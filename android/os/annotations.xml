@@ -1,0 +1,5 @@
+<root>
+    <item name='android.os.Parcel java.lang.String readString()'>
+        <annotation name='android.support.annotation.Nullable' />
+    </item>
+</root>
