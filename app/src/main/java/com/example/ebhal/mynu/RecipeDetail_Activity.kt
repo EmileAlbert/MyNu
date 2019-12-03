@@ -25,8 +25,18 @@ class RecipeDetail_Activity : AppCompatActivity() {
     lateinit var recipe : Recipe
     var recipe_index : Int = -1
 
-    lateinit var  titleView : TextView
-    lateinit var  textView: TextView
+    lateinit var  name_View : TextView
+    lateinit var  duration_View : TextView
+    // TODO declare ease (rating bar) widget
+    // TODO declare score (rating bar) widget
+    lateinit var  ingredients_View : TextView
+    lateinit var  steps_View : TextView
+    lateinit var  meal_View : TextView
+    lateinit var  price_View : TextView
+    lateinit var  nutriscore_View : TextView
+    // TODO declare meat (button) widget
+    // TODO declare health (button) widget
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +46,36 @@ class RecipeDetail_Activity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar !!.setDisplayHomeAsUpEnabled(true)
 
+        // Get recipe object
         recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
         recipe_index = intent.getIntExtra(EXTRA_RECIPE_INDEX, -1)
 
-        titleView = findViewById(R.id.title) as TextView
-        textView = findViewById(R.id.time) as TextView
-        textView = findViewById(R.id.price) as TextView
+        // Get entries name
+        name_View = findViewById(R.id.name) as TextView
+        duration_View = findViewById(R.id.duration) as TextView
+        // TODO handle ease (rating bar) widget
+        // TODO handle score (rating bar) widget
+        ingredients_View = findViewById(R.id.ingredients) as TextView
+        steps_View = findViewById(R.id.steps) as TextView
+        price_View = findViewById(R.id.price) as TextView
+        meal_View = findViewById(R.id.meal) as TextView
+        nutriscore_View = findViewById(R.id.nutriscore) as TextView
+        // TODO handle meat (button) widget
+        // TODO handle health (button) widget
 
-        titleView.text = recipe.title
-        textView.text = recipe.time.toString()
-        titleView.text = recipe.price.toString()
+        // Fill entries with existing value of the selected recipe if existing
+        name_View.text = recipe.name
+        duration_View.text = recipe.duration.toString()
+        // TODO handle ease (rating bar) widget
+        // TODO handle score (rating bar) widget
+        ingredients_View.text = recipe.ingredient_list
+        steps_View.text = recipe.recipe_steps
+        price_View.text = recipe.price.toString()
+        meal_View.text = recipe.meal_time
+        nutriscore_View.text = recipe.nutri_score.toString()
+        // TODO handle meat (button) widget
+        // TODO handle health (button) widget
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -69,7 +99,7 @@ class RecipeDetail_Activity : AppCompatActivity() {
     }
 
     private fun showConfirmDeleteRecipeDialog() {
-        val confirmFragment = ConfirmDeleteRecipeDialog(recipe.title)
+        val confirmFragment = ConfirmDeleteRecipeDialog(recipe.name)
         confirmFragment.listener = object : ConfirmDeleteRecipeDialog.ConfirmDeleteDialogListener{
             override fun onDialogPositiveClick() {
                 deleteRecipe()
@@ -91,13 +121,29 @@ class RecipeDetail_Activity : AppCompatActivity() {
     }
 
     fun saveRecipe(){
-        var title_field = findViewById<EditText>(R.id.title)
-        var time_field = findViewById<EditText>(R.id.time)
-        var price_field = findViewById<EditText>(R.id.price)
+        var name_field = findViewById<EditText>(R.id.name)
+        var duration_field = findViewById<EditText>(R.id.duration)
+        // TODO get ease (rating bar) widget value
+        // TODO get score (rating bar) widget value
+        var ingredients_field = findViewById<EditText>(R.id.ingredients)
+        var steps_field = findViewById<EditText>(R.id.steps)
+        var meal_field = findViewById<EditText>(R.id.meal)
+        //var price_field = findViewById<EditText>(R.id.price)
+        var nutriscore_field = findViewById<EditText>(R.id.nutriscore)
+        // TODO get meat (button) widget value
+        // TODO get health (button) widget value
 
-        recipe.title = title_field.toString()
-        recipe.time = Integer.valueOf(textView.text.toString())
-
+        recipe.name = name_field.toString()
+        recipe.duration = Integer.valueOf(duration_field.toString())
+        // TODO set ease value of recipe object
+        // TODO set score value of recipe object
+        recipe.ingredient_list = ingredients_field.toString()
+        recipe.recipe_steps = steps_field.toString()
+        recipe.meal_time = meal_field.toString()
+        // TODO set price value of recipe object
+        recipe.nutri_score = Integer.valueOf(nutriscore_field.toString())
+        // TODO set veggie value of recipe object
+        // TODO set healthy value of recipe object
 
         intent = Intent(ACTION_SAVE_RECIPE)
         intent.putExtra(EXTRA_RECIPE, recipe as Parcelable)

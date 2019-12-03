@@ -15,8 +15,8 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val cardView = itemView.findViewById(R.id.card_view) as CardView
-        val titleView = cardView.findViewById(R.id.title) as TextView
-        val timeView = cardView.findViewById(R.id.time) as TextView
+        val titleView = cardView.findViewById(R.id.name) as TextView
+        val timeView = cardView.findViewById(R.id.duration) as TextView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
@@ -29,8 +29,8 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
         val recipe = recipes[position]
         holder.cardView.setOnClickListener(itemClickListener)
         holder.cardView.tag = position
-        holder.titleView.text = recipe.title
-        holder.timeView.text = recipe.time.toString()
+        holder.titleView.text = recipe.name
+        holder.timeView.text = recipe.duration.toString()
     }
 
     override fun getItemCount(): Int {

@@ -19,7 +19,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -28,10 +28,10 @@
                 tools:text="Recipe" />
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title"
+                android:layout_below="@id/name"
                 android:maxLines="1"
                 android:ellipsize="end"
                 tools:text="Soon it will be the list of recipe tags" />

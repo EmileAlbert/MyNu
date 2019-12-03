@@ -1,117 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RecipeDetail_Activity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="Recette"/>
+        android:layout_height="match_parent"
+        tools:context=".RecipeDetail_Activity">
 
-    <EditText
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:hint="Titre de la recette"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Recette"/>
 
-    <EditText
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:hint="Durée"
-        android:layout_marginTop="5dp"/>
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:hint="Nom de la recette"/>
 
-    <RatingBar
-        android:id="@+id/ease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time"
-        />
-
-    <RatingBar
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time"
-        android:layout_alignParentRight="true"
-        />
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:hint="Durée"
+            android:layout_marginTop="5dp"/>
 
 
-    <EditText
-        android:id="@+id/ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ease"
-        android:layout_marginTop="30dp"
-        android:hint="Ingrédients" />
+        <RatingBar
 
-    <EditText
-        android:id="@+id/steps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ingredients"
-        android:layout_marginTop="5dp"
-        android:hint="Recette"
-        android:inputType="text" />
+            android:id="@+id/ease"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_below="@+id/duration"
+            android:numStars="5"
+            android:stepSize="1"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:transformPivotX="0dp" />
+
+        <RatingBar
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/duration"
+            android:layout_alignParentRight="true"
+            android:numStars="5"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:layout_marginRight="-30dp"
+            android:transformPivotX="110dp"
+            />
+            <!-- TODO change rating star image -->
+            <!-- android:progressDrawable="@drawable/ic_ease_rating_test" -->
 
 
-    <EditText
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/steps"
-        android:layout_marginTop="30dp"
-        android:hint="Prix" />
+        <EditText
+            android:id="@+id/ingredients"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ease"
+            android:layout_marginTop="30dp"
+            android:hint="Ingrédients" />
 
-    <EditText
-        android:id="@+id/meal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/price"
-        android:layout_below="@+id/steps"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:hint="MealTime"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/steps"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ingredients"
+            android:layout_marginTop="5dp"
+            android:hint="Recette"
+            />
 
-    <EditText
-        android:id="@+id/nutriscore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/meal"
-        android:layout_below="@+id/steps"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:hint="Nutriscore"
-        android:inputType="text" />
 
-    <ToggleButton
-        android:id="@+id/meat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/nutriscore"
-        android:layout_below="@+id/steps"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:text="ToggleButton"
-        android:textOff="Carnassier"
-        android:textOn="Végétarien" />
+        <EditText
+            android:id="@+id/price"
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/steps"
+            android:layout_marginTop="30dp"
+            android:hint="Prix" />
 
-    <ToggleButton
-        android:id="@+id/calories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/price"
-        android:layout_marginTop="10dp"
-        android:text="ToggleButton"
-        android:textOff="Sain"
-        android:textOn="Gras" />
-</RelativeLayout>
+        <EditText
+            android:id="@+id/meal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/price"
+            android:layout_below="@+id/steps"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:hint="MealTime"
+            android:inputType="text" />
+        <!-- TODO liste déroulante pour choisir ente déjeuner - diner - souper -->
+
+        <EditText
+            android:id="@+id/nutriscore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/meal"
+            android:layout_below="@+id/steps"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:hint="Nutriscore"
+            android:inputType="text" />
+
+        <ToggleButton
+            android:id="@+id/meat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/health"
+            android:layout_below="@+id/price"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="ToggleButton"
+            android:textOff="Carnivore"
+            android:textOn="Végétarien" />
+
+        <ToggleButton
+            android:id="@+id/health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/price"
+            android:layout_marginTop="10dp"
+            android:text="ToggleButton"
+            android:textOff="Sain"
+            android:textOn="Gras" />
+    </RelativeLayout>
+</ScrollView>
