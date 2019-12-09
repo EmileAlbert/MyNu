@@ -1,21 +1,25 @@
 package com.example.ebhal.mynu
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
-import android.support.v7.widget.LinearLayoutCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import com.example.ebhal.mynu.R.styleable.FloatingActionButton
-import com.example.ebhal.mynu.utils.deleteNote
-import com.example.ebhal.mynu.utils.persistRecipe
-import com.example.ebhal.mynu.utils.loadRecipes
+import com.example.ebhal.mynu.utils.*
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 // parentActivity of the application
 class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
@@ -24,12 +28,17 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
     lateinit var adapter: RecipeAdapter
     lateinit var recipes : MutableList<Recipe>
 
+    val REQUEST_IMPORT = 111
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_list_)
 
-        //recipes = mutableListOf<Recipe>()
-        recipes = loadRecipes(this)
+        try{
+            recipes = loadRecipes(this)
+        }
+        finally {}
+
         adapter = RecipeAdapter(recipes, this)
 
         val toolbar = findViewById(R.id.toolbar) as Toolbar
@@ -42,8 +51,34 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
         recyclerView.adapter = adapter
 
         // Test recipe creation
-        recipes.add(Recipe("Test 1", 10, 3, 2, "Ingrédients 1 et 2","Recette", 3.14f, "Dinner", 2, true, false))
+        recipes.add(Recipe("Test 1", 10, 1.0f, 2.0f, "Ingrédients 1 et 2","Recette 1", 1.11f, "Dinner", 1, true, false))
+        recipes.add(Recipe("Test 2", 20, 2.0f, 3.0f, "Ingrédients 3 et 4","Recette 2", 2.22f, "Dinner", 2, true, false))
+        recipes.add(Recipe("Test 3", 30, 3.0f, 4.0f, "Ingrédients 5 et 6","Recette 3", 3.33f, "Dinner", 3, true, false))
 
+    }
+
+    // Add menu toolbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_recipes_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_import_export -> {
+                //exportCSV(this, recipes)
+
+                // TODO
+                val intent = Intent()
+                        .setType("*/*") // TODO set type csv file
+                        .setAction(Intent.ACTION_GET_CONTENT)
+
+                startActivityForResult(Intent.createChooser(intent, "Select a file"),REQUEST_IMPORT)
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     // Code executed when click on a card of the list
@@ -56,22 +91,47 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
         else{
             when(view.id){
                 R.id.create_recipe_fab -> showRecipeDetail(-1)
-
             }
         }
     }
 
     // Code executed when return from child activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        fun getCSV (uri: Uri) : List<String> {
+            val csvFile = contentResolver.openInputStream(uri)
+            val isr = InputStreamReader(csvFile)
+            var list : List<String> = BufferedReader(isr).readLines()
+            return list
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+
         // Option 1 : just a RESULT_OK code and there is nothing to do
         if (resultCode != Activity.RESULT_OK || data == null) {
             return
         }
 
-        // Option 2 : REQUEST_EDIT_RECIPE and we need to save the ew value for the recipe object
         when (requestCode) {
+            // Option 2 : REQUEST_EDIT_RECIPE and we need to save the new value for the recipe object
             RecipeDetail_Activity.REQUEST_EDIT_RECIPE -> processEditRecipeResult(data)
+            // Option 3 : REQUEST_IMPORT and we need to read imported CSV file
+            REQUEST_IMPORT -> addImportedRecipes2list(this, importCSV(this, getCSV(data.data)))
         }
+    }
+
+    // Add imported recipes to recipes list
+    fun addImportedRecipes2list(context : Context, imported : MutableList<Recipe>) {
+        var existing_recipes_name : MutableList<String> = mutableListOf()
+        for (recipe in recipes){existing_recipes_name.add(recipe.name)}
+        for (imported_recipe in imported) {
+
+            if (imported_recipe.name !in existing_recipes_name) {recipes.add(imported_recipe)}
+        }
+
+        adapter.notifyDataSetChanged()
+        Toast.makeText(context, "Import réussi", Toast.LENGTH_LONG).show()
     }
 
     // Create the new recipe object or delete it function of the action contained in the Intent

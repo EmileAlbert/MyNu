@@ -4,16 +4,16 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.io.Serializable
 
-data class Recipe(var name : String = "default",
+data class Recipe(var name : String = "",
                   var duration : Int = 0,
-                  var ease : Int = -1,
-                  var score : Int = -1,
+                  var ease : Float = 0.00f,
+                  var score : Float = 0.00f,
                   //TODO var ingredient_list : MutableList<String> = arrayListOf(),
                   var ingredient_list : String ="",
                   var recipe_steps : String ="",
-                  var price : Float = -1F,
+                  var price : Float = 0F,
                   var meal_time : String = "",
-                  var nutri_score : Int = -1,
+                  var nutri_score : Int = 0,
                   var veggie : Boolean = false,
                   var healthy : Boolean = false,
                   //TODO var variant : Recipe = null object
@@ -22,8 +22,8 @@ data class Recipe(var name : String = "default",
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readInt(),
-            parcel.readInt(),
-            parcel.readInt(),
+            parcel.readFloat(),
+            parcel.readFloat(),
             parcel.readString(),
             parcel.readString(),
             parcel.readFloat(),
@@ -37,8 +37,8 @@ data class Recipe(var name : String = "default",
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeInt(duration)
-        parcel.writeInt(ease)
-        parcel.writeInt(score)
+        parcel.writeFloat(ease)
+        parcel.writeFloat(score)
         parcel.writeString(ingredient_list)
         parcel.writeString(recipe_steps)
         parcel.writeFloat(price)
@@ -53,8 +53,45 @@ data class Recipe(var name : String = "default",
         return 0
     }
 
+    fun getListParameters() : MutableList<String> {
+        var list = mutableListOf<String>()
+
+        list.add("name")
+        list.add("duration")
+        list.add("ease")
+        list.add("score")
+        list.add("ingredient_list")
+        list.add("recipe_steps")
+        list.add("price")
+        list.add("meal_time")
+        list.add("nutri_score")
+        list.add("veggie")
+        list.add("healthy")
+
+        return list
+    }
+
+    fun toCSVobject() : String{
+
+        var CSV_txt : String = ""
+
+        CSV_txt += "$name,"
+        CSV_txt += "$duration,"
+        CSV_txt += "$ease,"
+        CSV_txt += "$score,"
+        CSV_txt += "$ingredient_list,"
+        CSV_txt += "$recipe_steps,"
+        CSV_txt += "$price,"
+        CSV_txt += "$meal_time,"
+        CSV_txt += "$nutri_score,"
+        CSV_txt += "$healthy,"
+        CSV_txt += "$veggie,"
+        CSV_txt += "$name"
+
+        return CSV_txt
+    }
     companion object CREATOR : Parcelable.Creator<Recipe> {
-        private val serialVersionUID: Long = 42424242
+        private val serialVersionUID: Long = 4040404040 // TODO Maybe source of error when object definition changes
 
         override fun createFromParcel(parcel: Parcel): Recipe {
             return Recipe(parcel)

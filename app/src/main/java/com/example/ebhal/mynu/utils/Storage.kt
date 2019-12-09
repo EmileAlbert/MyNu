@@ -10,45 +10,49 @@ import java.util.*
 
 private val TAG = "storage"
 
+// Write note in memory
 fun persistRecipe(context: Context, recipe: Recipe) {
 
+    // Create the unique title of the note if doesn't exist
     if (TextUtils.isEmpty(recipe.filename)){
-        recipe.filename = UUID.randomUUID().toString() + ".recipe"
-    }
+        recipe.filename = UUID.randomUUID().toString() + ".recipe"}
     Log.i(TAG, "Save Recipe")
+
     val fileOutput = context.openFileOutput(recipe.filename, Context.MODE_PRIVATE)
     val outputStream = ObjectOutputStream(fileOutput)
     outputStream.writeObject(recipe)
     outputStream.close()
 }
 
+// Load all the recipes
 fun loadRecipes(context: Context): MutableList<Recipe>{
+
     val recipes = mutableListOf<Recipe>()
 
     val recipesDir = context.filesDir
-    Log.i(TAG, "Load recipes 1")
+    Log.i(TAG, "Load recipes list")
     for(filename in recipesDir.list()){
         val recipe = loadRecipe(context, filename)
         recipes.add(recipe)
     }
 
-    Log.i(TAG, "Load recipes 2")
     return recipes
 }
 
+// Suppress one note
 fun deleteNote(context: Context, recipe: Recipe){
     context.deleteFile(recipe.filename)
 }
 
+// Load recipe
 private fun loadRecipe(context: Context, filename: String) : Recipe {
-    Log.i(TAG, "Load recipe 1")
     val fileInput = context.openFileInput(filename)
     val inputStream = ObjectInputStream(fileInput)
     val recipe = inputStream.readObject() as Recipe
     inputStream.close()
-    Log.i(TAG, "Load recipe 2")
     return recipe
 }
+
 
 
 
