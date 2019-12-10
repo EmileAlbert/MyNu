@@ -21,6 +21,7 @@ import com.example.ebhal.mynu.utils.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+
 // parentActivity of the application
 class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
 
@@ -65,16 +66,20 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_import_export -> {
-                //exportCSV(this, recipes)
-
-                // TODO
+            R.id.action_import_recipe -> {
                 val intent = Intent()
-                        .setType("*/*") // TODO set type csv file
+                        .setType("text/csv")
                         .setAction(Intent.ACTION_GET_CONTENT)
 
                 startActivityForResult(Intent.createChooser(intent, "Select a file"),REQUEST_IMPORT)
                 return true
+            }
+
+            R.id.action_export_recipe -> {
+                val csv_object = CSV()
+                csv_object.exportCSV(this, recipes)
+                return true
+
             }
 
             else -> return super.onOptionsItemSelected(item)
@@ -98,15 +103,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
     // Code executed when return from child activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        fun getCSV (uri: Uri) : List<String> {
-            val csvFile = contentResolver.openInputStream(uri)
-            val isr = InputStreamReader(csvFile)
-            var list : List<String> = BufferedReader(isr).readLines()
-            return list
-
-        }
-
         super.onActivityResult(requestCode, resultCode, data)
+        val csv_object = CSV()
 
         // Option 1 : just a RESULT_OK code and there is nothing to do
         if (resultCode != Activity.RESULT_OK || data == null) {
@@ -116,22 +114,23 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener {
         when (requestCode) {
             // Option 2 : REQUEST_EDIT_RECIPE and we need to save the new value for the recipe object
             RecipeDetail_Activity.REQUEST_EDIT_RECIPE -> processEditRecipeResult(data)
+
             // Option 3 : REQUEST_IMPORT and we need to read imported CSV file
-            REQUEST_IMPORT -> addImportedRecipes2list(this, importCSV(this, getCSV(data.data)))
+            REQUEST_IMPORT -> import_recipes(csv_object.import(this, contentResolver.openInputStream(data.data)))
         }
     }
 
-    // Add imported recipes to recipes list
-    fun addImportedRecipes2list(context : Context, imported : MutableList<Recipe>) {
+    // Add imported recipes to recipes list if does not exist
+    fun import_recipes(import : MutableList<Recipe>) {
         var existing_recipes_name : MutableList<String> = mutableListOf()
         for (recipe in recipes){existing_recipes_name.add(recipe.name)}
-        for (imported_recipe in imported) {
+        for (imported_recipe in import) {
 
             if (imported_recipe.name !in existing_recipes_name) {recipes.add(imported_recipe)}
         }
 
         adapter.notifyDataSetChanged()
-        Toast.makeText(context, "Import réussi", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Import réussi", Toast.LENGTH_LONG).show()
     }
 
     // Create the new recipe object or delete it function of the action contained in the Intent
