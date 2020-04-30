@@ -5,13 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecipeList_Activity">
+    tools:context=".a_main_list.RecipeList_Activity"
+    android:id="@+id/main_layout">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"/>
+        android:background="?attr/colorPrimary"
+        app:title="@string/recipe_list_title"/>
 
 
     <android.support.v7.widget.RecyclerView

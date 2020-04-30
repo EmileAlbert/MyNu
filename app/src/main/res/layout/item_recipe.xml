@@ -6,7 +6,7 @@
     android:layout_height="70dp">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/card_view_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
@@ -19,7 +19,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/recipe_rc_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -28,14 +28,43 @@
                 tools:text="Recipe" />
 
             <TextView
-                android:id="@+id/duration"
+                android:id="@+id/recipe_rc_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/name"
+                android:layout_below="@id/recipe_rc_name"
                 android:maxLines="1"
                 android:ellipsize="end"
-                tools:text="Soon it will be the list of recipe tags" />
+                tools:text="duration" />
 
+            <TextView
+                android:id="@+id/recipe_rc_duration_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/recipe_rc_duration"
+                android:layout_toRightOf="@+id/recipe_rc_duration"
+                android:layout_marginLeft="10dp"
+                android:text="min" />
+
+
+            <TextView
+                android:id="@+id/recipe_rc_score_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/recipe_rc_duration_unit"
+                android:layout_alignBaseline="@+id/recipe_rc_duration"
+                android:layout_marginLeft="30dp"
+                android:text="Note : "
+                />
+
+            <TextView
+                android:id="@+id/recipe_rc_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/recipe_rc_score_title"
+                android:layout_alignBaseline="@+id/recipe_rc_duration"
+                android:layout_marginLeft="5dp"
+                android:text="score"
+                />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

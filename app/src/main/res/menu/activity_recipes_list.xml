@@ -6,5 +6,13 @@
         android:id="@+id/action_import_export"
         app:showAsAction="always"
         android:icon="@drawable/ic_import_export_white_24dp"
-        android:title="Enregistrer"/>
+        android:title="Importer/Exporter">
+        <menu>
+            <group>
+                <item android:id="@+id/action_import_recipe" android:title="Importer"/>
+                <item android:id="@+id/action_export_recipe" android:title="Exporter"/>
+            </group>
+        </menu>
+    </item>
+
 </menu>

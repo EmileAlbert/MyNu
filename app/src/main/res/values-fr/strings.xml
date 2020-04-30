@@ -1,20 +1,20 @@
 <resources>
     <string name="app_name">MyNu</string>
     <string name="menu_toolbar_title">Menu</string>
-    <string name="menu_shop_list">Go to shopping list</string>
+    <string name="menu_shop_list">Vers la liste des courses</string>
 
-    <string name="menu_wk_day_1">Monday</string>
-    <string name="menu_wk_day_2">Tuesday</string>
-    <string name="menu_wk_day_3">Wednesday</string>
-    <string name="menu_wk_day_4">Thursday</string>
-    <string name="menu_wk_day_5">Friday</string>
-    <string name="menu_wk_day_6">Saturday</string>
-    <string name="menu_wk_day_7">Sunday</string>
-    <string name="recipe_details_save_warning">Give a name to the recipe</string>
-    <string name="utils_saved">Saved</string>
-    <string name="utils_notsaved">Failed to save</string>
-    <string name="utils_deleted">Suppressed</string>
-    <string name="utils_notdeleted">Failed to suppress</string>
+    <string name="menu_wk_day_1">Lundi</string>
+    <string name="menu_wk_day_2">Mardi</string>
+    <string name="menu_wk_day_3">Mercredi</string>
+    <string name="menu_wk_day_4">Jeudi</string>
+    <string name="menu_wk_day_5">Vendredi</string>
+    <string name="menu_wk_day_6">Samedi</string>
+    <string name="menu_wk_day_7">Dimanche</string>
+    <string name="recipe_details_save_warning">Donner un nom à la recette</string>
+    <string name="utils_saved">Sauvé</string>
+    <string name="utils_notsaved">Échec de la sauvegarde</string>
+    <string name="utils_deleted">Supprimé</string>
+    <string name="utils_notdeleted">Échec de la suppression</string>
     <string name="recipe_list_menu_request">Sélectionnez une recette pour</string>
     <string name="recipe_list_title">Livre de recette</string>
     <string name="recipe_list_title_select">Livre de recette - Sélection</string>
@@ -27,10 +27,8 @@
     <string name="menu_sl_completed">Courses faites</string>
 
     <string-array name="details_meal_time">
-        <item>Dinner</item>
+        <item>Souper</item>
         <item>Lunch</item>
-        <item>Breakfast</item>
+        <item>Déjeuner</item>
     </string-array>
-
-
 </resources>

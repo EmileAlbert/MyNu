@@ -9,27 +9,49 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecipeList_Activity">
+
+        <activity android:name=".a_main_list.RecipeList_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecipeDetail_Activity"
+
+        <activity android:name=".a_details.RecipeDetail_Activity"
             android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".RecipeList_Activity"
+            android:parentActivityName=".a_main_list.RecipeList_Activity"
             tools:targetApi="jelly_bean">
 
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecipeList_Activity"/>
+                android:value=".a_main_list.RecipeList_Activity"/>
         </activity>
+
+        <activity android:name=".a_menu.Menu_activity"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".a_main_list.RecipeList_Activity"
+            tools:targetApi="jelly_bean">
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".a_main_list.RecipeList_Activity"/>
+        </activity>
+
+        <activity android:name=".a_shop_list.Shop_activity"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".a_menu.Menu_activity"
+            tools:targetApi="jelly_bean">
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".a_main_list.RecipeList_Activity"/>
+        </activity>
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"
