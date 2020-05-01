@@ -59,8 +59,16 @@ class Shop_activity : AppCompatActivity() {
 
     private fun goMenuBack() {
 
+        // Update existing item and create new ones
         var shopping_list_updated = adapter.get_items_list()
         updateShoppingList_database(database, shopping_list_updated)
+
+        // Suppress item in 2delete list
+        var items_toDelete = adapter.get_items2delete_list()
+        for (item in items_toDelete){
+
+            database.delete_item(item.dbID)
+        }
 
         val intent = Intent(this, Menu_activity::class.java)
         startActivity(intent)

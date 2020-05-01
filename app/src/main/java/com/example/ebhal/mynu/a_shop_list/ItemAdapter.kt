@@ -20,6 +20,8 @@ const val LOG = "ShoppingList_Adapter"
 class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
 
     private var items_list : MutableList<Item> = add_item_first2list(Item("", ""), shopping_list)
+
+    private var items2save_list : MutableList<Item> = shopping_list
     private var items2delete_list = mutableListOf<Item>()
 
     private var context = context
@@ -87,7 +89,6 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
 
     }
 
-
     fun swapItems(fromPosition : Int, toPosition : Int){
 
         if (fromPosition < toPosition) {
@@ -109,8 +110,6 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
         notifyItemMoved(fromPosition, toPosition)
     }
 
-
-
     override fun getItemCount(): Int {
         return items_list.size
     }
@@ -118,6 +117,7 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
     fun add_item(item : Item) {
 
         items_list.add(item)
+        items2save_list.add(item)
         this.notifyDataSetChanged()
     }
 
@@ -133,9 +133,8 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
     }
 
     fun get_items_list() : MutableList<Item>{
-        var res = items_list
-        res.removeAt(0)
-        return res
+
+        return items2save_list
     }
 
     fun get_items2delete_list() : MutableList<Item> {
