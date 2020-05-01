@@ -5,6 +5,7 @@ import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
 
 private val TAG = "storage"
+const val fake_item_name = "fake_item_fix_sl%"
 
 // RECIPE DATABASE MANAGEMENT /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Write note in memory
@@ -136,5 +137,33 @@ fun emptyShoppingList_database(database: Database){
     database.delete_all_items()
 }
 
+fun fixedShoppingList_database(database : Database, shopping_started : Boolean) : Boolean {
+
+    var fake_item = Item(fake_item_name, "", -1, true, true)
+
+    if (shopping_started){database.create_item(fake_item)}
+
+    else {
+
+        var item_list = database.get_items()
+
+        for (item in item_list){
+            if (item.name == fake_item_name){
+                database.delete_item(item.dbID)
+            }
+        }
+    }
+
+    return true
+}
 
 
+// return true if an item is checked
+fun checkeditem_database(database : Database) : Boolean {
+
+    var items_list = database.get_items()
+
+    for (item in items_list){if (item.check){return true}}
+
+    return false
+}

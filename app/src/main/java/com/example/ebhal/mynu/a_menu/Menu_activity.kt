@@ -18,7 +18,6 @@ import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.a_details.RecipeDetail_Activity
 import com.example.ebhal.mynu.a_main_list.RecipeList_Activity
 import com.example.ebhal.mynu.a_shop_list.Shop_activity
-import com.example.ebhal.mynu.a_shop_list.checkeditem
 import com.example.ebhal.mynu.a_shop_list.makeShoppingList
 import com.example.ebhal.mynu.a_shop_list.shoppingListIsCompleted
 import com.example.ebhal.mynu.data.Item
@@ -75,7 +74,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
         // Create recycler view with read only mode if shopping list started
         guest_number = database.get_daysGuest()
         week_days = getWeekDaysList()
-        adapter = MenuDayAdapter(recipes, week_days, guest_number,this, this, ::saveGuestNB_database, checkeditem(database))
+        adapter = MenuDayAdapter(recipes, week_days, guest_number,this, this, ::saveGuestNB_database, checkeditem_database(database))
 
         val recyclerView = findViewById<RecyclerView>(R.id.menu_day_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -152,7 +151,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
     // On cardview click listener - disable if shopping list started
     override fun onClick(view: View) {
 
-        if (view.tag != null && !checkeditem(database)) {
+        if (view.tag != null && !checkeditem_database(database)) {
             val day = view.tag as Int
 
             // Case when a day has an assigned recipe and is reclicked
@@ -283,7 +282,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
         }
 
         // shopping list already created but not started yet (no item checked)
-        else if (!checkeditem(database)){
+        else if (!checkeditem_database(database)){
 
             Log.i(TAG, "Shopping list not empty but not started")
 

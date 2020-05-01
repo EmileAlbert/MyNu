@@ -2,21 +2,28 @@ package com.example.ebhal.mynu.a_shop_list
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import com.example.ebhal.mynu.App
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Item
-import com.example.ebhal.mynu.utils.Database
-import com.example.ebhal.mynu.utils.loadShoppingList_database
-import com.example.ebhal.mynu.utils.updateShoppingList_database
+import com.example.ebhal.mynu.utils.*
 
 class Shop_activity : AppCompatActivity() {
+
+    private val TAG = "Shop_Activity"
+
+    var shopping_started : Boolean = false
 
     lateinit var adapter: ItemAdapter
     lateinit var items: MutableList<Item>
@@ -41,6 +48,7 @@ class Shop_activity : AppCompatActivity() {
 
         // Load shopping list from database
         items = loadShoppingList_database(database)
+        Log.i(TAG, "Load shopping list : $items")
 
         adapter = ItemAdapter(this, items)
 
@@ -52,13 +60,17 @@ class Shop_activity : AppCompatActivity() {
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(recyclerView)
 
+        shopping_started = checkeditem_database(database)
 
         button_menu_back = findViewById(R.id.shop_list_button)
         button_menu_back.setOnClickListener { goMenuBack() }
+
+        Toast.makeText(this, "fixed : ${checkeditem_database(database)}", Toast.LENGTH_SHORT).show()
     }
 
     private fun goMenuBack() {
 
+        Log.i(TAG, "Saved list : ${adapter.get_items_list()}")
         // Update existing item and create new ones
         var shopping_list_updated = adapter.get_items_list()
         updateShoppingList_database(database, shopping_list_updated)
@@ -74,4 +86,51 @@ class Shop_activity : AppCompatActivity() {
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.activity_shopping_list_menu, menu)
+
+        var item_menu = menu?.getItem(0)
+
+        if (shopping_started){
+
+            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_full_white_24dp)
+        }
+
+        else {
+
+            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_empty_white_24dp)
+        }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.shopping_shopping -> {
+
+                shopping_started = !shopping_started
+
+                var item_menu = item
+
+                if (shopping_started){
+
+                    item_menu.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_full_white_24dp)
+                }
+
+                else {
+
+                    item.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_empty_white_24dp)
+                }
+
+                fixedShoppingList_database(database, shopping_started)
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+
 }

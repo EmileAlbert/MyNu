@@ -44,6 +44,7 @@ private const val MENU_KEY_GUEST_NB = "guest_number"
 private const val SHOPLIST_KEY_ID = "id"
 private const val SHOPLIST_KEY_ITEM_NAME = "item_name"
 private const val SHOPLIST_KEY_ITEM_QTY  = "item_qty"
+private const val SHOPLIST_KEY_ITEM_RCPOS = "item_rc_position"
 private const val SHOPLIST_KEY_ITEM_CHECK  = "item_check"
 private const val SHOPLIST_KEY_INDEPENDENCE = "item_independence"
 
@@ -74,6 +75,7 @@ private const val MENU_TABLE_CREATE_REQUEST = "CREATE TABLE $MENU_TABLE_NAME ($M
 private const val SHOPLIST_TABLE_CREATE_REQUEST = "CREATE TABLE $SHOPLIST_TABLE_NAME ($SHOPLIST_KEY_ID INTEGER PRIMARY KEY, " +
                                                                                      "$SHOPLIST_KEY_ITEM_NAME TEXT, " +
                                                                                      "$SHOPLIST_KEY_ITEM_QTY TEXT, " +
+                                                                                     "$SHOPLIST_KEY_ITEM_RCPOS INTEGER," +
                                                                                      "$SHOPLIST_KEY_ITEM_CHECK TEXT," +
                                                                                      "$SHOPLIST_KEY_INDEPENDENCE TEXT)"
 
@@ -349,15 +351,17 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
         values.put(SHOPLIST_KEY_ITEM_NAME, item.name)
         values.put(SHOPLIST_KEY_ITEM_QTY, item.quantity)
+        values.put(SHOPLIST_KEY_ITEM_RCPOS, item.rc_position)
         values.put(SHOPLIST_KEY_ITEM_CHECK, item.check.toString())
         values.put(SHOPLIST_KEY_INDEPENDENCE, item.independence.toString())
+
 
         Log.i(TAG, "Create item $values")
 
         var id = writableDatabase.insert(SHOPLIST_TABLE_NAME, null, values)
 
         item.dbID = id
-        Log.i(TAG, "ID created item : $item.dbID")
+        Log.i(TAG, "ID created item : ${item.dbID}")
         return id > 0
     }
 
@@ -368,6 +372,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
         values.put(SHOPLIST_KEY_ITEM_NAME, item.name)
         values.put(SHOPLIST_KEY_ITEM_QTY, item.quantity)
+        values.put(SHOPLIST_KEY_ITEM_RCPOS, item.rc_position)
         values.put(SHOPLIST_KEY_ITEM_CHECK, item.check.toString())
         values.put(SHOPLIST_KEY_INDEPENDENCE, item.independence.toString())
 
@@ -412,11 +417,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
                 val name = cursor.getString(cursor.getColumnIndex(SHOPLIST_KEY_ITEM_NAME))
                 val quantity = cursor.getString(cursor.getColumnIndex(SHOPLIST_KEY_ITEM_QTY))
+                val rc_position = cursor.getInt(cursor.getColumnIndex(SHOPLIST_KEY_ITEM_RCPOS))
                 val check = cursor.getString(cursor.getColumnIndex(SHOPLIST_KEY_ITEM_CHECK))
                 val independence = cursor.getString(cursor.getColumnIndex(SHOPLIST_KEY_INDEPENDENCE))
                 val id = cursor.getLong(cursor.getColumnIndex(SHOPLIST_KEY_ID))
 
-                val item = Item(name, quantity, check.toBoolean(), independence.toBoolean() ,id)
+                // TODO
+                val item = Item(name, quantity,rc_position, check.toBoolean(), independence.toBoolean() ,id)
 
                 items_list.add(item)
             }

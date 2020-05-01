@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.ebhal.mynu.data.Ingredient
 import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
-import com.example.ebhal.mynu.utils.Database
 
 const val TAG = "shopping_list_tools"
 
@@ -121,16 +120,6 @@ fun shoppingListIsCompleted(shopping_list : List<Item>) : Boolean {
     for (item in shopping_list){ if (!item.check){return false} }
     return true
 
-}
-
-// return true if an item is checked
-fun checkeditem(database : Database) : Boolean {
-
-    var items_list = database.get_items()
-
-    for (item in items_list){if (item.check){return true}}
-
-    return false
 }
 
 fun add_item_first2list(item : Item, items_list : MutableList<Item>) : MutableList<Item> {

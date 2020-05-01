@@ -13,13 +13,14 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Item
+import com.example.ebhal.mynu.utils.fake_item_name
 
 
 const val LOG = "ShoppingList_Adapter"
 
-class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
+class ItemAdapter(context : Context, val shopping_list : MutableList<Item>): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
 
-    private var items_list : MutableList<Item> = add_item_first2list(Item("", ""), shopping_list)
+    private var items_list : MutableList<Item> = order_clean_list(add_item_first2list(Item("", "", 0), shopping_list))
 
     private var items2save_list : MutableList<Item> = shopping_list
     private var items2delete_list = mutableListOf<Item>()
@@ -49,7 +50,7 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
                         if (rc_sl_nameView.text.toString() != "") {
                             Log.w(LOG, "ADD DONE")
 
-                            var data =  Item(rc_sl_nameView.text.toString(), rc_sl_qtyView.text.toString(), false, true)
+                            var data =  Item(rc_sl_nameView.text.toString(), rc_sl_qtyView.text.toString(), -1,false, true)
                             this@ItemAdapter.add_item(data)
                             rc_sl_nameView.post(Runnable {rc_sl_nameView.requestFocus() })
                             true
@@ -81,11 +82,45 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val item = items_list[position]
+        item.rc_position = position
+
         holder.cardView.tag = position
         holder.rc_sl_nameView.setText(item.name)
         holder.rc_sl_qtyView.setText(item.qty_toStringUI())
         holder.rc_sl_checkbox.isChecked = item.check
+
+        Log.i(TAG, "onBindViewHolder ${item.name} position : $position")
+    }
+
+    private fun order_clean_list(unordered_list : MutableList<Item>): MutableList<Item> {
+
+        Log.i(TAG, "ORDER - unordered $unordered_list")
+
+        // suppress fake item of list
+        var fake_item_index = 0
+        var fake_item = false
+
+        for (item in unordered_list){
+
+            if (item.name == fake_item_name){
+
+                fake_item = true
+                break
+            }
+            fake_item_index += 1
+        }
+
+        if(fake_item){unordered_list.removeAt(fake_item_index)}
+
+        // re order list function of rc_position item parameter
+        val ordered_list = unordered_list
+        ordered_list.sortBy { it.rc_position }
+
+        Log.i(TAG, "ORDER - ordered $ordered_list")
+
+        return ordered_list
 
     }
 
@@ -108,6 +143,19 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
         }
 
         notifyItemMoved(fromPosition, toPosition)
+        Log.i("TAG", "moved item - old list : $items_list")
+        update_itemRCPos_listIndex()
+        Log.i("TAG", "moved item - new list : $items_list")
+    }
+
+    private fun update_itemRCPos_listIndex() {
+
+        var index = 0
+        for (item in items_list){
+
+            item.rc_position = index
+            index += 1
+        }
     }
 
     override fun getItemCount(): Int {

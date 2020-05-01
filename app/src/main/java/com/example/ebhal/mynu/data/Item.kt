@@ -1,6 +1,6 @@
 package com.example.ebhal.mynu.data
 
-data class Item(var name : String = "", var quantity : String = "", var check : Boolean = false, var independence : Boolean = false, var dbID : Long = -1){
+data class Item(var name : String = "", var quantity : String = "", var rc_position : Int = -1, var check : Boolean = false, var independence : Boolean = false, var dbID : Long = -1){
 
     fun qty_toStringUI() : String {
 

@@ -16,7 +16,7 @@ import com.example.ebhal.mynu.data.Ingredient
 import com.example.ebhal.mynu.utils.add_ing_first2list
 
 
-const val TAG = "Ingredient_Adapter"
+private const val TAG = "Ingredient_Adapter"
 
 class IngredientAdapter(var context : Context, val ingredients : MutableList<Ingredient>, val readOnly : Boolean)
     : RecyclerView.Adapter<IngredientAdapter.ViewHolder>(){
