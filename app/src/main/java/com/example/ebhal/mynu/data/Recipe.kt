@@ -81,31 +81,30 @@ data class Recipe(var name : String = "",
         list.add("season")
         list.add("ordinary")
         list.add("original")
-        list.add("id")
 
         return list
     }
 
     fun toCSVobject() : String{
 
-        var CSV_txt : String = ""
+        val CSV_sep = ";"
+        var CSV_txt = ""
 
-        CSV_txt += "$name" + ","
-        CSV_txt += "$duration" + ","
-        CSV_txt += "$ease" + ","
-        CSV_txt += "$score" + ","
-        CSV_txt += "$ingredient_list" + ","
-        CSV_txt += "$recipe_steps" + ","
-        CSV_txt += "$price" + ","
-        CSV_txt += "$meal_time" + ","
-        CSV_txt += "$nutri_score" + ","
-        CSV_txt += "$veggie" + ","
-        CSV_txt += "$salty" + ","
-        CSV_txt += "$temp" + ","
-        CSV_txt += "$season" + ","
-        CSV_txt += "$ordinary" + ","
-        CSV_txt += "$original" + ","
-        CSV_txt += "$id"
+        CSV_txt += "$name" + CSV_sep
+        CSV_txt += "$duration" + CSV_sep
+        CSV_txt += "$ease" + CSV_sep
+        CSV_txt += "$score" + CSV_sep
+        CSV_txt += "$ingredient_list" + CSV_sep
+        CSV_txt += "$recipe_steps" + CSV_sep
+        CSV_txt += "$price" + CSV_sep
+        CSV_txt += "$meal_time" + CSV_sep
+        CSV_txt += "$nutri_score" + CSV_sep
+        CSV_txt += "$veggie" + CSV_sep
+        CSV_txt += "$salty" + CSV_sep
+        CSV_txt += "$temp" + CSV_sep
+        CSV_txt += "$season" + CSV_sep
+        CSV_txt += "$ordinary" + CSV_sep
+        CSV_txt += "$original" + CSV_sep
 
         return CSV_txt
     }
@@ -121,7 +120,7 @@ data class Recipe(var name : String = "",
             }
 
             else {
-                list_str += ";" + ingredient.toString()
+                list_str += "&" + ingredient.toString()
             }
 
             i++
@@ -133,7 +132,7 @@ data class Recipe(var name : String = "",
     fun ing_string2list(ing_list_str : String) : MutableList<Ingredient>{
 
         var ingredients_list = mutableListOf<Ingredient>()
-        var ingredient_qty_list = ing_list_str.split(";")
+        var ingredient_qty_list = ing_list_str.split("&")
 
         if(ing_list_str != "") {
             for (ing_qty in ingredient_qty_list) {

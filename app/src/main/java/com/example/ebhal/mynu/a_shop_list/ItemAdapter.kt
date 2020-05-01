@@ -18,9 +18,9 @@ import com.example.ebhal.mynu.utils.fake_item_name
 
 const val LOG = "ShoppingList_Adapter"
 
-class ItemAdapter(context : Context, val shopping_list : MutableList<Item>): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
+class ItemAdapter(context : Context, val shopping_list : MutableList<Item>, val update_lock_button : (List<Item>) -> Boolean): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
 
-    private var items_list : MutableList<Item> = order_clean_list(add_item_first2list(Item("", "", 0), shopping_list))
+    private var items_list = order_clean_list(shopping_list)
 
     private var items2save_list : MutableList<Item> = shopping_list
     private var items2delete_list = mutableListOf<Item>()
@@ -71,6 +71,8 @@ class ItemAdapter(context : Context, val shopping_list : MutableList<Item>): Rec
                 var position = cardView.tag as Int
                 items_list[position].check = isChecked
 
+                update_lock_button(items_list)
+
                 //Toast.makeText(this@ItemAdapter.context,"${isChecked.toString()} + : ${position.toString()} ",Toast.LENGTH_SHORT).show()
             }
         }
@@ -96,35 +98,36 @@ class ItemAdapter(context : Context, val shopping_list : MutableList<Item>): Rec
 
     private fun order_clean_list(unordered_list : MutableList<Item>): MutableList<Item> {
 
+
         Log.i(TAG, "ORDER - unordered $unordered_list")
+
+        var ordered_list = mutableListOf<Item>()
+
 
         // suppress fake item of list
         var fake_item_index = 0
         var fake_item = false
 
-        for (item in unordered_list){
+        for (item in unordered_list) {
 
-            if (item.name == fake_item_name){
-
-                fake_item = true
-                break
+            if (item.name != fake_item_name) {
+                ordered_list.add(item)
             }
-            fake_item_index += 1
         }
 
-        if(fake_item){unordered_list.removeAt(fake_item_index)}
-
         // re order list function of rc_position item parameter
-        val ordered_list = unordered_list
         ordered_list.sortBy { it.rc_position }
 
         Log.i(TAG, "ORDER - ordered $ordered_list")
 
-        return ordered_list
+        return add_item_first2list(Item("", "", 0), ordered_list)
 
     }
 
     fun swapItems(fromPosition : Int, toPosition : Int){
+
+        // make first item (user input) un movable
+        if (fromPosition == 0 || toPosition == 0){return}
 
         if (fromPosition < toPosition) {
 

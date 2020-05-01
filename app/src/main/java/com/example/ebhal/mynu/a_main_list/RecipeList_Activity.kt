@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.example.ebhal.mynu.App
@@ -18,6 +19,8 @@ import com.example.ebhal.mynu.a_details.RecipeDetail_Activity
 import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
+
+const val TAG = "Recipe List activity"
 
 // parentActivity of the application
 class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener {
@@ -237,10 +240,13 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     // Add imported recipes to recipes list if does not exist
     fun import_recipes(imported_recipes: MutableList<Recipe>) {
 
-        // TODO CLEAN IMPORT MECHANISM
+        if(imported_recipes.size == 0){Toast.makeText(this, "Import échoué", Toast.LENGTH_LONG).show()}
+
         var imported_recipes_list = imported_recipes
         var existing_recipes_list = database.get_recipes()
         var existing_recipes_name_list = mutableListOf<String>()
+
+        Log.i(TAG, "list of importet recipes : $imported_recipes")
 
         // Get all existing recipe name
         for (existing_recipe in existing_recipes_list){
@@ -250,8 +256,11 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         // Import only recipes wich have a name not present in existing_recipes_name_list
         for (imported_recipe in imported_recipes_list) {
 
+            Log.i(TAG, "try to import $imported_recipe")
             if (imported_recipe.name !in existing_recipes_name_list) {
-                recipes.add(imported_recipe)
+
+                Log.i(TAG, "import $imported_recipe")
+                saveRecipe(imported_recipe, -1)
             }
         }
 

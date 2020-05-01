@@ -65,7 +65,6 @@ fun makeShoppingList(list_pairRecipesGuests: List<Pair<Recipe, Int>>): MutableLi
     return shopping_list
 }
 
-// TODO
 fun concat_ingredient_item(ingredient: Ingredient, item: Item): Item {
 
     var ing_1 = ingredient
