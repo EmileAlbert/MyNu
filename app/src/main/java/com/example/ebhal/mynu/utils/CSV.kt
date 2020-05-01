@@ -7,17 +7,20 @@ import android.support.v4.content.FileProvider
 import android.support.v4.util.ObjectsCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
 import com.example.ebhal.mynu.data.Recipe
 import java.io.*
 
 class CSV : AppCompatActivity() {
 
     private val TAG = "Import_Export"
+    val CSV_sep = ";"
 
     fun import (context : Context, csvFile: InputStream?) : MutableList<Recipe> {
 
         var data = URI2CSV_content(csvFile)
+
+        Log.i(TAG, "Import $data")
+
         var list_recipes = importRecipes(context, data)
         return list_recipes
 
@@ -40,23 +43,30 @@ class CSV : AppCompatActivity() {
         var recipe_data = data.toMutableList()
         val recipe_model = Recipe()
         var list_param_model = ""
-        for (param in recipe_model.getListParameters()){list_param_model += param + ","}
+        for (param in recipe_model.getListParameters()){
+            list_param_model += param + CSV_sep
+        }
 
         if (!ObjectsCompat.equals(recipe_data[0], list_param_model)){
-            Toast.makeText(context, "CSV header incorrect", Toast.LENGTH_LONG).show()
+            Log.i(TAG, "CSV header incorrect : ${recipe_data[0]} vs $list_param_model")
             return recipes_import
         }
 
         recipe_data.removeAt(0)
+
+        Log.i(TAG, "recipe data : $recipe_data")
+
         for (recipe_line in recipe_data) run {
             var params: List<String>
-            params = recipe_line.split(",")
+            params = recipe_line.split(CSV_sep)
 
+            Log.i(TAG, "data list : $params")
+            
             var recipe = Recipe(params[0], Integer.valueOf(params[1]), java.lang.Float.valueOf(params[2]),
-                    java.lang.Float.valueOf(params[3]), params[4], params[5],
-                    java.lang.Float.valueOf(params[6]), params[7], Integer.valueOf(params[8]),
-                    params[9].toBoolean(), params[10].toBoolean(), params[11].toBoolean(),
-                    params[12].toBoolean(), params[13].toBoolean(), params[14].toBoolean(),java.lang.Long.valueOf(params[15]))
+                            java.lang.Float.valueOf(params[3]), params[4], params[5],
+                            java.lang.Float.valueOf(params[6]), params[7], Integer.valueOf(params[8]),
+                            params[9].toBoolean(), params[10].toBoolean(), params[11].toBoolean(),
+                            params[12].toBoolean(), params[13].toBoolean(), params[14].toBoolean())
 
             recipes_import.add(recipe)
         }
@@ -65,6 +75,7 @@ class CSV : AppCompatActivity() {
     }
 
     fun exportCSV(context: Context, database: Database){
+
         //Toast.makeText(context, "Export CSV", Toast.LENGTH_SHORT).show()
 
         var recipes = database.get_recipes()
@@ -78,7 +89,8 @@ class CSV : AppCompatActivity() {
 
         var CSV_HEADER = ""
         for(param in parameters){
-            CSV_HEADER += "$param,"
+
+            CSV_HEADER += "$param$CSV_sep"
         }
 
         val CSV_File = File.createTempFile("data", ".csv", context.cacheDir)
@@ -113,5 +125,4 @@ class CSV : AppCompatActivity() {
         ContextCompat.startActivity(context, Intent.createChooser(sendIntent, "SHARE"), null)
     }
 
-    companion object
 }
