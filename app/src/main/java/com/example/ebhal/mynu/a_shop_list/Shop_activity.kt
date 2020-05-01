@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.Toast
 import com.example.ebhal.mynu.App
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.a_menu.Menu_activity
@@ -24,6 +23,7 @@ class Shop_activity : AppCompatActivity() {
     private val TAG = "Shop_Activity"
 
     var shopping_started : Boolean = false
+    var activity_menu : Menu? = null
 
     lateinit var adapter: ItemAdapter
     lateinit var items: MutableList<Item>
@@ -50,7 +50,7 @@ class Shop_activity : AppCompatActivity() {
         items = loadShoppingList_database(database)
         Log.i(TAG, "Load shopping list : $items")
 
-        adapter = ItemAdapter(this, items)
+        adapter = ItemAdapter(this, items, ::update_lock_button)
 
         val recyclerView = findViewById<RecyclerView>(R.id.shop_list_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -65,7 +65,7 @@ class Shop_activity : AppCompatActivity() {
         button_menu_back = findViewById(R.id.shop_list_button)
         button_menu_back.setOnClickListener { goMenuBack() }
 
-        Toast.makeText(this, "fixed : ${checkeditem_database(database)}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "fixed : ${checkeditem_database(database)}", Toast.LENGTH_SHORT).show()
     }
 
     private fun goMenuBack() {
@@ -90,17 +90,18 @@ class Shop_activity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.activity_shopping_list_menu, menu)
+        activity_menu = menu
 
         var item_menu = menu?.getItem(0)
 
         if (shopping_started){
 
-            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_full_white_24dp)
+            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
         }
 
         else {
 
-            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_empty_white_24dp)
+            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
         }
 
         return true
@@ -108,7 +109,7 @@ class Shop_activity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.shopping_shopping -> {
+            R.id.shopping_list_lock -> {
 
                 shopping_started = !shopping_started
 
@@ -116,12 +117,12 @@ class Shop_activity : AppCompatActivity() {
 
                 if (shopping_started){
 
-                    item_menu.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_full_white_24dp)
+                    item_menu.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
                 }
 
                 else {
 
-                    item.icon = ContextCompat.getDrawable(this, R.drawable.ic_shopping_empty_white_24dp)
+                    item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
                 }
 
                 fixedShoppingList_database(database, shopping_started)
@@ -130,6 +131,31 @@ class Shop_activity : AppCompatActivity() {
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    fun update_lock_button(items_list : List<Item>) : Boolean {
+
+        var lock = false
+        val item = activity_menu!!.findItem(R.id.shopping_list_lock)
+
+        for (item in items_list){if (item.check){lock = true}}
+
+        if (lock){
+
+            shopping_started = lock
+
+            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
+            item.isEnabled = false
+        }
+
+        else {
+
+            shopping_started = lock
+            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
+            item.isEnabled = true
+        }
+
+        return true
     }
 
 
