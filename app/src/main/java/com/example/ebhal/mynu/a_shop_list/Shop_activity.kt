@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.Button
 import com.example.ebhal.mynu.App
 import com.example.ebhal.mynu.R
@@ -46,6 +47,11 @@ class Shop_activity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.shop_list_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+
+        val callback = GestureAdapterHandler(this, adapter, ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(recyclerView)
+
 
         button_menu_back = findViewById(R.id.shop_list_button)
         button_menu_back.setOnClickListener { goMenuBack() }

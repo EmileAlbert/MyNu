@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Toast
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Item
 
@@ -19,6 +20,8 @@ const val LOG = "ShoppingList_Adapter"
 class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
 
     private var items_list : MutableList<Item> = add_item_first2list(Item("", ""), shopping_list)
+    private var items2delete_list = mutableListOf<Item>()
+
     private var context = context
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -26,10 +29,10 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
         val cardView : CardView
         val rc_sl_nameView : EditText
         val rc_sl_qtyView : EditText
-        //val rc_sl_delete_button : ImageView
         val rc_sl_checkbox : CheckBox
 
         init {
+
             cardView = itemView.findViewById(R.id.card_view_sl_item) as CardView
 
             rc_sl_nameView = cardView.findViewById(R.id.rc_sl_item_name) as EditText
@@ -59,16 +62,6 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
                 }
             }
 
-//            rc_sl_delete_button = cardView.findViewById(R.id.rc_sl_item_delete) as ImageView
-//            rc_sl_delete_button.setOnClickListener{
-//                Log.w(TAG, "DELETE BUTTON")
-//
-//                var position = cardView.tag as Int
-//                items_list.removeAt(position)
-//
-//                this@ItemAdapter.notifyDataSetChanged()
-//            }
-
             rc_sl_checkbox = cardView.findViewById(R.id.rc_sl_item_checked) as CheckBox
             rc_sl_checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
 
@@ -94,18 +87,59 @@ class ItemAdapter(context : Context, var shopping_list : MutableList<Item>): Rec
 
     }
 
+
+    fun swapItems(fromPosition : Int, toPosition : Int){
+
+        if (fromPosition < toPosition) {
+
+            for (i in fromPosition..toPosition - 1) {
+
+                items_list.set(i, items_list.set(i+1, items_list.get(i)))
+            }
+        }
+
+        else {
+
+            for (i in fromPosition..toPosition + 1) {
+
+                items_list.set(i, items_list.set(i-1, items_list.get(i)))
+            }
+        }
+
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+
+
     override fun getItemCount(): Int {
         return items_list.size
     }
 
     fun add_item(item : Item) {
+
         items_list.add(item)
         this.notifyDataSetChanged()
+    }
+
+    fun delete_item(item_index : Int) {
+
+        val item = items_list[item_index]
+        items_list.remove(item)
+        this.notifyDataSetChanged()
+
+        items2delete_list.add(item)
+
+        Toast.makeText(this@ItemAdapter.context,"Item supprimé",Toast.LENGTH_SHORT).show()
     }
 
     fun get_items_list() : MutableList<Item>{
         var res = items_list
         res.removeAt(0)
         return res
+    }
+
+    fun get_items2delete_list() : MutableList<Item> {
+
+        return items2delete_list
     }
 }
