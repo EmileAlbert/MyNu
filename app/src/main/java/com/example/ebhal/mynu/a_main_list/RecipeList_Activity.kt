@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.GestureDetectorCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import com.example.ebhal.mynu.App
 import com.example.ebhal.mynu.R
@@ -348,7 +350,23 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     // Adding menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_recipes_list, menu)
-        return true
+
+        val searchViewItem  = menu?.findItem(R.id.app_bar_search)
+        val search_input = MenuItemCompat.getActionView(searchViewItem) as SearchView
+        search_input.maxWidth = Integer.MAX_VALUE
+
+        search_input.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     // Divers  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

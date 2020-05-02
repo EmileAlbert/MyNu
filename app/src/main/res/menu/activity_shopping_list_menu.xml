@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/shopping_shopping"
+        android:id="@+id/shopping_list_lock"
         app:showAsAction="always"
-        android:icon="@drawable/ic_shopping_empty_white_24dp"
+        android:icon="@drawable/ic_lock_open_white_24dp"
         android:title="Commencer courses"/>
 
 </menu>

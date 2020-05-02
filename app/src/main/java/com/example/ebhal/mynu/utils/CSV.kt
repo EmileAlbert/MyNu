@@ -61,7 +61,7 @@ class CSV : AppCompatActivity() {
             params = recipe_line.split(CSV_sep)
 
             Log.i(TAG, "data list : $params")
-            
+
             var recipe = Recipe(params[0], Integer.valueOf(params[1]), java.lang.Float.valueOf(params[2]),
                             java.lang.Float.valueOf(params[3]), params[4], params[5],
                             java.lang.Float.valueOf(params[6]), params[7], Integer.valueOf(params[8]),
