@@ -11,9 +11,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="@string/shopping_list_title"/>
-
+        app:title="@string/shopping_list_title"
+        app:titleMarginStart="0dp"
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/pop_toolbar_theme"/>
 
     <Button
         android:id="@+id/shop_list_button"
@@ -23,7 +24,7 @@
         android:layout_below="@id/toolbar"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/shop_list_button_back"/>
+        android:text="@string/shopping_list_button_back"/>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"

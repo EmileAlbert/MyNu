@@ -1,7 +1,52 @@
 <resources>
     <string name="app_name">MyNu</string>
+
+
+    <string name="recipe_list_menu_request">Sélectionnez une recette pour</string>
+    <string name="recipe_list_title">Livre de recette</string>
+    <string name="recipe_list_title_select">Livre de recette - Sélection</string>
+
+    <string name="recipe_duration_unit">min</string>
+    <string name="recipe_price_unit">€</string>
+    <string name="recipe_score_prefix">Note :</string>
+
+
+    <string name="recipe_details_title">Recette</string>
+    <string name="recipe_details_name">Nom de la recette</string>
+    <string name="recipe_details_duration">Durée</string>
+    <string name="recipe_details_price">Prix</string>
+    <string name="recipe_details_save_warning">Donnez un nom à la recette</string>
+    <string name="recipe_details_notes_title">Notes à propos de la recette</string>
+    <string name="recipe_details_notes">A propos de la recette</string>
+    <string name="recipe_details_veggie_off">Carnivore</string>
+    <string name="recipe_details_veggie_on">Végétarien</string>
+    <string name="recipe_details_original_off">Normal</string>
+    <string name="recipe_details_original_on">Original</string>
+    <string name="recipe_details_ordinary_off">Ordinaire</string>
+    <string name="recipe_details_ordinary_on">Exceptionnel</string>
+    <string name="recipe_details_season_off">Été</string>
+    <string name="recipe_details_season_on">Hiver</string>
+    <string name="recipe_details_temp_off">Chaud</string>
+    <string name="recipe_details_temp_on">Froid</string>
+    <string name="recipe_details_salt_off">Salé</string>
+    <string name="recipe_details_salt_on">Sucré</string>
+    <string name="recipe_details_ingredient_name">Ingrédient</string>
+    <string name="recipe_details_ingredient_quantity">Quantité</string>
+    <string name="recipe_details_RO_title">Recette - Lecture seule</string>
+
+    <string-array name="recipe_details_meal_time">
+        <item>Souper</item>
+        <item>Diner</item>
+        <item>Déjeuner</item>
+    </string-array>
+
+
     <string name="menu_toolbar_title">Menu</string>
-    <string name="menu_shop_list">Vers la liste des courses</string>
+    <string name="menu_shop_list">Allez à la liste des courses</string>
+    <string name="menu_default_recipe_title">Aucune recette choisie</string>
+    <string name="menu_reset">Réinitialisation</string>
+    <string name="menu_reset_msg">Menu de la semaine réinitialisé</string>
+    <string name="menu_shopping_list_completed">Courses faites</string>
 
     <string name="menu_wk_day_1">Lundi</string>
     <string name="menu_wk_day_2">Mardi</string>
@@ -10,25 +55,17 @@
     <string name="menu_wk_day_5">Vendredi</string>
     <string name="menu_wk_day_6">Samedi</string>
     <string name="menu_wk_day_7">Dimanche</string>
-    <string name="recipe_details_save_warning">Donner un nom à la recette</string>
-    <string name="utils_saved">Sauvé</string>
-    <string name="utils_notsaved">Échec de la sauvegarde</string>
-    <string name="utils_deleted">Supprimé</string>
-    <string name="utils_notdeleted">Échec de la suppression</string>
-    <string name="recipe_list_menu_request">Sélectionnez une recette pour</string>
-    <string name="recipe_list_title">Livre de recette</string>
-    <string name="recipe_list_title_select">Livre de recette - Sélection</string>
-    <string name="menu_default_recipe_title">Aucune recette choisie</string>
-    <string name="reset">Reset</string>
-    <string name="menu_reset_msg">Menu de la semaine réinitialisé</string>
-    <string name="shop_list_button_back">Retourner au menu de la semaine</string>
-    <string name="shopping_list_title">Liste des courses</string>
-    <string name="recipe_details_RO_title">Recette - Lecture seule</string>
-    <string name="menu_sl_completed">Courses faites</string>
 
-    <string-array name="details_meal_time">
-        <item>Souper</item>
-        <item>Lunch</item>
-        <item>Déjeuner</item>
-    </string-array>
+
+    <string name="shopping_list_button_back">Retourner au menu de la semaine</string>
+    <string name="shopping_list_title">Liste des courses</string>
+    <string name="shopping_list_items_quantity">Quantité</string>
+    <string name="shopping_list_items_name">Item</string>
+
+
+    <string name="utils_saved">Sauvé</string>
+    <string name="utils_notsaved">Sauvegarde échouée</string>
+    <string name="utils_deleted">Supprimé</string>
+    <string name="utils_notdeleted">Suppression échouée</string>
+
 </resources>

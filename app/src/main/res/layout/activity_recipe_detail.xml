@@ -7,12 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".a_details.RecipeDetail_Activity">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-    app:title="Recette"/>
+
+        app:title="@string/recipe_details_title"
+
+        app:titleMarginStart="0dp"
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/pop_toolbar_theme"/>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,25 +32,30 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
+            android:layout_height="wrap_content"
             tools:context=".a_details.RecipeDetail_Activity">
-
 
             <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nom de la recette"
+
+                android:hint="@string/recipe_details_name"
+                style="@style/recipe_detail_title"
+
                 android:inputType="textCapSentences"/>
 
             <EditText
                 android:id="@+id/duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:hint="@string/recipe_details_duration"
+                style="@style/recipe_detail_text"
+
                 android:layout_below="@+id/name"
-                android:hint="Durée"
                 android:layout_marginTop="5dp"
+
                 android:inputType="number"
                 android:selectAllOnFocus="true"/>
 
@@ -53,19 +63,30 @@
                 android:id="@+id/duration_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:text="@string/recipe_duration_unit"
+                style="@style/recipe_detail_text"
+
                 android:layout_alignBaseline="@+id/duration"
                 android:layout_toRightOf="@+id/duration"
                 android:layout_marginLeft="10dp"
-                android:text="min" />
+                android:layout_toEndOf="@+id/duration"
+                android:layout_marginStart="10dp" />
 
             <EditText
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:hint="@string/recipe_details_price"
+                style="@style/recipe_detail_text"
+
                 android:layout_toLeftOf="@+id/unit_price"
                 android:layout_marginRight="10dp"
                 android:layout_alignBaseline="@+id/unit_price"
-                android:hint="Prix"
+                android:layout_toStartOf="@+id/unit_price"
+                android:layout_marginEnd="10dp"
+
                 android:inputType="numberDecimal"
                 android:selectAllOnFocus="true"/>
 
@@ -73,40 +94,51 @@
                 android:id="@+id/unit_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:text="@string/recipe_price_unit"
+                style="@style/recipe_detail_text"
+
                 android:layout_marginRight="115dp"
                 android:layout_alignTop="@+id/duration"
                 android:layout_alignBaseline="@+id/duration_unit"
                 android:layout_alignParentRight="true"
-                android:text="€" />
+                android:layout_marginEnd="115dp"
+                android:layout_alignParentEnd="true"/>
 
             <RatingBar
                 android:id="@+id/ease"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/duration"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginStart="0dp"
+
                 android:numStars="5"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
                 android:stepSize="1"
-                android:transformPivotX="0dp" />
+                android:transformPivotX="0dp"/>
 
             <RatingBar
                 android:id="@+id/score"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+
                 android:layout_below="@+id/duration"
                 android:layout_marginTop="25dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="-30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="-30dp"
+
                 android:numStars="5"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:layout_marginRight="-30dp"
-                android:transformPivotX="110dp"
-                />
+                android:transformPivotX="110dp"/>
                 <!-- TODO change rating star image -->
                 <!-- android:progressDrawable="@drawable/ic_ease_rating_test" -->
 
@@ -114,15 +146,22 @@
                 android:id="@+id/title_ingredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:text="Ingrédients (1 personne)"
+                style="@style/recipe_detail_subtitle"
+
                 android:layout_below="@+id/score"
-                android:layout_marginTop="50dp"
                 android:layout_marginLeft="4dp"
-                android:textSize="18dp"
-                android:text="Ingrédients (1 personne)" />
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="4dp"/>
+                <!-- TODO change to give possibility to change ingredient qty scale -->
+
 
             <TableRow
                 android:id="@+id/hr_ingredients_top"
+
                 android:layout_below="@+id/title_ingredients"
+
                 android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="4dp"
@@ -134,13 +173,17 @@
                 android:id="@+id/ingredients_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+
                 android:layout_below="@+id/hr_ingredients_top"
                 android:layout_marginTop="5dp"
+
                 tools:listitem="@layout/item_ingredient" />
 
             <TableRow
                 android:id="@+id/hr_ingredients_bot"
+
                 android:layout_below="@+id/ingredients_recycler_view"
+
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="4dp"
@@ -153,102 +196,141 @@
                 android:id="@+id/title_steps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:text="@string/recipe_details_notes_title"
+                style="@style/recipe_detail_subtitle"
+
                 android:layout_below="@+id/hr_ingredients_bot"
                 android:layout_marginTop="50dp"
                 android:layout_marginLeft="4dp"
-                android:textSize="18dp"
-                android:text="Notes à propos de la recette"/>
+                android:layout_marginStart="4dp"/>
 
             <EditText
                 android:id="@+id/steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:hint="@string/recipe_details_notes"
+                style="@style/recipe_detail_text"
+
                 android:layout_below="@+id/title_steps"
                 android:layout_marginTop="4dp"
-                android:hint="A propos de la recette"
-                android:inputType="textCapSentences"/>
+                android:inputType="textMultiLine"/>
 
             <Spinner
                 android:id="@+id/meal"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
+
+                android:entries="@array/recipe_details_meal_time"
+                style="@style/recipe_detail_text"
+
                 android:layout_below="@+id/steps"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="50dp"
-                android:entries="@array/details_meal_time" />
+                android:layout_marginStart="0dp"/>
 
 
             <SeekBar
                 android:id="@+id/nutriscore_seekbar"
                 android:layout_width="200dp"
                 android:layout_height="46dp"
+
                 android:layout_below="@+id/steps"
                 android:layout_marginTop="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="4dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="4dp"
+
                 android:max="4"
                 android:theme="@style/Widget.AppCompat.SeekBar.Discrete"/>
-                <!--app:layout_constraintBottom_toBottomOf="@+id/price"-->
+                <!-- TODO better seekbar interface design -->
 
             <ToggleButton
                 android:id="@+id/meat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:textOff="@string/recipe_details_veggie_off"
+                android:textOn="@string/recipe_details_veggie_on"
+                style="@style/recipe_detail_text"
+
                 android:layout_below="@+id/nutriscore_seekbar"
-                android:layout_marginTop="25dp"
-                android:textOff="Carnivore"
-                android:textOn="Végétarien" />
+                android:layout_marginTop="25dp"/>
 
             <ToggleButton
                 android:id="@+id/salt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:textOff="@string/recipe_details_salt_off"
+                android:textOn="@string/recipe_details_salt_on"
+                style="@style/recipe_detail_text"
+
                 android:layout_toRightOf="@+id/meat"
                 android:layout_below="@+id/nutriscore_seekbar"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="10dp"
-                android:textOff="Salé"
-                android:textOn="Sucré" />
+                android:layout_toEndOf="@+id/meat"
+                android:layout_marginStart="10dp" />
 
             <ToggleButton
                 android:id="@+id/temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:textOff="@string/recipe_details_temp_off"
+                android:textOn="@string/recipe_details_temp_on"
+                style="@style/recipe_detail_text"
+
                 android:layout_toRightOf="@+id/salt"
                 android:layout_below="@+id/nutriscore_seekbar"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="10dp"
-                android:textOff="Chaud"
-                android:textOn="Froid" />
+                android:layout_toEndOf="@+id/salt"
+                android:layout_marginStart="10dp" />
 
             <ToggleButton
                 android:id="@+id/season"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/meat"
 
-                android:textOff="Été"
-                android:textOn="Hiver" />
+                android:textOff="@string/recipe_details_season_off"
+                android:textOn="@string/recipe_details_season_on"
+                style="@style/recipe_detail_text"
+
+                android:layout_below="@+id/meat"/>
 
             <ToggleButton
                 android:id="@+id/ordinary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:textOff="@string/recipe_details_ordinary_off"
+                android:textOn="@string/recipe_details_ordinary_on"
+                style="@style/recipe_detail_text"
+
                 android:layout_toRightOf="@+id/season"
                 android:layout_below="@+id/meat"
                 android:layout_marginLeft="10dp"
-                android:textOff="Ordinaire"
-                android:textOn="Exceptionnel" />
+                android:layout_toEndOf="@+id/season"
+                android:layout_marginStart="10dp" />
 
             <ToggleButton
                 android:id="@+id/original"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:textOff="@string/recipe_details_original_off"
+                android:textOn="@string/recipe_details_original_on"
+                style="@style/recipe_detail_text"
+
                 android:layout_below="@+id/meat"
                 android:layout_toRightOf="@id/ordinary"
                 android:layout_marginLeft="10dp"
-                android:textOff="Normal"
-                android:textOn="Original" />
+                android:layout_toEndOf="@id/ordinary"
+                android:layout_marginStart="10dp" />
 
         </RelativeLayout>
     </ScrollView>

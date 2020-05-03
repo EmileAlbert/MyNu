@@ -22,36 +22,55 @@
                 android:id="@+id/rc_ingredient"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
+
+                android:hint="@string/recipe_details_ingredient_name"
+                style="@style/recipe_detail_text"
+
                 android:layout_marginLeft="0dp"
                 android:paddingLeft="2dp"
+                android:layout_marginStart="0dp"
+                android:paddingStart="2dp"
+
                 android:focusableInTouchMode="true"
                 android:focusable="true"
                 android:inputType="textCapSentences"
                 android:imeOptions="actionNext"
-                android:hint="Ingrédient"
-                tools:text="Ingrédient 1" />
+                tools:text="Ingredient 1"
+
+                tools:ignore="RtlSymmetry"/>
 
             <EditText
                 android:id="@+id/rc_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:hint="@string/recipe_details_ingredient_quantity"
+                style="@style/recipe_detail_text"
+
                 android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/rc_ingredient"
                 android:layout_toRightOf="@+id/rc_ingredient"
+
                 android:focusableInTouchMode="true"
                 android:focusable="true"
                 android:inputType="text"
                 android:imeOptions="actionDone"
-                android:hint="Quantité"
-                tools:text="3" />
+
+                tools:text="3"/>
 
             <ImageView
                 android:id="@+id/rc_ingredient_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:src="@drawable/ic_delete_black_24dp"
+
                 android:layout_toRightOf="@+id/rc_quantity"
                 android:layout_marginLeft="40dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_delete_black_24dp"/>
+                android:layout_toEndOf="@+id/rc_quantity"
+                android:layout_marginStart="40dp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

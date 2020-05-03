@@ -157,7 +157,7 @@ data class Recipe(var name : String = "",
 
 
     companion object CREATOR : Parcelable.Creator<Recipe> {
-        private val serialVersionUID: Long = 18042020 // TODO Maybe source of error when object definition changes
+        private val serialVersionUID: Long = 18042020
 
         override fun createFromParcel(parcel: Parcel): Recipe {
             return Recipe(parcel)

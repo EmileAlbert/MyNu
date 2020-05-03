@@ -12,23 +12,34 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="@string/recipe_list_title"/>
 
+        app:title="@string/recipe_list_title"
+        app:titleMarginStart="0dp"
+
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/pop_toolbar_theme"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recipes_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
+        android:layout_below="@+id/toolbar"
+
         tools:listitem="@layout/item_recipe"
-        android:layout_below="@+id/toolbar"/>
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:itemCount="7"/>
     
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/create_recipe_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
+
         android:src="@drawable/ic_add_white_24dp"/>
+
 </RelativeLayout>

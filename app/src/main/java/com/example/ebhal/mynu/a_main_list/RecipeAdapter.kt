@@ -24,6 +24,7 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
         val titleView = cardView.findViewById(R.id.recipe_rc_name) as TextView
         val timeView = cardView.findViewById(R.id.recipe_rc_duration) as TextView
         val scoreView = cardView.findViewById(R.id.recipe_rc_score) as TextView
+        val priceView = cardView.findViewById(R.id.recipe_rc_price) as TextView
 
 //        init {
 //            itemView.setOnClickListener{
@@ -42,11 +43,13 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
         val recipe = filtered_recipes_list[position]
         holder.cardView.setOnClickListener(itemClickListener)
         holder.cardView.setOnLongClickListener(itemLongClickListener)
+
         holder.cardView.tag = position
+
         holder.titleView.text = recipe.name
         holder.timeView.text = recipe.duration.toString()
         holder.scoreView.text = recipe.score.toString()
-
+        holder.priceView.text = getPriceSymbol(recipe.price)
     }
 
     override fun getItemCount(): Int {
@@ -96,6 +99,43 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
             }
 
         }
+    }
+
+
+    // return absolute index from filtered index
+    fun aboslute_index(relative_index : Int) : Int{
+
+        var abs_index : Int = -1
+
+        if (recipes_list.size == filtered_recipes_list.size){
+
+            abs_index = relative_index
+        }
+
+        else {
+
+            var index = 0
+
+            for (recipe in recipes_list){
+
+                if (recipe.equals(filtered_recipes_list[relative_index])){abs_index = index}
+
+                index += 1
+            }
+
+        }
+
+        return abs_index
+    }
+
+    fun getPriceSymbol(price : Float) : String {
+
+        var symbol = "€"
+
+        if (price > 5){ symbol += "€"}
+        if (price > 8){ symbol += "€"}
+
+        return symbol
     }
 
 

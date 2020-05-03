@@ -1,14 +1,115 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="Base.Theme.AppCompat.Light.NoActionBar"> -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary_variant</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_variant</item>
+        <item name="colorAccent">@color/colorAccent_variant</item>
+
     </style>
 
+    <!-- Toolbar style -->
+    <style name="toolbar_theme" parent="Theme.AppCompat.Light.NoActionBar" >
+
+        <item name="android:background">@color/colorPrimary_variant</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <style name="pop_toolbar_theme" parent="Theme.AppCompat.Light.NoActionBar" >
+
+        <item name="android:background">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <!-- Recipe cardview style -->
+    <style name="recipe_card_title">
+
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <style name="recipe_card_text">
+
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorAccent_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <!-- Recipe detail styles -->
+    <style name="recipe_detail_title">
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <style name="recipe_detail_subtitle">
+
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <style name="recipe_detail_text">
+
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+
+    <!-- Week menu style -->
+    <style name="menu_day_title">
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <style name="menu_recipe_title">
+
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAccent_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+    <style name="menu_guest_number">
+
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
+
+
+    <!-- List items style -->
+    <style name="item_text">
+
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
+
+    </style>
 
 </resources>

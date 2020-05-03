@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.*
 import android.widget.Button
@@ -24,7 +25,7 @@ import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
 
-class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener {
+class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
     private val TAG = "Menu Activity"
 
@@ -34,8 +35,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
     lateinit var week_days: List<String>
     lateinit var recipes : MutableList<Recipe>
     lateinit var guest_number : MutableList<Int>
-
-    lateinit var recipes_list_index : MutableList<Int>
+    lateinit var recipes_index : MutableList<Int>
 
     private lateinit var database: Database
 
@@ -49,6 +49,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
+        // Toolbar management
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar !!.setDisplayHomeAsUpEnabled(false)
@@ -69,12 +70,14 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
         // Load recipes in menu from database
         var (res_list_recipes, res_list_index) = loadMenu_database(database, emptyRecipe())
         recipes = res_list_recipes
-        recipes_list_index = res_list_index
+        recipes_index = res_list_index
 
         // Create recycler view with read only mode if shopping list started
+        var empty_recipe_name = resources.getString(R.string.menu_default_recipe_title)
+
         guest_number = database.get_daysGuest()
         week_days = getWeekDaysList()
-        adapter = MenuDayAdapter(recipes, week_days, guest_number,this, this, ::saveGuestNB_database, checkeditem_database(database))
+        adapter = MenuDayAdapter(recipes, recipes_index, week_days, guest_number, empty_recipe_name, this, ::saveGuestNB_database, checkeditem_database(database))
 
         val recyclerView = findViewById<RecyclerView>(R.id.menu_day_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -88,10 +91,15 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
         if (!shoppingListIsEmpty_database(database) && shoppingListIsCompleted(loadShoppingList_database(database))){
 
                 button_shopping_list.isEnabled = false
-                button_shopping_list.text = resources.getString(R.string.menu_sl_completed)
+                button_shopping_list.text = resources.getString(R.string.menu_shopping_list_completed)
+
                 // TODO change image on button (caddie when not completed and V when completed
         }
 
+        // Gesture management on recycler view
+        val callback = GestureAdapterHandler_menu(adapter, ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(recyclerView)
     }
 
     // External events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,26 +156,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
-    // On cardview click listener - disable if shopping list started
-    override fun onClick(view: View) {
-
-        if (view.tag != null && !checkeditem_database(database)) {
-            val day = view.tag as Int
-
-            // Case when a day has an assigned recipe and is reclicked
-            if (recipes_list_index[day] != -1){
-                //Toast.makeText(this, "Recette déjà choisie", Toast.LENGTH_LONG).show()
-                showModifyDialog(day)
-            }
-
-            else {
-                goPickRecipe(day)
-            }
-        }
-    }
-
-    // On cardview long click listener - show read only recipe details
-    override fun onLongClick(view : View) : Boolean{
+    // On cardview click listener - show read only recipe details
+    override fun onClick(view : View) {
 
         if (view.tag != null) {
 
@@ -181,7 +171,63 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
             }
         }
 
-        return true
+    }
+
+    inner class GestureAdapterHandler_menu(adapter: MenuDayAdapter, dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
+    {
+        val adapter = adapter
+
+        var dragFrom = -1
+        var dragTo = -1
+
+        override fun onMove(recyclerView : RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+
+            val fromPosition = viewHolder.adapterPosition
+            val toPosition = target.adapterPosition
+
+            if (dragFrom == -1) { dragFrom = fromPosition}
+            dragTo = toPosition
+
+            return true
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+
+            if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+
+                val (recipes_list, recipes_index_list) =  adapter.swapRecipes(dragFrom, dragTo)
+
+                recipes = recipes_list as MutableList<Recipe>
+                recipes_index = recipes_index_list as MutableList<Int>
+
+                AssignDayRecipe(recipes[dragFrom], recipes_index[dragFrom], dragFrom)
+                AssignDayRecipe(recipes[dragTo], recipes_index[dragTo], dragTo)
+            }
+
+            dragTo = -1
+            dragFrom = dragTo
+        }
+
+        override fun onSwiped(viewHolder : RecyclerView.ViewHolder, direction: Int) {
+
+            if (direction == 4 && !checkeditem_database(database)) {
+
+                val day = viewHolder.adapterPosition
+
+                // Case when a day has an assigned recipe and is reswiped
+                if (recipes_index[day] != -1){
+
+                    Log.i(TAG, "index : $recipes_index")
+                    showModifyDialog(day)
+                    adapter.notifyItemChanged(day)
+                }
+
+                else {
+                    goPickRecipe(day)
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -352,6 +398,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
 
         // Save assignation in activity list
         recipes[day] = recipe
+        recipes_index[day] = recipe_index
         adapter.notifyDataSetChanged()
     }
 
@@ -384,13 +431,14 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener, View.OnLongClic
 
     // Divers  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private fun getWeekDaysList(): List<String> {
-        val day_1 = resources.getString(R.string.menu_wk_day_1)
-        val day_2 = resources.getString(R.string.menu_wk_day_2)
-        val day_3 = resources.getString(R.string.menu_wk_day_3)
-        val day_4 = resources.getString(R.string.menu_wk_day_4)
-        val day_5 = resources.getString(R.string.menu_wk_day_5)
-        val day_6 = resources.getString(R.string.menu_wk_day_6)
-        val day_7 = resources.getString(R.string.menu_wk_day_7)
+
+        val day_1 = resources.getString(R.string.menu_wk_day_6)
+        val day_2 = resources.getString(R.string.menu_wk_day_7)
+        val day_3 = resources.getString(R.string.menu_wk_day_1)
+        val day_4 = resources.getString(R.string.menu_wk_day_2)
+        val day_5 = resources.getString(R.string.menu_wk_day_3)
+        val day_6 = resources.getString(R.string.menu_wk_day_4)
+        val day_7 = resources.getString(R.string.menu_wk_day_5)
 
         return listOf(day_1, day_2, day_3, day_4, day_5, day_6, day_7)
     }

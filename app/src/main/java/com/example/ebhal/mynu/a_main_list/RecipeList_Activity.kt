@@ -92,6 +92,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
             request_menu_day = intent.getStringExtra(EXTRA_REQUEST_MENU_DAY)
             adapter = RecipeAdapter(recipes, this, this)
+
             toolbar.title = resources.getString(R.string.recipe_list_title_select)
 
             var message = resources.getString(R.string.recipe_list_menu_request)
@@ -150,10 +151,14 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
     // Code executed when click on a card of the list (recycler view)
     override fun onClick(view: View) {
+
         if (view.tag != null) {
-            val recipe_index = view.tag as Int
+
+            val recipe_index = adapter.aboslute_index(view.tag as Int)
             showRecipeDetail(recipe_index)
+
         } else {
+
             when (view.id) {
                 R.id.create_recipe_fab -> showRecipeDetail(-1)
             }
@@ -162,10 +167,10 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
     // OnLongClick listerner - usable only if menu_view caller
     override fun onLongClick(view: View): Boolean {
-        if (view.tag != null) {
-            val recipe_index = view.tag as Int
 
-            // TODO Impelement send recipe to menu activity mechanism
+        if (view.tag != null) {
+
+            val recipe_index = adapter.aboslute_index(view.tag as Int)
 
             request_day_recipe = recipes[recipe_index]
             request_day_recipe_idx = recipe_index
@@ -320,6 +325,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Launch RecipeDetail_Activity activity
     fun showRecipeDetail(recipe_index: Int) {
+
         val recipe = if (recipe_index < 0) Recipe() else recipes[recipe_index]
 
         //Toast.makeText(this, "Recette sélectionnée : ${recipe.title}", Toast.LENGTH_SHORT).show()
@@ -349,6 +355,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     // Toolbar menu management  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Adding menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
         menuInflater.inflate(R.menu.activity_recipes_list, menu)
 
         val searchViewItem  = menu?.findItem(R.id.app_bar_search)

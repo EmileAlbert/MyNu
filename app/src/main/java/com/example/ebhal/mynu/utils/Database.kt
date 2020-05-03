@@ -91,7 +91,8 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        // To change body of created functions use File | Settings | File Templates.
     }
 
     // RECIPE DATABASE MANAGEMENT /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,8 +423,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
                 val independence = cursor.getString(cursor.getColumnIndex(SHOPLIST_KEY_INDEPENDENCE))
                 val id = cursor.getLong(cursor.getColumnIndex(SHOPLIST_KEY_ID))
 
-                // TODO
-                val item = Item(name, quantity,rc_position, check.toBoolean(), independence.toBoolean() ,id)
+                val item = Item(name, quantity,rc_position, check!!.toBoolean(), independence!!.toBoolean() ,id)
 
                 items_list.add(item)
             }

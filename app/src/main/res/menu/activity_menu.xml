@@ -6,6 +6,6 @@
         android:id="@+id/action_reset"
         app:showAsAction="always"
         android:icon="@drawable/ic_reset_white_24dp"
-        android:title="@string/reset"/>
+        android:title="@string/menu_reset"/>
 
 </menu>

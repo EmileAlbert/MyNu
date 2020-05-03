@@ -127,6 +127,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
         nutriscore_View = findViewById<SeekBar>(R.id.nutriscore_seekbar)
         nutriscore_View.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
             // TODO Update seekbar UI
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 var nutriscore = recipe.int2nutri(i)
@@ -248,7 +249,8 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     fun showConfirmDeleteRecipeDialog() {
         val confirmFragment = ConfirmDeleteRecipeDialog()
-//        TODO val confirmFragment = ConfirmDeleteRecipeDialog(recipe.name)
+
+        // TODO val confirmFragment = ConfirmDeleteRecipeDialog(recipe.name)
         confirmFragment.listener = object : ConfirmDeleteRecipeDialog.ConfirmDeleteDialogListener{
             override fun onDialogPositiveClick() {
                 deleteRecipe()

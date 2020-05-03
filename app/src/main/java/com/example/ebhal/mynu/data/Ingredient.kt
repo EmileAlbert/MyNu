@@ -73,7 +73,7 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         }
 
         if (letters_index.size == 2){
-            if (!possible_unit_letters.contains(letters_list[0])){
+            if (!possible_unit_letters.contains(letters_list[1])){
                 Log.i(TAG, "Invalid Qty input : letter not ordered")
                 return false
             }

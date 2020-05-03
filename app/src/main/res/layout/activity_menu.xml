@@ -9,12 +9,13 @@
     tools:context=".a_menu.Menu_activity">
 
     <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="@string/menu_toolbar_title"/>
-
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/menu_toolbar_title"
+        app:titleMarginStart="0dp"
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/pop_toolbar_theme"/>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
