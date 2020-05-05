@@ -30,14 +30,15 @@ const val TAG = "Recipe List activity"
 class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLongClickListener {
 
     companion object {
-        val REQUEST_GET_RECIPE = 42
 
-        val EXTRA_REQUEST_MENU_DAY_INT = "request_menu_day_int"
-        val EXTRA_REQUEST_MENU_DAY = "request_menu_day"
-        val EXTRA_MENU_RECIPE = "day_recipe"
-        val EXTRA_MENU_RECIPE_IDX = "day_recipe_index"
+        const val REQUEST_GET_RECIPE = 42
 
-        val ACTION_GET_DAY_RECIPE = "com.example.ebhal.mynu.actions.ACTION_GET_RECIPE"
+        const val EXTRA_REQUEST_MENU_DAY_INT = "request_menu_day_int"
+        const val EXTRA_REQUEST_MENU_DAY = "request_menu_day"
+        const val EXTRA_MENU_RECIPE = "day_recipe"
+        const val EXTRA_MENU_RECIPE_IDX = "day_recipe_index"
+
+        const val ACTION_GET_DAY_RECIPE = "com.example.ebhal.mynu.actions.ACTION_GET_RECIPE"
     }
 
     var request_menu_day_int = -1
@@ -46,7 +47,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     var request_day_recipe_idx = -1
 
     lateinit var adapter: RecipeAdapter
-    lateinit var recipes: MutableList<Recipe>
+    private lateinit var recipes: MutableList<Recipe>
 
     lateinit var toolbar : Toolbar
 
@@ -55,7 +56,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
     private lateinit var database : Database
 
-    val REQUEST_IMPORT = 111
+    private val REQUEST_IMPORT = 111
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -74,6 +75,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         toolbar_detector = GestureDetectorCompat(this, GestureListener())
         val toolbar_view = findViewById<View>(R.id.toolbar)
         toolbar_view.setOnTouchListener(object : View.OnTouchListener {
+
+            @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 return toolbar_detector.onTouchEvent(event)
             }
@@ -128,8 +131,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
                 velocityX: Float,
                 velocityY: Float) : Boolean{
 
-            var diffx = move_event?.x?.minus(down_event!!.x) ?: 0.0F
-            var diffy = move_event?.y?.minus(down_event!!.y) ?: 0.0F
+            val diffx = move_event?.x?.minus(down_event!!.x) ?: 0.0F
+            val diffy = move_event?.y?.minus(down_event!!.y) ?: 0.0F
 
             return if (Math.abs(diffx) > Math.abs(diffy)){
                 // left or right swipe
@@ -215,7 +218,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
                 //Toast.makeText(this, "Vogel Pick", Toast.LENGTH_SHORT).show()
 
-                var random_index = (0..recipes.size).random()
+                val random_index = (0..recipes.size).random()
                 returnRecipe2Menu(random_index)
 
                 return true
@@ -251,7 +254,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
             RecipeDetail_Activity.REQUEST_EDIT_RECIPE -> processEditRecipeResult(data)
 
             // Option 3 : REQUEST_IMPORT and we need to read imported CSV file
-            REQUEST_IMPORT -> import_recipes(csv_object.import(this, contentResolver.openInputStream(data.data)))
+            REQUEST_IMPORT -> importRecipes(csv_object.import(this, contentResolver.openInputStream(data.data!!)))
         }
     }
 
@@ -275,13 +278,13 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
     // Data management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Add imported recipes to recipes list if does not exist
-    fun import_recipes(imported_recipes: MutableList<Recipe>) {
+    private fun importRecipes(imported_recipes: MutableList<Recipe>) {
 
         if(imported_recipes.size == 0){Toast.makeText(this, "Import échoué", Toast.LENGTH_LONG).show()}
 
-        var imported_recipes_list = imported_recipes
-        var existing_recipes_list = database.get_recipes()
-        var existing_recipes_name_list = mutableListOf<String>()
+        val imported_recipes_list = imported_recipes
+        val existing_recipes_list = database.get_recipes()
+        val existing_recipes_name_list = mutableListOf<String>()
 
         Log.i(TAG, "list of importet recipes : $imported_recipes")
 
@@ -350,11 +353,9 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         else {Toast.makeText(this, resources.getString(R.string.utils_notdeleted), Toast.LENGTH_SHORT).show()}
     }
 
-    fun getRecipes_list() : MutableList<Recipe> {return recipes}
-
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Launch RecipeDetail_Activity activity
-    fun showRecipeDetail(recipe_index: Int) {
+    private fun showRecipeDetail(recipe_index: Int) {
 
         val recipe = if (recipe_index < 0) Recipe() else recipes[recipe_index]
 
@@ -376,16 +377,17 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         startActivityForResult(intent, RecipeDetail_Activity.REQUEST_EDIT_RECIPE)
     }
 
-    fun showMenuMaker(){
+    private fun showMenuMaker(){
         val intent = Intent(this, Menu_activity::class.java)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
+    @SuppressLint("InflateParams")
     private fun showPopUpFilterWindows() {
 
         val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.popup_filters,null)
+        val view = inflater.inflate(R.layout.popup_filters, null)
 
         // Initialize a new instance of popup window
         val popupWindow = PopupWindow(
@@ -457,10 +459,10 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         }
 
         val searchViewItem  = menu?.findItem(R.id.app_bar_search)
-        val search_input = MenuItemCompat.getActionView(searchViewItem) as SearchView
-        search_input.maxWidth = Integer.MAX_VALUE
+        val searchInput = searchViewItem?.actionView as SearchView
+        searchInput.maxWidth = Integer.MAX_VALUE
 
-        search_input.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchInput.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -476,25 +478,4 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     }
 
     // Divers  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    fun recipe_example(){
-        recipes.add(Recipe(
-                "Omelette champignon",
-                10,
-                1.0f,
-                3.0f,
-                "Oeuf_2;Champignons_250g",
-                "Mélanger tout et cuire",
-                2.5f,
-                "Souper",
-                0,
-                true,
-                false,
-                true,
-                true,
-                false))
-
-
-//        recipes.add(Recipe("Test 2", 20, 2.0f, 3.0f, "Ingrédients 3 et 4","Recette 2", 2.22f, "Souper", 2, true, false,true, false,true, false))
-//        recipes.add(Recipe("Test 3", 30, 3.0f, 4.0f, "Ingrédients 5 et 6","Recette 3", 3.33f, "Dejeuner", 3, false, false,false,false,false,false))
-    }
 }
