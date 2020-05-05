@@ -175,20 +175,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         if (view.tag != null) {
 
-            val recipe_index = adapter.aboslute_index(view.tag as Int)
-
-            request_day_recipe = recipes[recipe_index]
-            request_day_recipe_idx = recipe_index
-
-            intent = Intent(RecipeList_Activity.ACTION_GET_DAY_RECIPE)
-            intent.putExtra(EXTRA_MENU_RECIPE, request_day_recipe as Parcelable)
-            intent.putExtra(EXTRA_MENU_RECIPE_IDX, recipe_index)
-            intent.putExtra(EXTRA_REQUEST_MENU_DAY_INT, request_menu_day_int)
-
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-
-            //Toast.makeText(this, "Recette sélectionnée pour $request_menu_day : $recipe_index", Toast.LENGTH_SHORT).show()
+            returnRecipe2Menu(view.tag as Int)
         }
 
         return true
@@ -213,19 +200,24 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
                         .setAction(Intent.ACTION_GET_CONTENT)
 
                 startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_IMPORT)
+
                 return true
             }
 
             R.id.action_export_recipe -> {
                 val csv_object = CSV()
                 csv_object.exportCSV(this, database)
-                return true
 
+                return true
             }
 
             R.id.app_bar_random ->{
-                // TODO return a random recipe to menu
-                Toast.makeText(this, "Vogel Pick", Toast.LENGTH_SHORT).show()
+
+                //Toast.makeText(this, "Vogel Pick", Toast.LENGTH_SHORT).show()
+
+                var random_index = (0..recipes.size).random()
+                returnRecipe2Menu(random_index)
+
                 return true
             }
 
@@ -233,6 +225,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
                 Log.i(TAG, "Filter menu item")
                 showPopUpFilterWindows()
+
                 return true
             }
 
@@ -260,6 +253,24 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
             // Option 3 : REQUEST_IMPORT and we need to read imported CSV file
             REQUEST_IMPORT -> import_recipes(csv_object.import(this, contentResolver.openInputStream(data.data)))
         }
+    }
+
+    private fun returnRecipe2Menu(index : Int) {
+
+        val recipe_index = adapter.aboslute_index(index)
+
+        request_day_recipe = recipes[recipe_index]
+        request_day_recipe_idx = recipe_index
+
+        intent = Intent(RecipeList_Activity.ACTION_GET_DAY_RECIPE)
+        intent.putExtra(EXTRA_MENU_RECIPE, request_day_recipe as Parcelable)
+        intent.putExtra(EXTRA_MENU_RECIPE_IDX, recipe_index)
+        intent.putExtra(EXTRA_REQUEST_MENU_DAY_INT, request_menu_day_int)
+
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+
+        //Toast.makeText(this, "Recette sélectionnée pour $request_menu_day : $recipe_index", Toast.LENGTH_SHORT).show()
     }
 
     // Data management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
