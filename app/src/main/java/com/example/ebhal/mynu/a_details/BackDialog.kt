@@ -21,7 +21,7 @@ class BackConfirmDialog : DialogFragment(){
 
         builder.setMessage(getString(R.string.utils_dial_backConfirm_msg))
                 .setPositiveButton(getString(R.string.utils_dial_option_continue)) { _, _ -> listener?.onDialogPositiveClick()}
-                .setNegativeButton(getString(R.string.utils_dial_option_suppress)) { _, _ -> listener?.onDialogNegativeClick()}
+                .setNegativeButton(getString(R.string.utils_dial_option_cancel)) { _, _ -> listener?.onDialogNegativeClick()}
 
         return builder.create()
     }

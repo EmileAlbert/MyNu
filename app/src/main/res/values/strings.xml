@@ -70,5 +70,24 @@
     <string name="utils_dial_backConfirm_msg">En continuant vous perdrez les modifications</string>
     <string name="utils_dial_option_continue">Continuer</string>
     <string name="utils_dial_changeMenu_msg">Voulez-vous modifier la recette assignée à</string>
+    <string name="utils_menu_search">Search</string>
+    <string name="utils_menu_importexport">Importer/Exporter</string>
+    <string name="utils_menu_import">Importer</string>
+    <string name="utils_menu_export">Exporter</string>
+    <string name="utils_menu_random">Vogel Pick</string>
+
+    <string name="menu_filter_cold">Froid</string>
+    <string name="menu_filter_veggie">Veggie</string>
+
+    <string name="filter_popup_veggie_on">végétarien</string>
+    <string name="filter_popup_veggie_off">carnivore</string>
+    <string name="filter_popup_temp_off">froid</string>
+    <string name="filter_popup_temp_on">chaud</string>
+    <string name="filter_popup_apply">Appliquer les filtres</string>
+    <string name="filter_popup_salty_on">salé</string>
+    <string name="filter_popup_salty_off">sucré</string>
+    <string name="filter_popup_original_on">original</string>
+    <string name="filter_popup_original_off">normal</string>
+    <string name="utils_menu_filter">filter</string>
 
 </resources>

@@ -329,6 +329,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
                 showConfirmDeleteRecipeDialog(recipe)
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }

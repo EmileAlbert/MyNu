@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_filter_background"
+    android:padding="20dp">
+
+    <SeekBar
+        android:id="@+id/filter_switch_veggie"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+
+        android:max="1"
+        android:min="-1"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+
+        android:layout_toRightOf="@+id/filter_veggie_on"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/filter_veggie_on"
+        tools:targetApi="o" />
+
+    <TextView
+        android:id="@+id/filter_veggie_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_veggie_on"
+        style="@style/filter_text"
+
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignBottom="@+id/filter_switch_veggie"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/filter_veggie_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_veggie_off"
+        style="@style/filter_text"
+
+        android:layout_toRightOf="@+id/filter_switch_veggie"
+        android:layout_toEndOf="@+id/filter_switch_veggie"
+        android:layout_marginLeft="7dp"
+        android:layout_alignBottom="@+id/filter_switch_veggie"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp" />
+
+
+
+    <SeekBar
+        android:id="@+id/filter_switch_salty"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+
+        android:max="1"
+        android:min="-1"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+
+        android:layout_below="@+id/filter_switch_veggie"
+        android:layout_toRightOf="@+id/filter_salty_on"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/filter_salty_on"
+        tools:targetApi="o" />
+
+    <TextView
+        android:id="@+id/filter_salty_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_salty_on"
+        style="@style/filter_text"
+
+        android:layout_alignRight="@+id/filter_veggie_on"
+        android:layout_alignEnd="@+id/filter_veggie_on"
+        android:layout_alignBottom="@+id/filter_switch_salty"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/filter_salty_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_salty_off"
+        style="@style/filter_text"
+
+        android:layout_alignLeft="@+id/filter_veggie_off"
+        android:layout_alignBottom="@+id/filter_switch_salty"
+        android:layout_marginBottom="5dp"
+        android:layout_alignStart="@+id/filter_veggie_off" />
+
+
+    <SeekBar
+        android:id="@+id/filter_switch_temp"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+
+        android:max="1"
+        android:min="-1"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+
+        android:layout_below="@+id/filter_switch_salty"
+        android:layout_toRightOf="@+id/filter_temp_on"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/filter_temp_on"
+        tools:targetApi="o" />
+
+    <TextView
+        android:id="@+id/filter_temp_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_temp_on"
+        style="@style/filter_text"
+
+        android:layout_alignRight="@+id/filter_veggie_on"
+        android:layout_alignEnd="@+id/filter_veggie_on"
+        android:layout_alignBottom="@+id/filter_switch_temp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/filter_temp_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_temp_off"
+        style="@style/filter_text"
+
+        android:layout_alignLeft="@+id/filter_veggie_off"
+        android:layout_alignBottom="@+id/filter_switch_temp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignStart="@+id/filter_veggie_off" />
+
+
+    <SeekBar
+        android:id="@+id/filter_switch_original"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+
+        android:max="1"
+        android:min="-1"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+
+        android:layout_below="@+id/filter_switch_temp"
+        android:layout_toRightOf="@+id/filter_original_on"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/filter_original_on"
+        tools:targetApi="o" />
+
+    <TextView
+        android:id="@+id/filter_original_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_original_on"
+        style="@style/filter_text"
+
+        android:layout_alignRight="@+id/filter_veggie_on"
+        android:layout_alignEnd="@+id/filter_veggie_on"
+        android:layout_alignBottom="@+id/filter_switch_original"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/filter_original_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/filter_popup_original_off"
+        style="@style/filter_text"
+
+        android:layout_alignLeft="@+id/filter_veggie_off"
+        android:layout_alignBottom="@+id/filter_switch_original"
+        android:layout_marginBottom="5dp"
+        android:layout_alignStart="@+id/filter_veggie_off" />
+
+
+
+    <Button
+        android:id="@+id/filter_apply_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/filter_switch_original"
+        android:layout_marginTop="25dp"
+
+        android:text="@string/filter_popup_apply"/>
+
+</RelativeLayout>
+
+

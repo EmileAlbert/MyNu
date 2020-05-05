@@ -4,7 +4,7 @@
 
     <string name="recipe_list_menu_request">Sélectionnez une recette pour</string>
     <string name="recipe_list_title">Livre de recette</string>
-    <string name="recipe_list_title_select">Livre de recette - Sélection</string>
+    <string name="recipe_list_title_select">Sélection</string>
 
     <string name="recipe_duration_unit">min</string>
     <string name="recipe_price_unit">€</string>
@@ -78,5 +78,19 @@
     <string name="utils_dial_option_continue">Continuer</string>
     <string name="utils_dial_option_modify">Modifier</string>
     <string name="utils_dial_option_reset">Réinitialiser</string>
+
+    <string name="utils_menu_search">Search</string>
+    <string name="utils_menu_importexport">Importer/Exporter</string>
+    <string name="utils_menu_import">Importer</string>
+    <string name="utils_menu_random">Vogel Pick</string>
+    <string name="menu_filter_cold">Froid</string>
+    <string name="filter_popup_veggie_on">végétarien</string>
+    <string name="filter_popup_veggie_off">carnivore</string>
+    <string name="filter_popup_apply">Appliquer les filtres</string>
+    <string name="filter_popup_salty_on">salé</string>
+    <string name="filter_popup_salty_off">sucré</string>
+    <string name="filter_popup_original_on">original</string>
+    <string name="filter_popup_original_off">normal</string>
+    <string name="utils_menu_filter">filter</string>
 
 </resources>

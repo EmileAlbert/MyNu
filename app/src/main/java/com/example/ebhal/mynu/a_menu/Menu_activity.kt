@@ -78,7 +78,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
         guest_number = database.get_daysGuest()
         week_days = getWeekDaysList()
-        adapter = MenuDayAdapter(recipes, recipes_index, week_days, guest_number, empty_recipe_name, this, ::assignRandomRecipe, ::saveGuestNB_database, checkeditem_database(database))
+        adapter = MenuDayAdapter(recipes, recipes_index, week_days, guest_number, empty_recipe_name, this, ::saveGuestNB_database, checkeditem_database(database))
 
         val recyclerView = findViewById<RecyclerView>(R.id.menu_day_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -454,6 +454,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
     // Toolbar menu management  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Adding menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
         menuInflater.inflate(R.menu.activity_menu, menu)
         return true
     }

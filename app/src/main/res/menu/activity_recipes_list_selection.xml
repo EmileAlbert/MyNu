@@ -14,26 +14,22 @@
         tools:ignore="AlwaysShowAction" />
 
 
+
     <item
         android:layout_width="match_parent"
         android:id="@+id/app_bar_filter"
         android:icon="@drawable/ic_filter_white_24dp"
-        android:title="@string/utils_menu_search"
+        android:title="@string/utils_menu_filter"
         app:showAsAction="always"/>
 
 
     <item
-        android:id="@+id/action_import_export"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_import_export_white_24dp"
-        android:title="@string/utils_menu_importexport">
-        <menu>
-            <group>
-                <item android:id="@+id/action_import_recipe" android:title="@string/utils_menu_import"/>
-                <item android:id="@+id/action_export_recipe" android:title="@string/utils_menu_export"/>
-            </group>
-        </menu>
-    </item>
+        android:layout_width="match_parent"
+        android:id="@+id/app_bar_random"
+        android:icon="@drawable/ic_random_white_24dp"
+        android:title="@string/utils_menu_random"
+        app:showAsAction="always"/>
+
 
 
 </menu>

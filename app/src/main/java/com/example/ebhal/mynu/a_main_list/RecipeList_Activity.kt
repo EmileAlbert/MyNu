@@ -1,6 +1,8 @@
 package com.example.ebhal.mynu.a_main_list
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
@@ -13,14 +15,14 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
-import android.widget.SearchView
-import android.widget.Toast
+import android.widget.*
 import com.example.ebhal.mynu.App
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.a_details.RecipeDetail_Activity
 import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
+
 
 const val TAG = "Recipe List activity"
 
@@ -86,6 +88,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     override fun onStart() {
 
         super.onStart()
+
         // Request from menu view ?
         request_menu_day_int = intent.getIntExtra(EXTRA_REQUEST_MENU_DAY_INT, -1)
         if (request_menu_day_int >= 0){
@@ -109,6 +112,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         val recyclerView = findViewById<RecyclerView>(R.id.recipes_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+
+        adapter.tagListFilter = mutableMapOf("veggie" to null, "salt" to null, "temp" to null, "original" to null)
     }
 
     // External events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,9 +223,23 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
             }
 
+            R.id.app_bar_random ->{
+                // TODO return a random recipe to menu
+                Toast.makeText(this, "Vogel Pick", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.app_bar_filter ->{
+
+                Log.i(TAG, "Filter menu item")
+                showPopUpFilterWindows()
+                return true
+            }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
 
     // Internal events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Code executed when return from child activity
@@ -352,11 +371,79 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
+    private fun showPopUpFilterWindows() {
+
+        val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.popup_filters,null)
+
+        // Initialize a new instance of popup window
+        val popupWindow = PopupWindow(
+                view, // Custom view to show in popup window
+                LinearLayout.LayoutParams.WRAP_CONTENT, // Width of popup window
+                LinearLayout.LayoutParams.WRAP_CONTENT // Window height
+        )
+
+
+        val root_layout = findViewById<View>(R.id.main_layout)
+
+
+        popupWindow.showAtLocation(root_layout, Gravity.CENTER, 0,-500)
+
+        val buttonApply = view.findViewById<Button>(R.id.filter_apply_button)
+        buttonApply.setOnClickListener {
+
+            doFilter(popupWindow, view)
+
+        }
+    }
+
+    private fun doFilter(popup : PopupWindow, view: View) {
+
+        popup.dismiss()
+
+        val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
+        val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
+        val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
+        val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
+
+        val veggie = veggie_switch.progress
+        val salt = salt_switch.progress
+        val temp = temp_switch.progress
+        val original = original_switch.progress
+
+        if (veggie == -1){adapter.tagListFilter["veggie"] = true}
+        else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
+        else {adapter.tagListFilter["veggie"] = false}
+
+        if (salt == -1){adapter.tagListFilter["salt"] = false}
+        else if (salt == 0){adapter.tagListFilter["salt"] = null}
+        else {adapter.tagListFilter["salt"] = true}
+
+        if (temp == -1){adapter.tagListFilter["temp"] = false}
+        else if (temp == 0){adapter.tagListFilter["temp"] = null}
+        else {adapter.tagListFilter["temp"] = true}
+
+        if (original == -1){adapter.tagListFilter["original"] = true}
+        else if (original == 0){adapter.tagListFilter["original"] = null}
+        else {adapter.tagListFilter["original"] = false}
+
+        adapter.filter.filter(null)
+    }
+
+
     // Toolbar menu management  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Adding menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        menuInflater.inflate(R.menu.activity_recipes_list, menu)
+        if (request_menu_day_int >= 0){
+
+            menuInflater.inflate(R.menu.activity_recipes_list_selection, menu)
+        }
+
+        else {
+
+            menuInflater.inflate(R.menu.activity_recipes_list, menu)
+        }
 
         val searchViewItem  = menu?.findItem(R.id.app_bar_search)
         val search_input = MenuItemCompat.getActionView(searchViewItem) as SearchView
@@ -373,6 +460,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
             }
 
         })
+
         return super.onCreateOptionsMenu(menu)
     }
 
