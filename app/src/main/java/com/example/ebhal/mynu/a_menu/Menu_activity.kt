@@ -24,6 +24,7 @@ import com.example.ebhal.mynu.a_shop_list.shoppingListIsCompleted
 import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
+import java.util.*
 
 class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
@@ -77,7 +78,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
         guest_number = database.get_daysGuest()
         week_days = getWeekDaysList()
-        adapter = MenuDayAdapter(recipes, recipes_index, week_days, guest_number, empty_recipe_name, this, ::saveGuestNB_database, checkeditem_database(database))
+        adapter = MenuDayAdapter(recipes, recipes_index, week_days, guest_number, empty_recipe_name, this, ::assignRandomRecipe, ::saveGuestNB_database, checkeditem_database(database))
 
         val recyclerView = findViewById<RecyclerView>(R.id.menu_day_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -258,6 +259,28 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    // TODO verify
+    fun assignRandomRecipe(day : Int) : Boolean {
+
+//        recipes = loadRecipes_database(database)
+//        var random_index = (0..recipes.size).random()
+//
+//        if (!checkeditem_database(database)) {
+//
+//         // Case when a day has an assigned recipe and is reswiped
+//            if (recipes_index[day] != -1){
+//
+//                Log.i(TAG, "index : $recipes_index")
+//                showModifyDialog(day)
+//                adapter.notifyItemChanged(day)
+//            }
+//
+//            else {AssignDayRecipe(recipes[random_index], random_index, day)}
+//        }
+
+        return true
+    }
+
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Go to recipes list to choose day's recipe
     private fun goPickRecipe(day: Int) {
@@ -287,7 +310,13 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showModifyDialog(day : Int) {
+
         val confirmFragment = ConfirmModifyDialog()
+
+        var args: Bundle? = null
+        args?.putString("day", Int2Day(day))
+        confirmFragment.arguments = args
+
         confirmFragment.listener = object : ConfirmModifyDialog.ConfirmModifyDialogListener{
             override fun onDialogPositiveClick() {goPickRecipe(day)}
             override fun onDialogNegativeClick() {}

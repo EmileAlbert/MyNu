@@ -247,10 +247,15 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     }
 
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    fun showConfirmDeleteRecipeDialog() {
+    fun showConfirmDeleteRecipeDialog(recipe : Recipe) {
+
         val confirmFragment = ConfirmDeleteRecipeDialog()
 
-        // TODO val confirmFragment = ConfirmDeleteRecipeDialog(recipe.name)
+        // Pass the recipe title to the dialoger
+        var args: Bundle? = null
+        args?.putString("recipe_name", recipe.name)
+        confirmFragment.arguments = args
+
         confirmFragment.listener = object : ConfirmDeleteRecipeDialog.ConfirmDeleteDialogListener{
             override fun onDialogPositiveClick() {
                 deleteRecipe()
@@ -321,7 +326,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.action_delete -> {
-                showConfirmDeleteRecipeDialog()
+                showConfirmDeleteRecipeDialog(recipe)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

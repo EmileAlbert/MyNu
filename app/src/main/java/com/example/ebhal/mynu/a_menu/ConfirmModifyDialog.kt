@@ -2,9 +2,9 @@ package com.example.ebhal.mynu.a_menu
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import com.example.ebhal.mynu.R
 
 class ConfirmModifyDialog : DialogFragment(){
 
@@ -17,11 +17,26 @@ class ConfirmModifyDialog : DialogFragment(){
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
+        super.onCreate(savedInstanceState)
+
+        var day : String? = ""
+
+        // Get arguments
+        if (arguments != null) {
+            val args = arguments
+            day = args?.getString("day")
+        }
+
         val builder = AlertDialog.Builder(activity)
 
-        builder.setMessage("Voulez-vous modifier la recette assignée ?")
-                .setPositiveButton("Modifier", DialogInterface.OnClickListener{ dialog , id -> listener?.onDialogPositiveClick()})
-                .setNegativeButton("Annuler", DialogInterface.OnClickListener{ dialog , id -> listener?.onDialogNegativeClick()})
+        val msg = getString(R.string.utils_dial_changeMenu_msg)
+        val optionModify = getString(R.string.utils_dial_option_modify)
+        val optionCancel = getString(R.string.utils_dial_option_cancel)
+
+
+        builder.setMessage("$msg $day ?")
+                .setPositiveButton(optionModify) { _, _ -> listener?.onDialogPositiveClick()}
+                .setNegativeButton(optionCancel) { _, _ -> listener?.onDialogNegativeClick()}
 
         return builder.create()
     }

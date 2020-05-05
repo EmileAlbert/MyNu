@@ -67,5 +67,8 @@
     <string name="utils_notsaved">Sauvegarde échouée</string>
     <string name="utils_deleted">Supprimé</string>
     <string name="utils_notdeleted">Suppression échouée</string>
+    <string name="utils_dial_backConfirm_msg">En continuant vous perdrez les modifications</string>
+    <string name="utils_dial_option_continue">Continuer</string>
+    <string name="utils_dial_changeMenu_msg">Voulez-vous modifier la recette assignée à</string>
 
 </resources>

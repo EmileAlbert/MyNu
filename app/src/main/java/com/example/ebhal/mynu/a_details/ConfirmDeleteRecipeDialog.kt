@@ -2,9 +2,9 @@ package com.example.ebhal.mynu.a_details
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import com.example.ebhal.mynu.R
 
 class ConfirmDeleteRecipeDialog : DialogFragment(){
 
@@ -17,12 +17,28 @@ class ConfirmDeleteRecipeDialog : DialogFragment(){
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
+        super.onCreate(savedInstanceState)
+
+        var recipeName : String? = ""
+
+        // Get arguments
+        if (arguments != null) {
+            val args = arguments
+            recipeName = args?.getString("recipe_name")
+        }
+
         val builder = AlertDialog.Builder(activity)
 
-        val recipeTitle: String=""
-        builder.setMessage("Supprimer la recette \"$recipeTitle\" ?")
-                .setPositiveButton("Supprimer", DialogInterface.OnClickListener{ dialog , id -> listener?.onDialogPositiveClick()})
-                .setNegativeButton("Annuler", DialogInterface.OnClickListener{ dialog , id -> listener?.onDialogNegativeClick()})
+        val msg = getString(R.string.utils_dial_deleteConfirm_msg)
+
+        val optionSuppress = getString(R.string.utils_dial_option_suppress)
+        val optionCancel = getString(R.string.utils_dial_option_cancel)
+
+        val recipeTitle = recipeName
+
+        builder.setMessage("$msg \"$recipeTitle\" ?")
+                .setPositiveButton(optionSuppress) { _, _ -> listener?.onDialogPositiveClick()}
+                .setNegativeButton(optionCancel) { _, _ -> listener?.onDialogNegativeClick()}
 
         return builder.create()
     }

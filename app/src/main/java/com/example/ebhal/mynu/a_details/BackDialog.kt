@@ -2,9 +2,9 @@ package com.example.ebhal.mynu.a_details
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import com.example.ebhal.mynu.R
 
 class BackConfirmDialog : DialogFragment(){
 
@@ -19,9 +19,9 @@ class BackConfirmDialog : DialogFragment(){
 
         val builder = AlertDialog.Builder(activity)
 
-        builder.setMessage("En continuant vous perdrez les modifications")
-                .setPositiveButton("Continuer", DialogInterface.OnClickListener{ dialog, id -> listener?.onDialogPositiveClick()})
-                .setNegativeButton("Annuler", DialogInterface.OnClickListener{ dialog, id -> listener?.onDialogNegativeClick()})
+        builder.setMessage(getString(R.string.utils_dial_backConfirm_msg))
+                .setPositiveButton(getString(R.string.utils_dial_option_continue)) { _, _ -> listener?.onDialogPositiveClick()}
+                .setNegativeButton(getString(R.string.utils_dial_option_suppress)) { _, _ -> listener?.onDialogNegativeClick()}
 
         return builder.create()
     }

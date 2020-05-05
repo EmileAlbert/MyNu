@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Recipe
@@ -16,6 +17,7 @@ class MenuDayAdapter(val recipes : List<Recipe>,
                      val guest_number : List<Int>,
                      val empty_recipe_name : String,
                      val itemClickListener: View.OnClickListener,
+                     val randomPick_recipe : (Int) -> Boolean,
                      val saveGuest_database : (Int, Int) -> Boolean,
                      val readOnly : Boolean)
 
@@ -30,6 +32,7 @@ class MenuDayAdapter(val recipes : List<Recipe>,
         val cardView = itemView.findViewById(R.id.card_view_menu_day) as CardView
         val dayView = cardView.findViewById(R.id.menu_rc_day) as TextView
         val recipeTitleView = cardView.findViewById(R.id.menu_rc_recipe_title) as TextView
+        val randomPickView = cardView.findViewById(R.id.menu_random_recipe) as ImageView
         val guestView = cardView.findViewById(R.id.menu_rc_person_nb) as TextView
     }
 
@@ -73,6 +76,8 @@ class MenuDayAdapter(val recipes : List<Recipe>,
                 saveGuest_database(position, next)
                 true
             }
+
+            holder.randomPickView.setOnClickListener{randomPick_recipe(position)}
         }
     }
 
