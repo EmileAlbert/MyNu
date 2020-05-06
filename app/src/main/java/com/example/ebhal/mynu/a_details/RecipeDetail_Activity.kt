@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -107,6 +108,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
             makeViewReadOnly()
         }
 
+        Log.i("RECIPE DETAIL", "recipe :$recipe" )
     }
 
     // External events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +129,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         guestNumberView.text = nextValue.toString()
 
         // Dynamic multiply quantity
-        if (ingredient_adapter.get_ingredient_list(1).size > 0){
+        if (ingredient_adapter.get_ingredient_list(1).size > 1){
 
             ingredient_adapter.multiplyIngredientList(currentValue, nextValue)
 

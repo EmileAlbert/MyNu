@@ -140,11 +140,12 @@ class IngredientAdapter(var context : Context, ingredients : MutableList<Ingredi
     // each ingredient quantity is returned for 1 guest
     fun get_ingredient_list(N : Int) : MutableList<Ingredient>{
 
-        val raw_list = ingredientsList
+        val raw_list = mutableListOf<Ingredient>()
+        raw_list.addAll(this.ingredientsList)
 
-        Log.i(TAG, "Get ING LIST : $raw_list")
+        Log.i(TAG, "Get ING LIST : $raw_list" + this.ingredientsList)
         raw_list.removeAt(0)
-        Log.i(TAG, "Get ING LIST : $raw_list")
+        Log.i(TAG, "Get ING LIST : $raw_list" + this.ingredientsList)
 
         val normList1GuestQty = mutableListOf<Ingredient>()
 

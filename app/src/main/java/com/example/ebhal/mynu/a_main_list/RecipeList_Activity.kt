@@ -65,7 +65,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         // Data management on creation
         recipes = loadRecipes_database(database)
-
+        
         // Set toolbar and toolbar gesture handling
         toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -83,6 +83,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         // Set onTouch listener on Action button (add)
         add_button = findViewById<FloatingActionButton>(R.id.create_recipe_fab)
         add_button.setOnClickListener(this)
+
+
     }
 
     override fun onStart() {
