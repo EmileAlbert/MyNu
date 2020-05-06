@@ -20,9 +20,9 @@ fun makeShoppingList(list_pairRecipesGuests: List<Pair<Recipe, Int>>): MutableLi
         val guestNB = pair.second
         val ingredientsList = pair.first.ing_string2list(pair.first.ingredient_list)
 
-        Log.i(TAG, "ingredient_multiply_quantity")
         for (ingredient in ingredientsList){
 
+            Log.i(TAG, "ingredient_multiply_quantity $ingredient")
             val list_value_decade_unit = ingredient.getList_ValueDecadeUnit()
 
             val mult_qty = java.lang.Float.valueOf(list_value_decade_unit[0])* guestNB.toFloat()

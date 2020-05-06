@@ -74,11 +74,11 @@
                 android:text="@string/recipe_score_prefix"
                 style="@style/recipe_card_text"
 
-                android:layout_toRightOf="@+id/recipe_rc_duration_unit"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignBaseline="@+id/recipe_rc_duration"
-                android:layout_marginLeft="30dp"
-                android:layout_toEndOf="@+id/recipe_rc_duration_unit"
-                android:layout_marginStart="30dp"/>
+                android:layout_marginLeft="125dp"
+                android:layout_marginStart="125dp"/>
 
             <TextView
                 android:id="@+id/recipe_rc_score"
@@ -102,11 +102,11 @@
 
                 style="@style/recipe_card_text"
 
-                android:layout_toRightOf="@+id/recipe_rc_score"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignBaseline="@+id/recipe_rc_duration"
-                android:layout_marginLeft="50dp"
-                android:layout_toEndOf="@+id/recipe_rc_score"
-                android:layout_marginStart="50dp"
+                android:layout_marginLeft="250dp"
+                android:layout_marginStart="250dp"
 
                 tools:text="€ x price"/>
 

@@ -29,7 +29,8 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="ScrollViewSize">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/menu_day_recycler_view"
@@ -41,11 +42,16 @@
                 android:id="@+id/menu_button_shopping_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:text="@string/menu_shop_list"
+                style="@style/menu_button_text"
+                android:drawableTop="@drawable/ic_shopping_empty_white_24dp"
+                android:drawablePadding="5dp"
+
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/menu_day_recycler_view"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="@string/menu_shop_list"/>
+                android:layout_marginBottom="20dp"/>
 
         </RelativeLayout>
     </ScrollView>

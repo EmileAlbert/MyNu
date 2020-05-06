@@ -1,10 +1,13 @@
 package com.example.ebhal.mynu.a_menu
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.annotation.RequiresApi
 import android.support.v4.view.GestureDetectorCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -26,6 +29,7 @@ import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
 
+@Suppress("DEPRECATION")
 class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
     private val TAG = "Menu_Activity"
@@ -43,6 +47,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
     private lateinit var shopping_list : MutableList<Item>
     private lateinit var button_shopping_list : Button
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         database = App.database
@@ -90,12 +96,17 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         button_shopping_list.setOnClickListener{goToShoppingList()}
 
         // Disable shopping list button if list is completed
+        Log.i(TAG, "#######################################################################################################################")
         if (!shoppingListIsEmpty_database(database) && shoppingListIsCompleted(loadShoppingList_database(database))){
 
-                button_shopping_list.isEnabled = false
-                button_shopping_list.text = resources.getString(R.string.menu_shopping_list_completed)
+            button_shopping_list.isEnabled = false
+            button_shopping_list.text = resources.getString(R.string.menu_shopping_list_completed)
 
-                // TODO change image on button (caddie when not completed and V when completed
+            // TODO
+            val newDrawable = resources.getDrawable(R.drawable.ic_shopping_full_white_24dp)
+            Log.i(TAG, "drawable : $newDrawable")
+//            button_shopping_list.setCompoundDrawables(null, newDrawable, null, null)
+            button_shopping_list.setCompoundDrawablesWithIntrinsicBounds( null, newDrawable, null, null)
         }
 
         // Gesture management on recycler view

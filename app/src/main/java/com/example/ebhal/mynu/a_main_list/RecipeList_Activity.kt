@@ -22,7 +22,6 @@ import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
 
-
 const val TAG = "Recipe List activity"
 
 // parentActivity of the application
@@ -283,6 +282,50 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         //Toast.makeText(this, "Recette sélectionnée pour $request_menu_day : $recipe_index", Toast.LENGTH_SHORT).show()
     }
 
+    private fun resetFilterSeekbars(view : View): Boolean {
+
+        val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
+        val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
+        val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
+        val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
+
+        veggie_switch.progress = 0
+        salt_switch.progress = 0
+        temp_switch.progress = 0
+        original_switch.progress = 0
+
+        return true
+    }
+
+    private fun doFilter(view: View) {
+
+        val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
+        val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
+        val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
+        val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
+
+        val veggie = veggie_switch.progress
+        val salt = salt_switch.progress
+        val temp = temp_switch.progress
+        val original = original_switch.progress
+
+        if (veggie == -1){adapter.tagListFilter["veggie"] = true}
+        else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
+        else {adapter.tagListFilter["veggie"] = false}
+
+        if (salt == -1){adapter.tagListFilter["salt"] = false}
+        else if (salt == 0){adapter.tagListFilter["salt"] = null}
+        else {adapter.tagListFilter["salt"] = true}
+
+        if (temp == -1){adapter.tagListFilter["temp"] = false}
+        else if (temp == 0){adapter.tagListFilter["temp"] = null}
+        else {adapter.tagListFilter["temp"] = true}
+
+        if (original == -1){adapter.tagListFilter["original"] = true}
+        else if (original == 0){adapter.tagListFilter["original"] = null}
+        else {adapter.tagListFilter["original"] = false}
+    }
+
     // Data management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Add imported recipes to recipes list if does not exist
     private fun importRecipes(imported_recipes: MutableList<Recipe>) {
@@ -403,51 +446,20 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
                 LinearLayout.LayoutParams.WRAP_CONTENT // Window height
         )
 
+        popupWindow.isFocusable = true
 
         val root_layout = findViewById<View>(R.id.main_layout)
-
-
-        popupWindow.showAtLocation(root_layout, Gravity.CENTER, 0,-500)
+        popupWindow.showAtLocation(root_layout, Gravity.CENTER, 0,-400)
 
         val buttonApply = view.findViewById<Button>(R.id.filter_apply_button)
         buttonApply.setOnClickListener {
 
-            doFilter(popupWindow, view)
-
+            popupWindow.dismiss()
+            doFilter(view)
+            adapter.filter.filter(null)
         }
-    }
 
-    private fun doFilter(popup : PopupWindow, view: View) {
-
-        popup.dismiss()
-
-        val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
-        val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
-        val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
-        val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
-
-        val veggie = veggie_switch.progress
-        val salt = salt_switch.progress
-        val temp = temp_switch.progress
-        val original = original_switch.progress
-
-        if (veggie == -1){adapter.tagListFilter["veggie"] = true}
-        else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
-        else {adapter.tagListFilter["veggie"] = false}
-
-        if (salt == -1){adapter.tagListFilter["salt"] = false}
-        else if (salt == 0){adapter.tagListFilter["salt"] = null}
-        else {adapter.tagListFilter["salt"] = true}
-
-        if (temp == -1){adapter.tagListFilter["temp"] = false}
-        else if (temp == 0){adapter.tagListFilter["temp"] = null}
-        else {adapter.tagListFilter["temp"] = true}
-
-        if (original == -1){adapter.tagListFilter["original"] = true}
-        else if (original == 0){adapter.tagListFilter["original"] = null}
-        else {adapter.tagListFilter["original"] = false}
-
-        adapter.filter.filter(null)
+        buttonApply.setOnLongClickListener{resetFilterSeekbars(view)}
     }
 
     // Toolbar menu management  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
