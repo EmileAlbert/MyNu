@@ -23,14 +23,14 @@ data class Recipe(var name : String = "",
                   var id : Long = -1) : Parcelable, Serializable {
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
+            parcel.readString()!!,
             parcel.readInt(),
             parcel.readFloat(),
             parcel.readFloat(),
-            parcel.readString(),
-            parcel.readString(),
+            parcel.readString()!!,
+            parcel.readString()!!,
             parcel.readFloat(),
-            parcel.readString(),
+            parcel.readString()!!,
             parcel.readInt(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
@@ -64,7 +64,7 @@ data class Recipe(var name : String = "",
     }
 
     fun getListParameters() : MutableList<String> {
-        var list = mutableListOf<String>()
+        val list = mutableListOf<String>()
 
         list.add("name")
         list.add("duration")
@@ -90,14 +90,14 @@ data class Recipe(var name : String = "",
         val CSV_sep = ";"
         var CSV_txt = ""
 
-        CSV_txt += "$name" + CSV_sep
+        CSV_txt += name + CSV_sep
         CSV_txt += "$duration" + CSV_sep
         CSV_txt += "$ease" + CSV_sep
         CSV_txt += "$score" + CSV_sep
-        CSV_txt += "$ingredient_list" + CSV_sep
-        CSV_txt += "$recipe_steps" + CSV_sep
+        CSV_txt += ingredient_list + CSV_sep
+        CSV_txt += recipe_steps + CSV_sep
         CSV_txt += "$price" + CSV_sep
-        CSV_txt += "$meal_time" + CSV_sep
+        CSV_txt += meal_time + CSV_sep
         CSV_txt += "$nutri_score" + CSV_sep
         CSV_txt += "$veggie" + CSV_sep
         CSV_txt += "$salty" + CSV_sep
@@ -131,13 +131,13 @@ data class Recipe(var name : String = "",
 
     fun ing_string2list(ing_list_str : String) : MutableList<Ingredient>{
 
-        var ingredients_list = mutableListOf<Ingredient>()
-        var ingredient_qty_list = ing_list_str.split("&")
+        val ingredients_list = mutableListOf<Ingredient>()
+        val ingredient_qty_list = ing_list_str.split("&")
 
         if(ing_list_str != "") {
             for (ing_qty in ingredient_qty_list) {
                 Log.w("Recipe", "STR2LST $ing_qty")
-                var ing_qty_couple = ing_qty.split("_")
+                val ing_qty_couple = ing_qty.split("_")
                 ingredients_list.add(Ingredient(ing_qty_couple[0], ing_qty_couple[1]))
             }
         }
@@ -145,15 +145,16 @@ data class Recipe(var name : String = "",
         return ingredients_list
     }
 
-    fun int2nutri(int : Int) : String{
-        val int2nutriscore = mapOf(0 to "A", 1 to "B", 2 to "C", 3 to "D", 4 to "E")
-        return int2nutriscore[int]!!
-    }
 
-    fun nutri2int(nutriscore : String) : Int{
-        val nutriscore2int = mapOf("A" to 0, "B" to 1, "C" to 2, "D" to 3, "E" to 4)
-        return nutriscore2int[nutriscore]!!
-    }
+//    fun int2nutri(int : Int) : String{
+//        val int2nutriscore = mapOf(0 to "A", 1 to "B", 2 to "C", 3 to "D", 4 to "E")
+//        return int2nutriscore[int]!!
+//    }
+//
+//    fun nutri2int(nutriscore : String) : Int{
+//        val nutriscore2int = mapOf("A" to 0, "B" to 1, "C" to 2, "D" to 3, "E" to 4)
+//        return nutriscore2int[nutriscore]!!
+//    }
 
 
     companion object CREATOR : Parcelable.Creator<Recipe> {

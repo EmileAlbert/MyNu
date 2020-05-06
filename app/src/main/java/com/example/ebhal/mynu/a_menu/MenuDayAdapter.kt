@@ -1,6 +1,5 @@
 package com.example.ebhal.mynu.a_menu
 
-import android.Manifest.permission_group.CALENDAR
 import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -8,25 +7,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Recipe
 import java.util.*
 
-class MenuDayAdapter(val recipes : List<Recipe>,
-                     val recipes_index : List<Int>,
-                     val days : List<String>,
-                     val guest_number : List<Int>,
-                     val empty_recipe_name : String,
-                     val itemClickListener: View.OnClickListener,
+class MenuDayAdapter(recipes : List<Recipe>,
+                     recipes_index : List<Int>,
+                     private val days : List<String>,
+                     guest_number : List<Int>,
+                     private val empty_recipe_name : String,
+                     private val itemClickListener: View.OnClickListener,
                      val saveGuest_database : (Int, Int) -> Boolean,
-                     val readOnly : Boolean)
+                     private val readOnly : Boolean)
 
     : RecyclerView.Adapter<MenuDayAdapter.ViewHolder>() {
 
-    var recipes_list = recipes as MutableList<Recipe>
-    var recipes_index_list = recipes_index as MutableList<Int>
+    private var recipes_list = recipes as MutableList<Recipe>
+    private var recipes_index_list = recipes_index as MutableList<Int>
 
     private var days_guest : MutableList<Int> = guest_number.toMutableList()
 
@@ -95,11 +93,11 @@ class MenuDayAdapter(val recipes : List<Recipe>,
 
     fun swapRecipes(fromPosition : Int, toPosition : Int) : Pair<List<Recipe>, List<Int>> {
 
-        var recipe_swap_1 = recipes_list[fromPosition]
-        var recipe_swap_2 = recipes_list[toPosition]
+        val recipe_swap_1 = recipes_list[fromPosition]
+        val recipe_swap_2 = recipes_list[toPosition]
 
-        var recipe_swap_1_index = recipes_index_list[fromPosition]
-        var recipe_swap_2_index = recipes_index_list[toPosition]
+        val recipe_swap_1_index = recipes_index_list[fromPosition]
+        val recipe_swap_2_index = recipes_index_list[toPosition]
 
         if (recipe_swap_1.name != empty_recipe_name){
 

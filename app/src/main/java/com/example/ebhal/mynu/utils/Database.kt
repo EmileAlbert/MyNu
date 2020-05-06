@@ -177,7 +177,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
     fun get_recipes() : MutableList<Recipe> {
 
-        var recipe_list = mutableListOf<Recipe>()
+        val recipe_list = mutableListOf<Recipe>()
         readableDatabase.rawQuery("SELECT * FROM $RECIPE_TABLE_NAME", null).use { cursor ->
             while (cursor.moveToNext()) {
 
@@ -198,9 +198,9 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
                 val originality = cursor.getString(cursor.getColumnIndex(RECIPE_KEY_ORIGINALITY))
                 val id = cursor.getLong(cursor.getColumnIndex(RECIPE_KEY_ID))
 
-                var recipe = Recipe(name, duration, ease, score, ingredients, steps, price, meal, nutriscore,
-                        veggie.toBoolean(), salty.toBoolean(), temp.toBoolean(), season.toBoolean(),
-                        ordinary.toBoolean(), originality.toBoolean(), id)
+                val recipe = Recipe(name, duration, ease, score, ingredients, steps, price, meal, nutriscore,
+                        veggie!!.toBoolean(), salty!!.toBoolean(), temp!!.toBoolean(), season!!.toBoolean(),
+                        ordinary!!.toBoolean(), originality!!.toBoolean(), id)
 
                 recipe_list.add(recipe)
             }
@@ -209,12 +209,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
             return recipe_list
     }
 
-    fun get_recipe_count() : Int = DatabaseUtils.queryNumEntries(readableDatabase, RECIPE_TABLE_NAME, null).toInt()
+
+//    fun get_recipe_count() : Int = DatabaseUtils.queryNumEntries(readableDatabase, RECIPE_TABLE_NAME, null).toInt()
 
 
     // MENU DATABASE MANAGEMENT ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     fun get_menu_index() : MutableList<Int> {
-        var menu_index = mutableListOf<Int>(-1, -1, -1, -1, -1, -1, -1)
+        val menu_index = mutableListOf<Int>(-1, -1, -1, -1, -1, -1, -1)
 
         try {
             readableDatabase.rawQuery("SELECT * FROM $MENU_TABLE_NAME", null).use { cursor ->
@@ -240,7 +241,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
     fun get_daysGuest() : MutableList<Int> {
 
-        var days_guest = mutableListOf<Int>(-1, -1, -1, -1, -1, -1, -1)
+        val days_guest = mutableListOf<Int>(-1, -1, -1, -1, -1, -1, -1)
 
         try {
             readableDatabase.rawQuery("SELECT * FROM $MENU_TABLE_NAME", null).use { cursor ->
@@ -313,7 +314,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         else {
             Log.d(TAG, "db table menu initialized - count : ${get_menuDays_count()}")
 
-            var day_list = mutableListOf<Int>(0, 1, 2, 3, 4, 5, 6)
+            val day_list = mutableListOf<Int>(0, 1, 2, 3, 4, 5, 6)
 
             for (day in day_list){
                 update_dayMenu(day, -1)
@@ -359,7 +360,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
         Log.i(TAG, "Create item $values")
 
-        var id = writableDatabase.insert(SHOPLIST_TABLE_NAME, null, values)
+        val id = writableDatabase.insert(SHOPLIST_TABLE_NAME, null, values)
 
         item.dbID = id
         Log.i(TAG, "ID created item : ${item.dbID}")
@@ -412,7 +413,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
     fun get_items() : MutableList<Item> {
 
-        var items_list = mutableListOf<Item>()
+        val items_list = mutableListOf<Item>()
         readableDatabase.rawQuery("SELECT * FROM $SHOPLIST_TABLE_NAME", null).use { cursor ->
             while (cursor.moveToNext()) {
 

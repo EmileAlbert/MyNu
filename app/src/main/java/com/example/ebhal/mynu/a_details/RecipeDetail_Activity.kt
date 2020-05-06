@@ -17,24 +17,23 @@ import com.example.ebhal.mynu.a_main_list.RecipeList_Activity
 import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Ingredient
 import com.example.ebhal.mynu.data.Recipe
-import org.w3c.dom.Text
 
 
 class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
-        val REQUEST_CODE = "request_code"
+        const val REQUEST_CODE = "request_code"
 
-        val REQUEST_EDIT_RECIPE = 1
-        val REQUEST_VIEW_RECIPE = 12
-        val EXTRA_RECIPE = "recipe"
-        val EXTRA_RECIPE_INDEX = "recipe_index"
+        const val REQUEST_EDIT_RECIPE = 1
+        const val REQUEST_VIEW_RECIPE = 12
+        const val EXTRA_RECIPE = "recipe"
+        const val EXTRA_RECIPE_INDEX = "recipe_index"
 
-        val ACTION_SAVE_RECIPE = "com.example.ebhal.mynu.actions.ACTION_SAVE_RECIPE"
-        val ACTION_DELETE_RECIPE = "com.example.ebhal.mynu.actions.ACTION_DELETE_RECIPE"
+        const val ACTION_SAVE_RECIPE = "com.example.ebhal.mynu.actions.ACTION_SAVE_RECIPE"
+        const val ACTION_DELETE_RECIPE = "com.example.ebhal.mynu.actions.ACTION_DELETE_RECIPE"
 
-        val EXTRA_REQUEST_MENU_DAY_INT = "request_menu_day_int"
-        val EXTRA_REQUEST_MENU_DAY = "request_menu_day"
+        const val EXTRA_REQUEST_MENU_DAY_INT = "request_menu_day_int"
+        const val EXTRA_REQUEST_MENU_DAY = "request_menu_day"
     }
 
     var request_code : Int = -1
@@ -82,7 +81,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
         request_code = intent.getIntExtra(REQUEST_CODE, -1)
 
-        recipe = intent.getParcelableExtra<Recipe>(EXTRA_RECIPE)
+        recipe = intent.getParcelableExtra(EXTRA_RECIPE)
 
         if (request_code == REQUEST_EDIT_RECIPE){
 
@@ -130,7 +129,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         // Dynamic multiply quantity
         if (ingredient_adapter.get_ingredient_list(1).size > 0){
 
-            ingredient_adapter.multIngredientList(currentValue, nextValue)
+            ingredient_adapter.multiplyIngredientList(currentValue, nextValue)
 
         }
 
@@ -140,7 +139,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
     // Internal events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Get entries name
-    fun getEntriesName(){
+    private fun getEntriesName(){
 
         guestNumberView = findViewById(R.id.guest_nb)
 
@@ -169,12 +168,12 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
-        meat_check = findViewById<ToggleButton>(R.id.meat)
-        salt_check = findViewById<ToggleButton>(R.id.salt)
-        temp_check = findViewById<ToggleButton>(R.id.temp)
-        season_check = findViewById<ToggleButton>(R.id.season)
-        ordinary_check = findViewById<ToggleButton>(R.id.ordinary)
-        original_check = findViewById<ToggleButton>(R.id.original)
+        meat_check = findViewById(R.id.meat)
+        salt_check = findViewById(R.id.salt)
+        temp_check = findViewById(R.id.temp)
+        season_check = findViewById(R.id.season)
+        ordinary_check = findViewById(R.id.ordinary)
+        original_check = findViewById(R.id.original)
     }
 
     // Disable entries modification possibility
@@ -201,7 +200,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     }
 
     // Fill entry with existing recipe data received from intent
-    fun fillEntrieswithRecipe(){
+    private fun fillEntrieswithRecipe(){
 
         guestNumberView.text = "1"
 
@@ -244,7 +243,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     }
 
     // Save recipe in Recipe object
-    fun saveRecipe(){
+    private fun saveRecipe(){
 
         if (name_View.text.toString() == ""){
 
@@ -260,7 +259,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         recipe.ease = ease_rating.rating
         recipe.score = score_rating.rating
 
-        var guestNB : Int
+        val guestNB : Int
         if (guestNBisValid(guestNumberView.text.toString())){
             guestNB = Integer.valueOf(guestNumberView.text.toString())
         }
@@ -301,12 +300,12 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     }
 
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    fun showConfirmDeleteRecipeDialog(recipe : Recipe) {
+    private fun showConfirmDeleteRecipeDialog(recipe : Recipe) {
 
         val confirmFragment = ConfirmDeleteRecipeDialog()
 
         // Pass the recipe title to the dialoger
-        var args: Bundle? = Bundle()
+        val args: Bundle? = Bundle()
         args?.putString("recipe_name", recipe.name)
         confirmFragment.arguments = args
 
@@ -336,7 +335,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
-    fun showBackConfirmDialog() {
+    private fun showBackConfirmDialog() {
         val confirmFragment = BackConfirmDialog()
         confirmFragment.listener = object : BackConfirmDialog.ConfirmBackDialogListener{
             override fun onDialogPositiveClick() {
@@ -373,6 +372,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when(item.itemId){
             R.id.action_save -> {
                 saveRecipe()

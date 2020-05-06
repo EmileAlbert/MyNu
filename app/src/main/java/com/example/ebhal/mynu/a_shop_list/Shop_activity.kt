@@ -22,17 +22,17 @@ class Shop_activity : AppCompatActivity() {
 
     private val TAG = "Shop_Activity"
 
-    var shopping_started : Boolean = false
-    var activity_menu : Menu? = null
+    private var shoppingIsStarted : Boolean = false
+    private var activityMenu : Menu? = null
 
-    lateinit var adapter: ItemAdapter
-    lateinit var items: MutableList<Item>
+    private lateinit var adapter: ItemAdapter
+    private lateinit var items: MutableList<Item>
 
-    lateinit var toolbar : Toolbar
+    var toolbar : Toolbar? = null
 
     private lateinit var database : Database
 
-    private lateinit var button_menu_back : Button
+    private lateinit var buttonMenuBack : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,28 +42,28 @@ class Shop_activity : AppCompatActivity() {
         setContentView(R.layout.activity_shop_list)
 
         // Set toolbar and toolbar gesture handling
-        toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.navigationIcon = null
+        toolbar?.navigationIcon = null
 
         // Load shopping list from database
         items = loadShoppingList_database(database)
         Log.i(TAG, "Load shopping list : $items")
 
-        adapter = ItemAdapter(this, items, ::update_lock_button)
+        adapter = ItemAdapter(this, items, ::updateLockButton)
 
         val recyclerView = findViewById<RecyclerView>(R.id.shop_list_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        val callback = GestureAdapterHandler(this, adapter, ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
+        val callback = GestureAdapterHandler(adapter, ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(recyclerView)
 
-        shopping_started = checkeditem_database(database)
+        shoppingIsStarted = checkeditem_database(database)
 
-        button_menu_back = findViewById(R.id.shop_list_button)
-        button_menu_back.setOnClickListener { goMenuBack() }
+        buttonMenuBack = findViewById(R.id.shop_list_button)
+        buttonMenuBack.setOnClickListener { goMenuBack() }
 
         //Toast.makeText(this, "fixed : ${checkeditem_database(database)}", Toast.LENGTH_SHORT).show()
     }
@@ -71,13 +71,14 @@ class Shop_activity : AppCompatActivity() {
     private fun goMenuBack() {
 
         Log.i(TAG, "Saved list : ${adapter.get_items_list()}")
+
         // Update existing item and create new ones
-        var shopping_list_updated = adapter.get_items_list()
-        updateShoppingList_database(database, shopping_list_updated)
+        val shoppingListUpdated = adapter.get_items_list()
+        updateShoppingList_database(database, shoppingListUpdated)
 
         // Suppress item in 2delete list
-        var items_toDelete = adapter.get_items2delete_list()
-        for (item in items_toDelete){
+        val itemsToDelete = adapter.get_items2delete_list()
+        for (item in itemsToDelete){
 
             database.delete_item(item.dbID)
         }
@@ -90,18 +91,18 @@ class Shop_activity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.activity_shopping_list_menu, menu)
-        activity_menu = menu
+        activityMenu = menu
 
-        var item_menu = menu?.getItem(0)
+        val menuItem = menu?.getItem(0)
 
-        if (shopping_started){
+        if (shoppingIsStarted){
 
-            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
         }
 
         else {
 
-            item_menu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
         }
 
         return true
@@ -111,13 +112,11 @@ class Shop_activity : AppCompatActivity() {
         when(item.itemId){
             R.id.shopping_list_lock -> {
 
-                shopping_started = !shopping_started
+                shoppingIsStarted = !shoppingIsStarted
 
-                var item_menu = item
+                if (shoppingIsStarted){
 
-                if (shopping_started){
-
-                    item_menu.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
+                    item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
                 }
 
                 else {
@@ -125,7 +124,7 @@ class Shop_activity : AppCompatActivity() {
                     item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
                 }
 
-                fixedShoppingList_database(database, shopping_started)
+                fixedShoppingList_database(database, shoppingIsStarted)
                 return true
             }
 
@@ -133,26 +132,26 @@ class Shop_activity : AppCompatActivity() {
         }
     }
 
-    fun update_lock_button(items_list : List<Item>) : Boolean {
+    private fun updateLockButton(items_list : List<Item>) : Boolean {
 
         var lock = false
-        val item = activity_menu!!.findItem(R.id.shopping_list_lock)
+        val menuItem = activityMenu!!.findItem(R.id.shopping_list_lock)
 
         for (item in items_list){if (item.check){lock = true}}
 
         if (lock){
 
-            shopping_started = lock
+            shoppingIsStarted = lock
 
-            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
-            item.isEnabled = false
+            menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
+            menuItem.isEnabled = false
         }
 
         else {
 
-            shopping_started = lock
-            item.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
-            item.isEnabled = true
+            shoppingIsStarted = lock
+            menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
+            menuItem.isEnabled = true
         }
 
         return true

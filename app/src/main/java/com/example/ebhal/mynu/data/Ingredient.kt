@@ -38,10 +38,10 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         val possible_decade_letters = getDecadePossibilities('a')
         val possible_unit_letters = getUnitPossibilities()
 
-        var raw_input = input.toLowerCase()
+        val raw_input = input.toLowerCase()
 
-        var letters_index = mutableListOf<Int>()
-        var letters_list = mutableListOf<Char>()
+        val letters_index = mutableListOf<Int>()
+        val letters_list = mutableListOf<Char>()
         var digitCount = 0
 
         var index = 0
@@ -91,7 +91,7 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
     // return normalized quantity form as value-decade-unit
     fun normalizedQuantityForm_fromRaw(raw_qty: String) : String {
 
-        var raw_qty_string = raw_qty
+        val raw_qty_string = raw_qty
 
         val qty_unit = getUnit_fromRaw(raw_qty_string)
         val qty_value = getValue_fromRaw(raw_qty_string, qty_unit)
@@ -125,17 +125,17 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
     private fun getValue_fromRaw(raw_qty: String, unit : String): Float {
 
         val decade_unit_list = unit.split("-")
-        var decade = decade_unit_list[0]
-        var unit = decade_unit_list[1]
+        val qtyDecade = decade_unit_list[0]
+        val qtyUnit = decade_unit_list[1]
 
         // raw quantity form : valuedecadeunit or value decadeunit
         var quantity_string_raw  = raw_qty
         // Log.i(TAG, "get value : raw qty string = $quantity_string_raw")
 
-        if (unit != "i") {
+        if (qtyUnit != "i") {
 
-            val unit_index = quantity_string_raw.indexOf(unit)
-            val decade_index = quantity_string_raw.indexOf(decade)
+            val unit_index = quantity_string_raw.indexOf(qtyUnit)
+            val decade_index = quantity_string_raw.indexOf(qtyDecade)
 
             quantity_string_raw = quantity_string_raw.removeRange(unit_index, unit_index + 1)
 
@@ -153,7 +153,7 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
         val unit_letters = getUnitPossibilities()
 
-        var raw_quantity = raw_qty
+        val raw_quantity = raw_qty
 
         var letterCount = 0
         var digitCount = 0
@@ -191,10 +191,10 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
     // Use when this.quantity has a form value-decade-unit
     fun normalizedQuantityValue_fromNorm() : String{
 
-        var norm_qty = ""
+        var norm_qty: String
 
-        var decade = getList_ValueDecadeUnit()[1]
-        var unit = getList_ValueDecadeUnit()[2]
+        val decade = getList_ValueDecadeUnit()[1]
+        val unit = getList_ValueDecadeUnit()[2]
 
         val current_qty_value = java.lang.Float.valueOf(getList_ValueDecadeUnit()[0])
 
@@ -287,8 +287,8 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
     fun decade2factor_l() : MutableMap<String, Float>{
 
-        var decade2factorMap = mutableMapOf<String, Float>()
-        var decades = getDecadePossibilities('l')
+        val decade2factorMap = mutableMapOf<String, Float>()
+        val decades = getDecadePossibilities('l')
 
         //
         for (decade in decades ){
@@ -305,8 +305,8 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
     fun decade2factor_g() : MutableMap<String, Float>{
 
-        var decade2factorMap = mutableMapOf<String, Float>()
-        var decades = getDecadePossibilities('g')
+        val decade2factorMap = mutableMapOf<String, Float>()
+        val decades = getDecadePossibilities('g')
 
         //
         for (decade in decades ){

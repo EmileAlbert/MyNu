@@ -1,6 +1,6 @@
 package com.example.ebhal.mynu.utils
 
-private val TAG = "storage"
+//private val TAG = "storage"
 
 // Write note in memory
 //fun persistRecipe(context: Context, recipe: Recipe) {

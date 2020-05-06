@@ -4,11 +4,11 @@ data class Item(var name : String = "", var quantity : String = "", var rc_posit
 
     fun qty_toStringUI() : String {
 
-        var res = ""
+        val res: String
 
         if (this.quantity.contains('-')){
 
-            var strings = this.quantity.split("-")
+            val strings = this.quantity.split("-")
 
             res = strings[0]
             if (strings[1] == "i"){return res}

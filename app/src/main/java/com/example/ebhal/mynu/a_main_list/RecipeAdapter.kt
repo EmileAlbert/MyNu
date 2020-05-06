@@ -13,10 +13,10 @@ import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Recipe
 import java.util.*
 
-class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnClickListener, val itemLongClickListener: View.OnLongClickListener? = null)
+class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.OnClickListener, private val itemLongClickListener: View.OnLongClickListener? = null)
     : RecyclerView.Adapter<RecipeAdapter.ViewHolder>(), Filterable {
 
-    var recipesList = recipes
+    private var recipesList = recipes
     var filteredRecipesList = recipes
 
     var tagListFilter : MutableMap<String, Boolean?> = mutableMapOf("veggie" to null, "salt" to null, "temp" to null, "original" to null)
@@ -67,7 +67,7 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
                 val charConstraint = !constraint.isNullOrEmpty()
                 val charSearch = constraint.toString()
 
-                var tagsFilteredRecipesList = tagsFiltering(tagListFilter)
+                val tagsFilteredRecipesList = tagsFiltering(tagListFilter)
 
                 // Name filtering
                 if (!charConstraint) {
@@ -110,41 +110,34 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
 
     private fun tagsFiltering(tagsMap : MutableMap<String, Boolean?>) : MutableList<Recipe> {
 
-        var tagsFilteredRecipesList = mutableListOf<Recipe>()
-
-        var veggieList = mutableListOf<Recipe>()
-        var saltyList = mutableListOf<Recipe>()
-        var tempList = mutableListOf<Recipe>()
-        var originalList = mutableListOf<Recipe>()
-
-        val tags = tagsMap
+        val tagsFilteredRecipesList = mutableListOf<Recipe>()
 
         // Tags filtering
        for (recipe in recipesList){
 
            var filtered = false
 
-           Log.i("FILTER ADAPTER TAG", "$tagListFilter")
+           Log.i("FILTER ADAPTER TAG", "$tagsMap")
            Log.i("FILTER ADAPTER RECIPE", "$recipe")
 
-           if (tagListFilter["veggie"] != null){
+           if (tagsMap["veggie"] != null){
 
-               if (recipe.veggie != tagListFilter["veggie"]){filtered = true}
+               if (recipe.veggie != tagsMap["veggie"]){filtered = true}
            }
 
-           if (tagListFilter["salt"] != null){
+           if (tagsMap["salt"] != null){
 
-               if (recipe.salty != tagListFilter["salt"]){filtered = true}
+               if (recipe.salty != tagsMap["salt"]){filtered = true}
            }
 
-           if (tagListFilter["temp"] != null){
+           if (tagsMap["temp"] != null){
 
-               if (recipe.temp != tagListFilter["temp"]){filtered = true}
+               if (recipe.temp != tagsMap["temp"]){filtered = true}
            }
 
-           if (tagListFilter["original"] != null){
+           if (tagsMap["original"] != null){
 
-               if (recipe.original != tagListFilter["original"]){filtered = true}
+               if (recipe.original != tagsMap["original"]){filtered = true}
            }
 
            if (!filtered){
@@ -161,13 +154,13 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
     }
 
     // return absolute index from filtered index
-    fun aboslute_index(relative_index : Int) : Int{
+    fun absoluteIndex(relative_index : Int) : Int{
 
-        var abs_index : Int = -1
+        var absIndex : Int = -1
 
         if (recipesList.size == filteredRecipesList.size){
 
-            abs_index = relative_index
+            absIndex = relative_index
         }
 
         else {
@@ -176,17 +169,17 @@ class RecipeAdapter(val recipes : List<Recipe>, val itemClickListener: View.OnCl
 
             for (recipe in recipesList){
 
-                if (recipe.equals(filteredRecipesList[relative_index])){abs_index = index}
+                if (recipe == filteredRecipesList[relative_index]){absIndex = index}
 
                 index += 1
             }
 
         }
 
-        return abs_index
+        return absIndex
     }
 
-    fun getPriceSymbol(price : Float) : String {
+    private fun getPriceSymbol(price : Float) : String {
 
         var symbol = "€"
 

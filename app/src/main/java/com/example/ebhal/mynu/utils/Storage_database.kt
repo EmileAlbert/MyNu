@@ -11,7 +11,7 @@ const val fake_item_name = "fake_item_fix_sl%"
 // Write note in memory
 fun persistRecipe_database(database : Database, recipe: Recipe) : Boolean {
     Log.i(TAG, "Persist recipe")
-    var result = false
+    val result: Boolean
 
     // recipe is not in database (new one)
     if (recipe.id < 0){
@@ -35,7 +35,7 @@ fun loadRecipes_database(database: Database): MutableList<Recipe>{
 // Suppress one recipe
 fun deleteRecipe_database(database : Database, recipe_ID : Long) : Boolean {
 
-    var result = database.delete_recipe(recipe_ID)
+    val result = database.delete_recipe(recipe_ID)
     return result
 }
 
@@ -63,11 +63,11 @@ fun resetMenu_database(database: Database){
 
 fun loadMenu_database(database : Database, empty_recipe : Recipe) : Pair<MutableList<Recipe>, MutableList<Int>> {
 
-    var menu_list_recipe = mutableListOf<Recipe>()
-    var menu_list_index = mutableListOf<Int>()
+    val menu_list_recipe = mutableListOf<Recipe>()
+    val menu_list_index = mutableListOf<Int>()
 
-    var main_recipes_list = loadRecipes_database(database)
-    var menu_recipe_index = database.get_menu_index()
+    val main_recipes_list = loadRecipes_database(database)
+    val menu_recipe_index = database.get_menu_index()
 
     for (recipe_index in menu_recipe_index){
 
@@ -106,7 +106,7 @@ fun saveShoppingList_database(database: Database, shop_list : List<Item>) : Bool
 
 fun loadShoppingList_database(database: Database): MutableList<Item> {
 
-    var shopping_list = database.get_items()
+    val shopping_list = database.get_items()
     return shopping_list
 
 }
@@ -139,13 +139,13 @@ fun emptyShoppingList_database(database: Database){
 
 fun fixedShoppingList_database(database : Database, shopping_started : Boolean) : Boolean {
 
-    var fake_item = Item(fake_item_name, "", -1, true, true)
+    val fake_item = Item(fake_item_name, "", -1, true, true)
 
     if (shopping_started){database.create_item(fake_item)}
 
     else {
 
-        var item_list = database.get_items()
+        val item_list = database.get_items()
 
         for (item in item_list){
             if (item.name == fake_item_name){
@@ -161,7 +161,7 @@ fun fixedShoppingList_database(database : Database, shopping_started : Boolean) 
 // return true if an item is checked
 fun checkeditem_database(database : Database) : Boolean {
 
-    var items_list = database.get_items()
+    val items_list = database.get_items()
 
     for (item in items_list){if (item.check){return true}}
 

@@ -18,14 +18,12 @@ import com.example.ebhal.mynu.utils.fake_item_name
 
 const val LOG = "ShoppingList_Adapter"
 
-class ItemAdapter(context : Context, val shopping_list : MutableList<Item>, val update_lock_button : (List<Item>) -> Boolean): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
+class ItemAdapter(private var context: Context, shopping_list : MutableList<Item>, val update_lock_button : (List<Item>) -> Boolean): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
 
     private var items_list = order_clean_list(shopping_list)
 
     private var items2save_list : MutableList<Item> = shopping_list
     private var items2delete_list = mutableListOf<Item>()
-
-    private var context = context
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
 
@@ -43,16 +41,16 @@ class ItemAdapter(context : Context, val shopping_list : MutableList<Item>, val 
             rc_sl_nameView.isFocusable = true
 
             rc_sl_qtyView = cardView.findViewById(R.id.rc_sl_item_quantity) as EditText
-            rc_sl_qtyView.setOnEditorActionListener { v, actionId, _ ->
+            rc_sl_qtyView.setOnEditorActionListener { _, actionId, _ ->
                 return@setOnEditorActionListener when (actionId) {
 
                     EditorInfo.IME_ACTION_DONE -> {
                         if (rc_sl_nameView.text.toString() != "") {
                             Log.w(LOG, "ADD DONE")
 
-                            var data =  Item(rc_sl_nameView.text.toString(), rc_sl_qtyView.text.toString(), -1,false, true)
+                            val data =  Item(rc_sl_nameView.text.toString(), rc_sl_qtyView.text.toString(), -1,false, true)
                             this@ItemAdapter.add_item(data)
-                            rc_sl_nameView.post(Runnable {rc_sl_nameView.requestFocus() })
+                            rc_sl_nameView.post {rc_sl_nameView.requestFocus() }
                             true
                         }
 
@@ -66,9 +64,9 @@ class ItemAdapter(context : Context, val shopping_list : MutableList<Item>, val 
             }
 
             rc_sl_checkbox = cardView.findViewById(R.id.rc_sl_item_checked) as CheckBox
-            rc_sl_checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            rc_sl_checkbox.setOnCheckedChangeListener { _, isChecked ->
 
-                var position = cardView.tag as Int
+                val position = cardView.tag as Int
                 items_list[position].check = isChecked
 
                 update_lock_button(items_list)
@@ -101,12 +99,7 @@ class ItemAdapter(context : Context, val shopping_list : MutableList<Item>, val 
 
         Log.i(TAG, "ORDER - unordered $unordered_list")
 
-        var ordered_list = mutableListOf<Item>()
-
-
-        // suppress fake item of list
-        var fake_item_index = 0
-        var fake_item = false
+        val ordered_list = mutableListOf<Item>()
 
         for (item in unordered_list) {
 

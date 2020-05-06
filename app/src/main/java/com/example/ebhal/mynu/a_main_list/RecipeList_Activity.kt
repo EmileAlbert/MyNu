@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.GestureDetectorCompat
-import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -161,7 +160,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         if (view.tag != null) {
 
-            val recipe_index = adapter.aboslute_index(view.tag as Int)
+            val recipe_index = adapter.absoluteIndex(view.tag as Int)
             showRecipeDetail(recipe_index)
 
         } else {
@@ -262,13 +261,13 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
             RecipeDetail_Activity.REQUEST_EDIT_RECIPE -> processEditRecipeResult(data)
 
             // Option 3 : REQUEST_IMPORT and we need to read imported CSV file
-            REQUEST_IMPORT -> importRecipes(csv_object.import(this, contentResolver.openInputStream(data.data!!)))
+            REQUEST_IMPORT -> importRecipes(csv_object.import(contentResolver.openInputStream(data.data!!)))
         }
     }
 
     private fun returnRecipe2Menu(index : Int) {
 
-        val recipe_index = adapter.aboslute_index(index)
+        val recipe_index = adapter.absoluteIndex(index)
 
         request_day_recipe = recipes[recipe_index]
         request_day_recipe_idx = recipe_index

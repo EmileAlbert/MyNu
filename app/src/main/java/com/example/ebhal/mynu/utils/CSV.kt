@@ -1,5 +1,6 @@
 package com.example.ebhal.mynu.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat
@@ -10,18 +11,19 @@ import android.util.Log
 import com.example.ebhal.mynu.data.Recipe
 import java.io.*
 
+@SuppressLint("Registered")
 class CSV : AppCompatActivity() {
 
     private val TAG = "Import_Export"
     val CSV_sep = ";"
 
-    fun import (context : Context, csvFile: InputStream?) : MutableList<Recipe> {
+    fun import (csvFile: InputStream?) : MutableList<Recipe> {
 
-        var data = URI2CSV_content(csvFile)
+        val data = URI2CSV_content(csvFile)
 
         Log.i(TAG, "Import $data")
 
-        var list_recipes = importRecipes(context, data)
+        val list_recipes = importRecipes(data)
         return list_recipes
 
     }
@@ -31,16 +33,16 @@ class CSV : AppCompatActivity() {
     private fun URI2CSV_content (csvFile : InputStream?) : List<String> {
 
         val isr = InputStreamReader(csvFile, "UTF-8")
-        var list : List<String> = BufferedReader(isr).readLines()
+        val list : List<String> = BufferedReader(isr).readLines()
         return list
 
     }
 
     // Convert list of content to recipe object
-    private fun importRecipes(context: Context, data : List<String>) : MutableList<Recipe> {
+    private fun importRecipes(data: List<String>) : MutableList<Recipe> {
 
-        var recipes_import : MutableList<Recipe> = mutableListOf()
-        var recipe_data = data.toMutableList()
+        val recipes_import : MutableList<Recipe> = mutableListOf()
+        val recipe_data = data.toMutableList()
         val recipe_model = Recipe()
         var list_param_model = ""
         for (param in recipe_model.getListParameters()){
@@ -57,12 +59,12 @@ class CSV : AppCompatActivity() {
         Log.i(TAG, "recipe data : $recipe_data")
 
         for (recipe_line in recipe_data) run {
-            var params: List<String>
+            val params: List<String>
             params = recipe_line.split(CSV_sep)
 
             Log.i(TAG, "data list : $params")
 
-            var recipe = Recipe(params[0], Integer.valueOf(params[1]), java.lang.Float.valueOf(params[2]),
+            val recipe = Recipe(params[0], Integer.valueOf(params[1]), java.lang.Float.valueOf(params[2]),
                             java.lang.Float.valueOf(params[3]), params[4], params[5],
                             java.lang.Float.valueOf(params[6]), params[7], Integer.valueOf(params[8]),
                             params[9].toBoolean(), params[10].toBoolean(), params[11].toBoolean(),
@@ -78,9 +80,9 @@ class CSV : AppCompatActivity() {
 
         //Toast.makeText(context, "Export CSV", Toast.LENGTH_SHORT).show()
 
-        var recipes = database.get_recipes()
+        val recipes = database.get_recipes()
 
-        var parameters = mutableListOf<String>()
+        val parameters : MutableList<String>
         if (recipes.size != 0){
             parameters = recipes[0].getListParameters()
         }

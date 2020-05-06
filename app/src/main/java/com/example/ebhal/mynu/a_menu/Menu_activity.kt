@@ -1,5 +1,6 @@
 package com.example.ebhal.mynu.a_menu
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -24,11 +25,10 @@ import com.example.ebhal.mynu.a_shop_list.shoppingListIsCompleted
 import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
 import com.example.ebhal.mynu.utils.*
-import java.util.*
 
 class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
-    private val TAG = "Menu Activity"
+    private val TAG = "Menu_Activity"
 
     private lateinit var toolbar_detector: GestureDetectorCompat
     lateinit var adapter: MenuDayAdapter
@@ -60,6 +60,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         val toolbar_view = findViewById<View>(R.id.toolbar)
 
         toolbar_view.setOnTouchListener(object : View.OnTouchListener {
+            @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 return toolbar_detector.onTouchEvent(event)
             }
@@ -98,7 +99,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Gesture management on recycler view
-        val callback = GestureAdapterHandler_menu(adapter, ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
+        val callback = GestureAdapterHandler_menu(ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(recyclerView)
     }
@@ -115,8 +116,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
                 velocityX: Float,
                 velocityY: Float) : Boolean{
 
-            var diffx = move_event?.x?.minus(down_event!!.x) ?: 0.0F
-            var diffy = move_event?.y?.minus(down_event!!.y) ?: 0.0F
+            val diffx = move_event?.x?.minus(down_event!!.x) ?: 0.0F
+            val diffy = move_event?.y?.minus(down_event!!.y) ?: 0.0F
 
             return if (Math.abs(diffx) > Math.abs(diffy)){
                 // left or right swipe
@@ -162,8 +163,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
         if (view.tag != null) {
 
-            var recipe_index = view.tag as Int
-            var selected_recipe = recipes[recipe_index]
+            val recipe_index = view.tag as Int
+            val selected_recipe = recipes[recipe_index]
 
             if (selected_recipe.name != resources.getString(R.string.menu_default_recipe_title)) {
                 showRecipeDetail(recipe_index)
@@ -174,10 +175,10 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    inner class GestureAdapterHandler_menu(adapter: MenuDayAdapter, dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
+    inner class GestureAdapterHandler_menu(dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
     {
-        var dragFrom = -1
-        var dragTo = -1
+        private var dragFrom = -1
+        private var dragTo = -1
 
         override fun onMove(recyclerView : RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
@@ -267,8 +268,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         guest_number = adapter.getGuestNumberforDays()
 
         val day_name = getWeekDaysList()[day]
-        var day_recipe = Recipe()
-        var day_recipe_idx = 0
+        val day_recipe = Recipe()
+        val day_recipe_idx = 0
 
         val intent = Intent(this, RecipeList_Activity::class.java)
         intent.putExtra(RecipeList_Activity.EXTRA_REQUEST_MENU_DAY_INT, day)
@@ -292,7 +293,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
         val confirmFragment = ConfirmModifyDialog()
 
-        var args: Bundle? = null
+        val args: Bundle? = null
         args?.putString("day", Int2Day(day))
         confirmFragment.arguments = args
 
@@ -309,7 +310,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         val recipes_list = recipes
         val days_guest_number = adapter.getGuestNumberforDays()
 
-        var recipes_guestNB_list = mutableListOf<Pair<Recipe, Int>>()
+        val recipes_guestNB_list = mutableListOf<Pair<Recipe, Int>>()
 
 
         // Construct list of paire recipe - guest number
@@ -341,8 +342,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
             Log.i(TAG, "Shopping list not empty but not started")
 
             // replace all item in shopping list except items added independently of any recipe
-            var existing_item_database = loadShoppingList_database(database)
-            var independent_items = mutableListOf<Item>()
+            val existing_item_database = loadShoppingList_database(database)
+            val independent_items = mutableListOf<Item>()
 
             for (existing_item in existing_item_database){
 
@@ -365,9 +366,9 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
     }
 
     // Launch RecipeDetail_Activity activity
-    fun showRecipeDetail(recipe_index: Int) {
+    private fun showRecipeDetail(recipe_index: Int) {
 
-        var selected_recipe = recipes[recipe_index]
+        val selected_recipe = recipes[recipe_index]
 
         val intent = Intent(this, RecipeDetail_Activity::class.java)
         intent.putExtra(RecipeDetail_Activity.EXTRA_RECIPE, selected_recipe as Parcelable)
@@ -398,7 +399,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
     private fun AssignDayRecipe(recipe : Recipe, recipe_index : Int, day : Int) {
 
-        var days_guest = adapter.getGuestNumberforDays()
+        val days_guest = adapter.getGuestNumberforDays()
 
         // Save assignation in db
         persistDayMenu_database(database, day, recipe_index)

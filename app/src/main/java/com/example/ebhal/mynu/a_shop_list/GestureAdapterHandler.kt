@@ -1,13 +1,10 @@
 package com.example.ebhal.mynu.a_shop_list
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 
-class GestureAdapterHandler(context: Context, adapter: ItemAdapter, dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
+class GestureAdapterHandler(private var adapter: ItemAdapter, dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
 {
-    val context = context
-    var adapter = adapter
 
     // Ovrride fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean
     override fun onMove(recyclerView : RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
