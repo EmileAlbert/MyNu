@@ -43,7 +43,10 @@
                 android:hint="@string/recipe_details_name"
                 style="@style/recipe_detail_title"
 
-                android:inputType="textCapSentences"/>
+                android:inputType="textCapSentences"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:id="@+id/duration"
@@ -57,7 +60,10 @@
                 android:layout_marginTop="5dp"
 
                 android:inputType="number"
-                android:selectAllOnFocus="true"/>
+                android:selectAllOnFocus="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionNext"/>
 
             <TextView
                 android:id="@+id/duration_unit"
@@ -88,7 +94,10 @@
                 android:layout_marginEnd="10dp"
 
                 android:inputType="numberDecimal"
-                android:selectAllOnFocus="true"/>
+                android:selectAllOnFocus="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionNext"/>
 
             <TextView
                 android:id="@+id/unit_price"
@@ -147,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="Ingrédients (1 personne)"
+                android:text="@string/recipe_details_ingredient_title"
                 style="@style/recipe_detail_subtitle"
 
                 android:layout_below="@+id/score"
@@ -156,25 +165,104 @@
                 android:layout_marginStart="4dp"/>
                 <!-- TODO change to give possibility to change ingredient qty scale -->
 
+            <TableRow
+                android:id="@+id/hr_guest_nb_top"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+
+                android:background="@color/colorAccent_variant"
+
+                android:layout_above="@+id/guest_nb"
+                android:layout_marginBottom="4dp"
+                android:layout_alignRight="@+id/guest_nb"
+                android:layout_alignLeft="@id/guest_nb"
+                android:layout_alignEnd="@+id/guest_nb"
+                android:layout_alignStart="@id/guest_nb"/>
+
+            <TextView
+                android:id="@+id/guest_nb"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+
+                android:inputType="number"
+                style="@style/recipe_detail_text"
+
+                android:layout_alignBottom="@+id/title_ingredients"
+                android:layout_toLeftOf="@+id/guest_nb_unit"
+                android:layout_toStartOf="@+id/guest_nb_unit"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+
+                android:textAlignment="center"
+                android:focusable="true"
+
+                tools:text="1"
+                tools:ignore="TextViewEdits" />
+
+            <TextView
+                android:id="@+id/guest_nb_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/recipe_details_guest_nb_unit"
+                style="@style/recipe_detail_text"
+
+                android:layout_alignBottom="@+id/title_ingredients"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:focusable="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="6dp" />
 
             <TableRow
-                android:id="@+id/hr_ingredients_top"
-
+                android:id="@+id/hr_ingredients_top_1"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
                 android:layout_below="@+id/title_ingredients"
 
                 android:layout_marginTop="4dp"
-                android:layout_width="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/guest_nb"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
+                android:background="@color/colorAccent_variant"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/guest_nb" />
+
+
+            <TableRow
+                android:id="@+id/hr_ingredients_top_2"
                 android:layout_height="2dp"
-                android:background="#c80a0a"/>
+                android:layout_width="0dp"
+
+                android:background="@color/colorAccent_variant"
+
+                android:layout_alignBottom="@+id/hr_ingredients_top_1"
+                android:layout_alignRight="@+id/guest_nb"
+                android:layout_alignLeft="@id/guest_nb"
+                android:layout_alignEnd="@+id/guest_nb"
+                android:layout_alignStart="@id/guest_nb"/>
+
+            <TableRow
+                android:id="@+id/hr_ingredients_top_3"
+                android:layout_width="0dp"
+                android:layout_below="@+id/title_ingredients"
+
+                android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/hr_ingredients_top_2"
+                android:layout_marginLeft="4dp"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent_variant"
+                android:layout_alignRight="@+id/hr_ingredients_bot"
+                android:layout_toEndOf="@+id/hr_ingredients_top_2"
+                android:layout_marginStart="4dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ingredients_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
 
-                android:layout_below="@+id/hr_ingredients_top"
+                android:layout_below="@+id/hr_ingredients_top_1"
                 android:layout_marginTop="5dp"
 
                 tools:listitem="@layout/item_ingredient" />
@@ -189,7 +277,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_height="2dp"
-                android:background="#c80a0a"/>
+                android:background="@color/colorAccent_variant"/>
 
 
             <TextView

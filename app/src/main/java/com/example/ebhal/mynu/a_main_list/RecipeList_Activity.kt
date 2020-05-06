@@ -85,7 +85,6 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         // Set onTouch listener on Action button (add)
         add_button = findViewById<FloatingActionButton>(R.id.create_recipe_fab)
         add_button.setOnClickListener(this)
-
     }
 
     override fun onStart() {
@@ -218,7 +217,17 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
                 //Toast.makeText(this, "Vogel Pick", Toast.LENGTH_SHORT).show()
 
-                val random_index = (0..recipes.size).random()
+                var selected_recipe : Recipe
+                var random_index : Int
+
+                random_index = (0..recipes.size).random()
+                selected_recipe = recipes[random_index]
+
+                while (selected_recipe.meal_time != "Souper"){
+                    random_index = (0..recipes.size).random()
+                    selected_recipe = recipes[random_index]
+                }
+
                 returnRecipe2Menu(random_index)
 
                 return true
@@ -235,7 +244,6 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
             else -> return super.onOptionsItemSelected(item)
         }
     }
-
 
     // Internal events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Code executed when return from child activity
@@ -442,7 +450,6 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         adapter.filter.filter(null)
     }
-
 
     // Toolbar menu management  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Adding menu

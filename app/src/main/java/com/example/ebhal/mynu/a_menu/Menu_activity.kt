@@ -69,12 +69,12 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         if (database.get_menuDays_count() < 6){resetMenu_database(database)}
 
         // Load recipes in menu from database
-        var (res_list_recipes, res_list_index) = loadMenu_database(database, emptyRecipe())
+        val (res_list_recipes, res_list_index) = loadMenu_database(database, emptyRecipe())
         recipes = res_list_recipes
         recipes_index = res_list_index
 
         // Create recycler view with read only mode if shopping list started
-        var empty_recipe_name = resources.getString(R.string.menu_default_recipe_title)
+        val empty_recipe_name = resources.getString(R.string.menu_default_recipe_title)
 
         guest_number = database.get_daysGuest()
         week_days = getWeekDaysList()
@@ -176,8 +176,6 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
     inner class GestureAdapterHandler_menu(adapter: MenuDayAdapter, dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
     {
-        val adapter = adapter
-
         var dragFrom = -1
         var dragTo = -1
 
@@ -197,13 +195,16 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
             if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
 
-                val (recipes_list, recipes_index_list) =  adapter.swapRecipes(dragFrom, dragTo)
+                val (recipes_list, recipes_index_list) = adapter.swapRecipes(dragFrom, dragTo)
 
-                recipes = recipes_list as MutableList<Recipe>
-                recipes_index = recipes_index_list as MutableList<Int>
+                if (recipes_list.size > 0) {
 
-                AssignDayRecipe(recipes[dragFrom], recipes_index[dragFrom], dragFrom)
-                AssignDayRecipe(recipes[dragTo], recipes_index[dragTo], dragTo)
+                    recipes = recipes_list as MutableList<Recipe>
+                    recipes_index = recipes_index_list as MutableList<Int>
+
+                    AssignDayRecipe(recipes[dragFrom], recipes_index[dragFrom], dragFrom)
+                    AssignDayRecipe(recipes[dragTo], recipes_index[dragTo], dragTo)
+                }
             }
 
             dragTo = -1
@@ -257,28 +258,6 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
             // Option 2 : REQUEST_EDIT_RECIPE and we need to save the new value for the recipe object
             RecipeList_Activity.REQUEST_GET_RECIPE -> getData_recipe(data)
         }
-    }
-
-    // TODO verify
-    fun assignRandomRecipe(day : Int) : Boolean {
-
-//        recipes = loadRecipes_database(database)
-//        var random_index = (0..recipes.size).random()
-//
-//        if (!checkeditem_database(database)) {
-//
-//         // Case when a day has an assigned recipe and is reswiped
-//            if (recipes_index[day] != -1){
-//
-//                Log.i(TAG, "index : $recipes_index")
-//                showModifyDialog(day)
-//                adapter.notifyItemChanged(day)
-//            }
-//
-//            else {AssignDayRecipe(recipes[random_index], random_index, day)}
-//        }
-
-        return true
     }
 
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

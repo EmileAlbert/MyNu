@@ -92,5 +92,8 @@
     <string name="filter_popup_original_on">original</string>
     <string name="filter_popup_original_off">normal</string>
     <string name="utils_menu_filter">filter</string>
+    <string name="recipe_details_ingredient_title">Ingrédients</string>
+    <string name="recipe_details_guest_nb_unit">personne</string>
+    <string name="recipe_details_invalid_guest_nb">Entrez un nombre de personne valide</string>
 
 </resources>

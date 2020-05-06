@@ -16,9 +16,12 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
         var res = ""
 
+
         if (this.quantity.contains('-')){
 
-            var strings = this.quantity.split("-")
+            Log.i(TAG, "QTY to UI : ${this.quantity}")
+            val strings = this.quantity.split("-")
+
 
             res = strings[0]
             if (strings[1] == "i"){return res}
@@ -28,8 +31,6 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
         return res
     }
-
-
 
     // check if an user input is valid to be processed as a quantity
     fun checkInputQtyIsValid(input : String) : Boolean{
@@ -97,6 +98,27 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
 
         return "$qty_value-$qty_unit"
+    }
+
+    // return normalized quantity for 1 person
+    fun Nto1quantity(norm_qty : String, N : Int) : String{
+
+        val valueDecadeUnitList = norm_qty.split("-")
+
+        val NGuestQty = java.lang.Float.valueOf(valueDecadeUnitList[0])
+        val oneGuestQty = NGuestQty / N
+
+        return "$oneGuestQty-${valueDecadeUnitList[1]}-${valueDecadeUnitList[2]}"
+    }
+
+    fun OneToNquantity(norm_qty : String, N : Float) : String{
+
+        val valueDecadeUnitList = norm_qty.split("-")
+
+        val GuestQty = java.lang.Float.valueOf(valueDecadeUnitList[0])
+        val oneGuestQty = GuestQty * N
+
+        return "$oneGuestQty-${valueDecadeUnitList[1]}-${valueDecadeUnitList[2]}"
     }
 
     // return float equals to quantity from a raw (not normalized) string

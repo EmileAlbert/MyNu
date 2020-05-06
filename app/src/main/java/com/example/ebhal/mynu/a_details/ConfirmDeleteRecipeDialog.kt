@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.Log
 import com.example.ebhal.mynu.R
 
 class ConfirmDeleteRecipeDialog : DialogFragment(){
@@ -19,10 +20,12 @@ class ConfirmDeleteRecipeDialog : DialogFragment(){
 
         super.onCreate(savedInstanceState)
 
+        Log.i("DialogDeleteConfirm", "$savedInstanceState")
         var recipeName : String? = ""
 
         // Get arguments
         if (arguments != null) {
+
             val args = arguments
             recipeName = args?.getString("recipe_name")
         }
@@ -36,7 +39,7 @@ class ConfirmDeleteRecipeDialog : DialogFragment(){
 
         val recipeTitle = recipeName
 
-        builder.setMessage("$msg \"$recipeTitle\" ?")
+        builder.setMessage("$msg $recipeTitle ?")
                 .setPositiveButton(optionSuppress) { _, _ -> listener?.onDialogPositiveClick()}
                 .setNegativeButton(optionCancel) { _, _ -> listener?.onDialogNegativeClick()}
 

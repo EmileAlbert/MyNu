@@ -39,7 +39,7 @@ class IngredientAdapter(var context : Context, val ingredients : MutableList<Ing
             rc_nameView.isFocusable = true
 
             rc_qtyView = cardView.findViewById(R.id.rc_quantity) as EditText
-            rc_qtyView.setOnEditorActionListener { v, actionId, _ ->
+            rc_qtyView.setOnEditorActionListener { _, actionId, _ ->
                 return@setOnEditorActionListener when (actionId) {
 
                     EditorInfo.IME_ACTION_DONE -> {
@@ -82,7 +82,7 @@ class IngredientAdapter(var context : Context, val ingredients : MutableList<Ing
             rc_delete_button.setOnClickListener{
                 Log.w(TAG, "DELETE BUTTON")
 
-                var position = cardView.tag as Int
+                val position = cardView.tag as Int
                 ingredients_list.removeAt(position)
 
                 this@IngredientAdapter.notifyDataSetChanged()
@@ -97,17 +97,17 @@ class IngredientAdapter(var context : Context, val ingredients : MutableList<Ing
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
         val viewItem = LayoutInflater.from(parent.context).inflate(R.layout.item_ingredient, parent, false)
         return ViewHolder(viewItem)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val ingredient = ingredients_list[position]
         holder.cardView.tag = position
         holder.rc_nameView.setText(ingredient.name)
         holder.rc_qtyView.setText(ingredient.qty_toStringUI())
-
-
     }
 
     override fun getItemCount(): Int {
@@ -119,10 +119,44 @@ class IngredientAdapter(var context : Context, val ingredients : MutableList<Ing
         this.notifyDataSetChanged()
     }
 
-    fun get_ingredient_list() : MutableList<Ingredient>{
-        var res = ingredients_list
-        res.removeAt(0)
-        return res
+    // Multiply ingredient list
+    fun multIngredientList(current : Int, next : Int){
+
+        val list = ingredients_list
+        val factor = next.toFloat() / current.toFloat()
+
+        Log.i(TAG, "MULT INg LIST - $current - $next - $factor : $list")
+
+
+        for (ingredient in ingredients_list){
+
+            ingredient.quantity = ingredient.OneToNquantity(ingredient.quantity, factor)
+        }
+
+        ingredients_list = add_ing_first2list(Ingredient("",""), list)
+        notifyDataSetChanged()
+    }
+
+    // each ingredient quantity is returned for 1 guest
+    fun get_ingredient_list(N : Int) : MutableList<Ingredient>{
+
+        val raw_list = ingredients_list
+
+        Log.i(TAG, "Get ING LIST : $raw_list")
+        raw_list.removeAt(0)
+        Log.i(TAG, "Get ING LIST : $raw_list")
+
+        var normList1GuestQty = mutableListOf<Ingredient>()
+
+        for (ingredient in raw_list){
+
+            var raw_qty = ingredient.quantity
+            ingredient.quantity = ingredient.Nto1quantity(raw_qty, N)
+
+            normList1GuestQty.add(ingredient)
+        }
+
+        return normList1GuestQty
     }
 
 }

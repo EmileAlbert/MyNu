@@ -17,6 +17,7 @@ import com.example.ebhal.mynu.a_main_list.RecipeList_Activity
 import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Ingredient
 import com.example.ebhal.mynu.data.Recipe
+import org.w3c.dom.Text
 
 
 class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
@@ -43,6 +44,8 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
     var menu_request_day_int = -1
     var menu_request_day = ""
+
+    lateinit var guestNumberView : TextView
 
     lateinit var name_View : TextView
     lateinit var duration_View : TextView
@@ -93,6 +96,11 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         getEntriesName()
         fillEntrieswithRecipe()
 
+        if (recipe.id < 0) {name_View.requestFocus()}
+
+        // Set on click listener of guest number textview
+        guestNumberView.setOnClickListener{onGuestNBClick(true)}
+        guestNumberView.setOnLongClickListener{onGuestNBClick(false)}
 
         if (request_code == REQUEST_VIEW_RECIPE){
 
@@ -102,7 +110,6 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-
     // External events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     override fun onClick(view : View) {
         if (view.tag != null){
@@ -110,27 +117,51 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun onGuestNBClick(increment : Boolean) : Boolean {
+
+        val currentValue = Integer.valueOf(guestNumberView.text.toString())
+        var nextValue = currentValue
+
+        if (increment){nextValue += 1}
+        else {nextValue -= 1}
+
+        guestNumberView.text = nextValue.toString()
+
+        // Dynamic multiply quantity
+        if (ingredient_adapter.get_ingredient_list(1).size > 0){
+
+            ingredient_adapter.multIngredientList(currentValue, nextValue)
+
+        }
+
+        return true
+    }
+
+
     // Internal events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Get entries name
     fun getEntriesName(){
-        name_View = findViewById<TextView>(R.id.name)
-        duration_View = findViewById<TextView>(R.id.duration)
-        price_View = findViewById<TextView>(R.id.price)
 
-        ease_rating = findViewById<RatingBar>(R.id.ease)
-        score_rating = findViewById<RatingBar>(R.id.score)
+        guestNumberView = findViewById(R.id.guest_nb)
 
-        ingredient_recyclerView = findViewById<RecyclerView>(R.id.ingredients_recycler_view)
+        name_View = findViewById(R.id.name)
+        duration_View = findViewById(R.id.duration)
+        price_View = findViewById(R.id.price)
 
-        steps_View = findViewById<TextView>(R.id.steps)
-        meal_View = findViewById<Spinner>(R.id.meal)
+        ease_rating = findViewById(R.id.ease)
+        score_rating = findViewById(R.id.score)
 
-        nutriscore_View = findViewById<SeekBar>(R.id.nutriscore_seekbar)
+        ingredient_recyclerView = findViewById(R.id.ingredients_recycler_view)
+
+        steps_View = findViewById(R.id.steps)
+        meal_View = findViewById(R.id.meal)
+
+        nutriscore_View = findViewById(R.id.nutriscore_seekbar)
         nutriscore_View.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             // TODO Update seekbar UI
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                var nutriscore = recipe.int2nutri(i)
+                // var nutriscore = recipe.int2nutri(i)
                 //Toast.makeText(applicationContext,"Nutriscore : $nutriscore",Toast.LENGTH_SHORT).show()
             }
 
@@ -171,6 +202,9 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
     // Fill entry with existing recipe data received from intent
     fun fillEntrieswithRecipe(){
+
+        guestNumberView.text = "1"
+
         // Fill entries with existing value of the selected recipe if existing
         name_View.text = recipe.name
         duration_View.text = recipe.duration.toString()
@@ -213,6 +247,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     fun saveRecipe(){
 
         if (name_View.text.toString() == ""){
+
             val message = resources.getString(R.string.recipe_details_save_warning)
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             return
@@ -225,7 +260,17 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         recipe.ease = ease_rating.rating
         recipe.score = score_rating.rating
 
-        recipe.ingredient_list = recipe.ing_list2string(ingredient_adapter.get_ingredient_list())
+        var guestNB : Int
+        if (guestNBisValid(guestNumberView.text.toString())){
+            guestNB = Integer.valueOf(guestNumberView.text.toString())
+        }
+
+        else {
+            Toast.makeText(this, getString(R.string.recipe_details_invalid_guest_nb), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        recipe.ingredient_list = recipe.ing_list2string(ingredient_adapter.get_ingredient_list(guestNB))
 
         recipe.recipe_steps = steps_View.text.toString()
         recipe.meal_time = meal_View.selectedItem.toString()
@@ -246,13 +291,22 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         finishActivity(intent, Activity.RESULT_OK)
     }
 
+    private fun guestNBisValid(input : String): Boolean {
+
+        for (char in input){
+            if (!char.isDigit()){return false}
+        }
+
+        return true
+    }
+
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     fun showConfirmDeleteRecipeDialog(recipe : Recipe) {
 
         val confirmFragment = ConfirmDeleteRecipeDialog()
 
         // Pass the recipe title to the dialoger
-        var args: Bundle? = null
+        var args: Bundle? = Bundle()
         args?.putString("recipe_name", recipe.name)
         confirmFragment.arguments = args
 

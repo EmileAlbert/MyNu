@@ -1,5 +1,7 @@
 package com.example.ebhal.mynu.a_menu
 
+import android.Manifest.permission_group.CALENDAR
+import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -10,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Recipe
+import java.util.*
 
 class MenuDayAdapter(val recipes : List<Recipe>,
                      val recipes_index : List<Int>,
@@ -46,7 +49,12 @@ class MenuDayAdapter(val recipes : List<Recipe>,
         //val recipe = recipes[position]
 
         holder.cardView.tag = position
+
         holder.dayView.text = day
+        if (position == weekDay()) {
+            Log.i("MENU DAY ADAPTER", "$day - ${Calendar.DAY_OF_WEEK}")
+            holder.dayView.setTypeface(null, Typeface.BOLD_ITALIC)
+        }
 
         holder.recipeTitleView.text = recipes_list[position].name
         holder.guestView.text = days_guest[position].toString()
@@ -112,5 +120,12 @@ class MenuDayAdapter(val recipes : List<Recipe>,
         return Pair(listOf(), listOf())
     }
 
+    fun weekDay() : Int {
 
+        val calendar = Calendar.getInstance()
+
+        Log.i("MENU DAY ADAPTER", "${calendar.time} - ${Calendar.DAY_OF_WEEK}")
+        return calendar.get(Calendar.DAY_OF_WEEK)
+
+    }
 }
