@@ -1,6 +1,5 @@
 package com.example.ebhal.mynu.a_menu
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
@@ -104,10 +103,8 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
             button_shopping_list.isEnabled = false
             button_shopping_list.text = resources.getString(R.string.menu_shopping_list_completed)
 
-            // TODO
             val newDrawable = resources.getDrawable(R.drawable.ic_shopping_full_white_24dp)
             Log.i(TAG, "drawable : $newDrawable")
-//            button_shopping_list.setCompoundDrawables(null, newDrawable, null, null)
             button_shopping_list.setCompoundDrawablesWithIntrinsicBounds( null, newDrawable, null, null)
         }
 
@@ -207,21 +204,19 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
             // Auto scroll of scroll view
             if (toPosition == 4){
-                scrollview.postDelayed(
-                        Runnable {
+                scrollview.postDelayed({
+
                             Log.i(TAG, "Scroll down")
                             scrollview.smoothScrollBy(0, 250)
-//                            ObjectAnimator.ofInt(scrollview, "scrollY",  250).setDuration(600).start()
                         },1000
                 )
             }
 
             if (toPosition == 3){
-                scrollview.postDelayed(
-                        Runnable {
+                scrollview.postDelayed({
+
                             Log.i(TAG, "Scroll up")
                             scrollview.smoothScrollBy(0, -250)
-//                            ObjectAnimator.ofInt(scrollview, "scrollY",  -250).setDuration(400).start()
                         },1000
                 )
             }
