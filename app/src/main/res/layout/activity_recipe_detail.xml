@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             tools:context=".a_details.RecipeDetail_Activity">
 
+
             <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
@@ -115,9 +116,9 @@
                 android:layout_alignParentEnd="true"/>
 
             <RatingBar
-                android:id="@+id/ease"
+                android:id="@+id/score"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
 
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -129,27 +130,26 @@
                 android:numStars="5"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:stepSize="1"
                 android:transformPivotX="0dp"/>
 
             <RatingBar
-                android:id="@+id/score"
+                android:id="@+id/ease"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
+
+                style="@style/ImageRatingBar"
 
                 android:layout_below="@+id/duration"
                 android:layout_marginTop="25dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="-30dp"
+                android:layout_marginRight="-23dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="-30dp"
+                android:layout_marginEnd="-23dp"
 
                 android:numStars="5"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
                 android:transformPivotX="110dp"/>
-                <!-- TODO change rating star image -->
-                <!-- android:progressDrawable="@drawable/ic_ease_rating_test" -->
 
             <TextView
                 android:id="@+id/title_ingredients"
@@ -163,14 +163,13 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginStart="4dp"/>
-                <!-- TODO change to give possibility to change ingredient qty scale -->
 
             <TableRow
                 android:id="@+id/hr_guest_nb_top"
                 android:layout_width="0dp"
                 android:layout_height="2dp"
 
-                android:background="@color/colorAccent_variant"
+                android:background="@color/colorAccent"
 
                 android:layout_above="@+id/guest_nb"
                 android:layout_marginBottom="4dp"
@@ -225,7 +224,7 @@
                 android:layout_toLeftOf="@+id/guest_nb"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
-                android:background="@color/colorAccent_variant"
+                android:background="@color/colorAccent"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/guest_nb" />
 
@@ -235,7 +234,7 @@
                 android:layout_height="2dp"
                 android:layout_width="0dp"
 
-                android:background="@color/colorAccent_variant"
+                android:background="@color/colorAccent"
 
                 android:layout_alignBottom="@+id/hr_ingredients_top_1"
                 android:layout_alignRight="@+id/guest_nb"
@@ -252,7 +251,7 @@
                 android:layout_toRightOf="@+id/hr_ingredients_top_2"
                 android:layout_marginLeft="4dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent_variant"
+                android:background="@color/colorAccent"
                 android:layout_alignRight="@+id/hr_ingredients_bot"
                 android:layout_toEndOf="@+id/hr_ingredients_top_2"
                 android:layout_marginStart="4dp" />
@@ -277,8 +276,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent_variant"/>
-
+                android:background="@color/colorAccent"/>
 
             <TextView
                 android:id="@+id/title_steps"
@@ -308,13 +306,13 @@
             <Spinner
                 android:id="@+id/meal"
                 android:layout_width="wrap_content"
-                android:layout_height="46dp"
+                android:layout_height="40dp"
 
-                android:entries="@array/recipe_details_meal_time"
-                style="@style/recipe_detail_text"
+                android:spinnerMode="dropdown"
 
                 android:layout_below="@+id/steps"
-                android:layout_marginLeft="0dp"
+                android:padding="2dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginStart="0dp"/>
 
@@ -324,16 +322,19 @@
                 android:layout_width="200dp"
                 android:layout_height="46dp"
 
+                style="@style/CustomSeekbar"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:paddingRight="20dp"
+                android:paddingEnd="20dp"
                 android:layout_below="@+id/steps"
                 android:layout_marginTop="50dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="6dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="4dp"
 
-                android:max="4"
-                android:theme="@style/Widget.AppCompat.SeekBar.Discrete"/>
-                <!-- TODO better seekbar interface design -->
+                android:max="4"/>
 
             <ToggleButton
                 android:id="@+id/meat"

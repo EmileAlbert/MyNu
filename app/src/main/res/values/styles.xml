@@ -5,16 +5,16 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary_variant</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_variant</item>
-        <item name="colorAccent">@color/colorAccent_variant</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
     </style>
 
     <!-- Toolbar style -->
     <style name="toolbar_theme" parent="Theme.AppCompat.Light.NoActionBar" >
 
-        <item name="android:background">@color/colorPrimary_variant</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:textColor">@color/black</item>
@@ -38,7 +38,7 @@
     <style name="recipe_card_title">
 
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -46,7 +46,7 @@
     <style name="recipe_card_text">
 
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorAccent_variant</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -55,7 +55,7 @@
     <style name="recipe_detail_title">
 
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -63,7 +63,7 @@
     <style name="recipe_detail_subtitle">
 
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -71,7 +71,7 @@
     <style name="recipe_detail_text">
 
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -81,7 +81,7 @@
     <style name="menu_day_title">
 
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -89,7 +89,7 @@
     <style name="menu_recipe_title">
 
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorAccent_variant</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -97,7 +97,7 @@
     <style name="menu_guest_number">
 
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -105,7 +105,7 @@
     <style name="menu_button_text">
 
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -115,7 +115,7 @@
     <style name="item_text">
 
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
     </style>
@@ -124,9 +124,21 @@
     <style name="filter_text">
 
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimary_variant</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_medium</item>
 
+    </style>
+
+    <style name="CustomSeekbar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint" tools:targetApi="lollipop">@color/neutral</item>
+        <item name="android:progressTint" tools:ignore="NewApi">@color/neutral</item>
+        <item name="android:colorControlActivated" tools:ignore="NewApi">@color/neutral</item>
+    </style>
+
+    <style name="ImageRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ease_rating_bar</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:maxHeight">50dp</item>
     </style>
 
 </resources>

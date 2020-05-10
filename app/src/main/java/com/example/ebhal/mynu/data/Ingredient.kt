@@ -1,6 +1,9 @@
 package com.example.ebhal.mynu.data
 
 import android.util.Log
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 const val TAG = "Ingredient_class"
 
@@ -16,14 +19,14 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
         var res = ""
 
-
         if (this.quantity.contains('-')){
 
             Log.i(TAG, "QTY to UI : ${this.quantity}")
             val strings = this.quantity.split("-")
 
+            val int_res = java.lang.Float.valueOf(strings[0])
+            res = int_res.toBigDecimal().setScale(1, RoundingMode.HALF_EVEN).toString()
 
-            res = strings[0]
             if (strings[1] == "i"){return res}
             else if(strings[1] == strings[2]){return "$res ${strings[1]}"}
             else {return "$res ${strings[1]}${strings[2]}"}

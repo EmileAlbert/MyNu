@@ -188,6 +188,4 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
 
         return symbol
     }
-
-
 }

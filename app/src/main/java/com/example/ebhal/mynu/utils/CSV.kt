@@ -54,15 +54,17 @@ class CSV : AppCompatActivity() {
             return recipes_import
         }
 
+        // remove header
         recipe_data.removeAt(0)
 
-        Log.i(TAG, "recipe data : $recipe_data")
+        Log.i(TAG, "recipes data : $recipe_data")
 
         for (recipe_line in recipe_data) run {
+
             val params: List<String>
             params = recipe_line.split(CSV_sep)
 
-            Log.i(TAG, "data list : $params")
+            Log.i(TAG, "@@@@@   Recipe Name : ${params[0]} \n$params\n")
 
             val recipe = Recipe(params[0], Integer.valueOf(params[1]), java.lang.Float.valueOf(params[2]),
                             java.lang.Float.valueOf(params[3]), params[4], params[5],
@@ -70,6 +72,7 @@ class CSV : AppCompatActivity() {
                             params[9].toBoolean(), params[10].toBoolean(), params[11].toBoolean(),
                             params[12].toBoolean(), params[13].toBoolean(), params[14].toBoolean())
 
+            Log.i(TAG, "@@@@@   Recipe Name : ${params[0]} OK")
             recipes_import.add(recipe)
         }
 

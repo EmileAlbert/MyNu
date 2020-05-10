@@ -15,6 +15,7 @@ private const val DATABASE_VERSION = 1
 private const val RECIPE_TABLE_NAME = "recipe"
 private const val MENU_TABLE_NAME = "menu"
 private const val SHOPLIST_TABLE_NAME = "shopping_list"
+private const val FILTER_TABLE_NAME = "filters"
 
 // Database columns name for recipe table
 private const val RECIPE_KEY_ID = "id"
@@ -48,6 +49,15 @@ private const val SHOPLIST_KEY_ITEM_RCPOS = "item_rc_position"
 private const val SHOPLIST_KEY_ITEM_CHECK  = "item_check"
 private const val SHOPLIST_KEY_INDEPENDENCE = "item_independence"
 
+// Database columns name for filters table
+private const val FILTER_KEY_ID = "id"
+private const val FILTER_KEY_FILTER1 = "filter1"
+private const val FILTER_KEY_FILTER2 = "filter2"
+private const val FILTER_KEY_FILTER3 = "filter3"
+private const val FILTER_KEY_FILTER4 = "filter4"
+private const val FILTER_KEY_FILTER5 = "filter5"
+private const val FILTER_KEY_FILTER6 = "filter6"
+private const val FILTER_KEY_FILTER7 = "filter7"
 
 // Database table creation request
 private const val RECIPE_TABLE_CREATE_REQUEST = "CREATE TABLE $RECIPE_TABLE_NAME ($RECIPE_KEY_ID INTEGER PRIMARY KEY, " +
@@ -79,8 +89,16 @@ private const val SHOPLIST_TABLE_CREATE_REQUEST = "CREATE TABLE $SHOPLIST_TABLE_
                                                                                      "$SHOPLIST_KEY_ITEM_CHECK TEXT," +
                                                                                      "$SHOPLIST_KEY_INDEPENDENCE TEXT)"
 
+private const val FILTER_TABLE_CREATE_REQUEST = "CREATE TABLE $FILTER_TABLE_NAME ($FILTER_KEY_ID INTEGER PRIMARY KEY, " +
+                                                                                 "$FILTER_KEY_FILTER1 INTEGER, " +
+                                                                                 "$FILTER_KEY_FILTER2 INTEGER, " +
+                                                                                 "$FILTER_KEY_FILTER3 INTEGER, " +
+                                                                                 "$FILTER_KEY_FILTER4 INTEGER, " +
+                                                                                 "$FILTER_KEY_FILTER5 INTEGER, " +
+                                                                                 "$FILTER_KEY_FILTER6 INTEGER, " +
+                                                                                 "$FILTER_KEY_FILTER7 INTEGER)"
 
-class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
+class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     val TAG = Database::class.java.simpleName
 
@@ -88,6 +106,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         db?.execSQL(RECIPE_TABLE_CREATE_REQUEST)
         db?.execSQL(MENU_TABLE_CREATE_REQUEST)
         db?.execSQL(SHOPLIST_TABLE_CREATE_REQUEST)
+        db?.execSQL(FILTER_TABLE_CREATE_REQUEST)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -96,7 +115,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
     }
 
     // RECIPE DATABASE MANAGEMENT /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    fun create_recipe(recipe: Recipe) : Boolean {
+    fun create_recipe(recipe: Recipe): Boolean {
 
         val values = ContentValues()
 
@@ -125,7 +144,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
     }
 
-    fun update_recipe(recipe: Recipe) : Boolean{
+    fun update_recipe(recipe: Recipe): Boolean {
 
         var result = false
         val values = ContentValues()
@@ -152,14 +171,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         try {
             writableDatabase.update(RECIPE_TABLE_NAME, values, "$RECIPE_KEY_ID = $recipe_ID", null)
             result = true
+        } catch (e: Exception) {
         }
-
-        catch (e : Exception){}
 
         return result
     }
 
-    fun delete_recipe(recipe_ID : Long) : Boolean {
+    fun delete_recipe(recipe_ID: Long): Boolean {
 
         var result = false
 
@@ -168,14 +186,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         try {
             writableDatabase.delete(RECIPE_TABLE_NAME, "$RECIPE_KEY_ID = $recipe_ID", null)
             result = true
+        } catch (e: Exception) {
         }
-
-        catch (e : Exception){}
 
         return result
     }
 
-    fun get_recipes() : MutableList<Recipe> {
+    fun get_recipes(): MutableList<Recipe> {
 
         val recipe_list = mutableListOf<Recipe>()
         readableDatabase.rawQuery("SELECT * FROM $RECIPE_TABLE_NAME", null).use { cursor ->
@@ -206,15 +223,14 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
             }
 
         }
-            return recipe_list
+        return recipe_list
     }
-
 
 //    fun get_recipe_count() : Int = DatabaseUtils.queryNumEntries(readableDatabase, RECIPE_TABLE_NAME, null).toInt()
 
 
     // MENU DATABASE MANAGEMENT ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    fun get_menu_index() : MutableList<Int> {
+    fun get_menu_index(): MutableList<Int> {
         val menu_index = mutableListOf<Int>(-1, -1, -1, -1, -1, -1, -1)
 
         try {
@@ -231,15 +247,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
             Log.d(TAG, "get_menu_index : success : $menu_index")
             return menu_index
 
-        }
-
-        catch(e : Exception) {
+        } catch (e: Exception) {
             Log.d(TAG, "get_menu_index : failed : $e")
             return menu_index
         }
     }
 
-    fun get_daysGuest() : MutableList<Int> {
+    fun get_daysGuest(): MutableList<Int> {
 
         val days_guest = mutableListOf<Int>(-1, -1, -1, -1, -1, -1, -1)
 
@@ -257,15 +271,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
             Log.d(TAG, "get_days_guestNB : success : $days_guest")
             return days_guest
 
-        }
-
-        catch(e : Exception) {
+        } catch (e: Exception) {
             Log.d(TAG, "get_days_guestNB : failed : $e")
             return days_guest
         }
     }
 
-    fun update_dayMenu(day_index : Int, recipe_list_index : Int) : Boolean {
+    fun update_dayMenu(day_index: Int, recipe_list_index: Int): Boolean {
         var result = false
 
         Log.d(TAG, "Update menu day $day_index - $recipe_list_index")
@@ -274,16 +286,14 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
             writableDatabase.execSQL("UPDATE $MENU_TABLE_NAME SET $MENU_KEY_RECIPE_IDX = $recipe_list_index WHERE $MENU_KEY_DAY = $day_index;")
             result = true
-        }
-
-        catch (e : Exception){
+        } catch (e: Exception) {
             Log.d(TAG, "Update dayMenu failed : $e")
         }
 
         return result
     }
 
-    fun update_dayGuest(day_index: Int, guest_number : Int) : Boolean {
+    fun update_dayGuest(day_index: Int, guest_number: Int): Boolean {
         var result = false
 
         Log.d(TAG, "Update guest number for day $day_index - $guest_number")
@@ -292,31 +302,27 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
             writableDatabase.execSQL("UPDATE $MENU_TABLE_NAME SET $MENU_KEY_GUEST_NB = $guest_number WHERE $MENU_KEY_DAY = $day_index;")
             result = true
-        }
-
-        catch (e : Exception){
+        } catch (e: Exception) {
             Log.d(TAG, "Update day guest failed : $e")
         }
 
         return result
     }
 
-    fun reset_menu() : Boolean{
+    fun reset_menu(): Boolean {
 
         Log.d(TAG, "Reset week menu")
 
-        if (get_menuDays_count() < 6){
+        if (get_menuDays_count() < 6) {
             Log.d(TAG, "db table menu not initialized - count : ${get_menuDays_count()}")
             initialized_menu_table()
 
-        }
-
-        else {
+        } else {
             Log.d(TAG, "db table menu initialized - count : ${get_menuDays_count()}")
 
             val day_list = mutableListOf<Int>(0, 1, 2, 3, 4, 5, 6)
 
-            for (day in day_list){
+            for (day in day_list) {
                 update_dayMenu(day, -1)
                 update_dayGuest(day, 2)
             }
@@ -325,15 +331,15 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         return true
     }
 
-    fun get_menuDays_count() : Int = DatabaseUtils.queryNumEntries(readableDatabase, MENU_TABLE_NAME, null).toInt()
+    fun get_menuDays_count(): Int = DatabaseUtils.queryNumEntries(readableDatabase, MENU_TABLE_NAME, null).toInt()
 
-    fun initialized_menu_table(){
+    fun initialized_menu_table() {
 
         Log.d(TAG, "Menu table init")
 
         val week_days = listOf<Int>(0, 1, 2, 3, 4, 5, 6)
 
-        for (day in week_days){
+        for (day in week_days) {
 
             val values = ContentValues()
 
@@ -347,7 +353,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
 
     // SHOPPING LIST DATABASE MANAGEMENT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    fun create_item(item : Item) : Boolean{
+    fun create_item(item: Item): Boolean {
 
         val values = ContentValues()
 
@@ -367,7 +373,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         return id > 0
     }
 
-    fun update_item(item : Item) : Boolean{
+    fun update_item(item: Item): Boolean {
 
         var result = false
         val values = ContentValues()
@@ -386,16 +392,14 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
             writableDatabase.update(SHOPLIST_TABLE_NAME, values, "$SHOPLIST_KEY_ID = $item_ID", null)
             result = true
             Log.i(TAG, "Success item")
-        }
-
-        catch (e : Exception){
+        } catch (e: Exception) {
             Log.i(TAG, "Failed udpate item : $e")
         }
 
         return result
     }
 
-    fun delete_item(item_ID : Long) : Boolean {
+    fun delete_item(item_ID: Long): Boolean {
 
         var result = false
 
@@ -404,14 +408,13 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         try {
             writableDatabase.delete(SHOPLIST_TABLE_NAME, "$SHOPLIST_KEY_ID = $item_ID", null)
             result = true
+        } catch (e: Exception) {
         }
-
-        catch (e : Exception){}
 
         return result
     }
 
-    fun get_items() : MutableList<Item> {
+    fun get_items(): MutableList<Item> {
 
         val items_list = mutableListOf<Item>()
         readableDatabase.rawQuery("SELECT * FROM $SHOPLIST_TABLE_NAME", null).use { cursor ->
@@ -424,7 +427,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
                 val independence = cursor.getString(cursor.getColumnIndex(SHOPLIST_KEY_INDEPENDENCE))
                 val id = cursor.getLong(cursor.getColumnIndex(SHOPLIST_KEY_ID))
 
-                val item = Item(name, quantity,rc_position, check!!.toBoolean(), independence!!.toBoolean() ,id)
+                val item = Item(name, quantity, rc_position, check!!.toBoolean(), independence!!.toBoolean(), id)
 
                 items_list.add(item)
             }
@@ -433,9 +436,80 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         return items_list
     }
 
-    fun get_items_count() : Int = DatabaseUtils.queryNumEntries(readableDatabase, SHOPLIST_TABLE_NAME, null).toInt()
+    fun get_items_count(): Int = DatabaseUtils.queryNumEntries(readableDatabase, SHOPLIST_TABLE_NAME, null).toInt()
 
     fun delete_all_items() {
         writableDatabase.execSQL("DELETE FROM $SHOPLIST_TABLE_NAME")
+    }
+
+
+    // FILTER DATABASE MANAGEMENT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    fun initFilters(): Boolean {
+
+        val values = ContentValues()
+
+        values.put(FILTER_KEY_FILTER1, 0 )
+        values.put(FILTER_KEY_FILTER2, 0 )
+        values.put(FILTER_KEY_FILTER3, 0 )
+        values.put(FILTER_KEY_FILTER4, 0 )
+        values.put(FILTER_KEY_FILTER5, 0 )
+        values.put(FILTER_KEY_FILTER6, 0 )
+        values.put(FILTER_KEY_FILTER7, 0 )
+
+
+        Log.i(TAG, "Create item $values")
+
+        val id = writableDatabase.insert(FILTER_TABLE_NAME, null, values)
+
+        Log.i(TAG, "Init filter : $id")
+        return id > 0
+    }
+
+    fun updateFilters(f1 : Int = 0, f2 : Int = 0, f3 : Int = 0, f4 : Int = 0, f5 : Int = 0, f6 : Int = 0, f7 : Int = 0) : Boolean {
+
+        var result = false
+        val values = ContentValues()
+
+        values.put(FILTER_KEY_FILTER1, f1)
+        values.put(FILTER_KEY_FILTER2, f2)
+        values.put(FILTER_KEY_FILTER3, f3)
+        values.put(FILTER_KEY_FILTER4, f4)
+        values.put(FILTER_KEY_FILTER5, f5)
+        values.put(FILTER_KEY_FILTER6, f6)
+        values.put(FILTER_KEY_FILTER7, f7)
+
+        Log.i(TAG, "Update item $values")
+
+        try {
+            writableDatabase.update(FILTER_TABLE_NAME, values, "$FILTER_KEY_ID = 1", null)
+            result = true
+            Log.i(TAG, "Success update filters")
+
+        }
+
+        catch (e: Exception) {
+            Log.i(TAG, "Failed udpate filters : $e")
+        }
+
+        return result
+    }
+
+    fun getFilters() : List<Int> {
+
+        val filtersValue = mutableListOf<Int>()
+        readableDatabase.rawQuery("SELECT * FROM $FILTER_TABLE_NAME", null).use { cursor ->
+            while (cursor.moveToNext()) {
+
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER1)))
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER2)))
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER3)))
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER4)))
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER5)))
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER6)))
+                filtersValue.add(cursor.getInt(cursor.getColumnIndex(FILTER_KEY_FILTER7)))
+            }
+        }
+
+        return filtersValue
     }
 }

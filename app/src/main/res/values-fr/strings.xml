@@ -95,5 +95,6 @@
     <string name="recipe_details_ingredient_title">Ingrédients</string>
     <string name="recipe_details_guest_nb_unit">personne</string>
     <string name="recipe_details_invalid_guest_nb">Entrez un nombre de personne valide</string>
+    <string name="details_nutriscore_hint">Selectionnez un nutriscore</string>
 
 </resources>

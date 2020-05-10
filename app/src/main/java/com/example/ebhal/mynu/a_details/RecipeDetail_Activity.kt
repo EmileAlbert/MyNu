@@ -1,5 +1,6 @@
 package com.example.ebhal.mynu.a_details
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -18,9 +19,17 @@ import com.example.ebhal.mynu.a_main_list.RecipeList_Activity
 import com.example.ebhal.mynu.a_menu.Menu_activity
 import com.example.ebhal.mynu.data.Ingredient
 import com.example.ebhal.mynu.data.Recipe
-
+import android.view.LayoutInflater
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.widget.TextView
+import android.graphics.drawable.Drawable
+import android.widget.SeekBar
 
 class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
+
+    private val TAG = "Recipe_Details"
 
     companion object {
         const val REQUEST_CODE = "request_code"
@@ -60,6 +69,8 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var steps_View : TextView
     lateinit var meal_View : Spinner
+
+    lateinit var thumbView : View
     lateinit var nutriscore_View : SeekBar
 
     lateinit var meat_check : ToggleButton
@@ -69,6 +80,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     lateinit var ordinary_check : ToggleButton
     lateinit var original_check : ToggleButton
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -93,7 +105,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Get and fill entries
-        getEntriesName()
+        initEntries()
         fillEntrieswithRecipe()
 
         if (recipe.id < 0) {name_View.requestFocus()}
@@ -124,11 +136,14 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         var nextValue = currentValue
 
         if (increment){nextValue += 1}
-        else {nextValue -= 1}
+        else if (!increment && currentValue != 1) {nextValue -= 1}
+        else {return false}
 
         guestNumberView.text = nextValue.toString()
 
         // Dynamic multiply quantity
+        Log.i(TAG , "ingredient list : ${ingredient_adapter.get_ingredient_list(1)}")
+
         if (ingredient_adapter.get_ingredient_list(1).size > 1){
 
             ingredient_adapter.multiplyIngredientList(currentValue, nextValue)
@@ -138,10 +153,10 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
-
     // Internal events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Get entries name
-    private fun getEntriesName(){
+    @SuppressLint("InflateParams")
+    private fun initEntries(){
 
         guestNumberView = findViewById(R.id.guest_nb)
 
@@ -156,17 +171,23 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
         steps_View = findViewById(R.id.steps)
         meal_View = findViewById(R.id.meal)
+        val spinnerArrayAdapter : ArrayAdapter<String> = ArrayAdapter<String>(this,R.layout.spinner_entries, resources.getStringArray(R.array.recipe_details_meal_time))
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_entries)
+        meal_View.setAdapter(spinnerArrayAdapter)
 
         nutriscore_View = findViewById(R.id.nutriscore_seekbar)
+        thumbView = LayoutInflater.from(this).inflate(R.layout.nutriscore_seekbar_thumb, null, false)
         nutriscore_View.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
-            // TODO Update seekbar UI
-            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                // var nutriscore = recipe.int2nutri(i)
-                //Toast.makeText(applicationContext,"Nutriscore : $nutriscore",Toast.LENGTH_SHORT).show()
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromuser : Boolean) {
+                nutriscore_View.thumb = getThumb(progress)
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                Toast.makeText(this@RecipeDetail_Activity, getString(R.string.details_nutriscore_hint), Toast.LENGTH_SHORT).show()
+            }
+
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
@@ -226,6 +247,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         if (meal_View.getItemAtPosition(2) == recipe.meal_time){meal_View.setSelection(2)}
 
         nutriscore_View.progress = recipe.nutri_score
+        nutriscore_View.thumb = getThumb(recipe.nutri_score)
 
         meat_check.isChecked = recipe.veggie
         salt_check.isChecked = recipe.salty
@@ -242,6 +264,23 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         intent.putExtra(EXTRA_RECIPE_INDEX, recipe_index)
 
         finishActivity(intent, Activity.RESULT_OK)
+    }
+
+    fun getThumb(progress: Int = 0): Drawable {
+
+        val mapText = mapOf(0 to "A", 1 to "B", 2 to "C", 3 to "D", 4 to "E")
+        val mapThumb = mapOf(0 to R.drawable.ns_thumb_darkgreen, 1 to R.drawable.ns_thumb_green, 2 to R.drawable.ns_thumb_yellow, 3 to R.drawable.ns_thumb_orange, 4 to R.drawable.ns_thumb_red)
+
+        (thumbView.findViewById(R.id.seekbar_thumb) as TextView).text = mapText[progress]
+        (thumbView.findViewById(R.id.seekbar_thumb) as TextView).setBackgroundResource(mapThumb[progress]!!)
+
+        thumbView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val bitmap = Bitmap.createBitmap(thumbView.getMeasuredWidth(), thumbView.getMeasuredHeight(), Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        thumbView.layout(0, 0, thumbView.getMeasuredWidth(), thumbView.getMeasuredHeight())
+        thumbView.draw(canvas)
+
+        return BitmapDrawable(resources, bitmap)
     }
 
     // Save recipe in Recipe object

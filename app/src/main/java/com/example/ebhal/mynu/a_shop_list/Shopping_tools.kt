@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.ebhal.mynu.data.Ingredient
 import com.example.ebhal.mynu.data.Item
 import com.example.ebhal.mynu.data.Recipe
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 const val TAG = "shopping_list_tools"
 
@@ -26,8 +28,10 @@ fun makeShoppingList(list_pairRecipesGuests: List<Pair<Recipe, Int>>): MutableLi
             val list_value_decade_unit = ingredient.getList_ValueDecadeUnit()
 
             val mult_qty = java.lang.Float.valueOf(list_value_decade_unit[0])* guestNB.toFloat()
+            val df = DecimalFormat("#.#")
+            df.roundingMode = RoundingMode.HALF_UP
 
-            ingredient.quantity = "$mult_qty-${list_value_decade_unit[1]}-${list_value_decade_unit[2]}"
+            ingredient.quantity = "${df.format(mult_qty)}-${list_value_decade_unit[1]}-${list_value_decade_unit[2]}"
 
             Log.i(TAG, "mult ingredient : $ingredient")
             rawIngredientList.add(ingredient)
@@ -43,8 +47,16 @@ fun makeShoppingList(list_pairRecipesGuests: List<Pair<Recipe, Int>>): MutableLi
 
         for (item in shoppingList){
 
+            val clean_item_name = cleanInputString(item.name)
+            val clean_ing_name = cleanInputString(ingredient.name)
+
+            val item_quantity_unit = item.quantity.split("-")[2]
+            val ing_quantity_unit = ingredient.quantity.split("-")[2]
+
+            Log.i(TAG, "cleaned name : $clean_ing_name & $clean_item_name")
+
             // double in list - update existing item with concatenation
-            if (ingredient.name == item.name){
+            if (clean_ing_name == clean_item_name && item_quantity_unit == ing_quantity_unit){
 
                 Log.i(TAG, "double : $item" )
 
@@ -65,7 +77,12 @@ fun makeShoppingList(list_pairRecipesGuests: List<Pair<Recipe, Int>>): MutableLi
     return shoppingList
 }
 
+
+
 fun concat_ingredient_item(ingredient: Ingredient, item: Item): Item {
+
+    val df = DecimalFormat("#.#")
+    df.roundingMode = RoundingMode.HALF_UP
 
     val ing_1 = ingredient
     val ing_2 = Ingredient(item.name, item.quantity)
@@ -127,4 +144,17 @@ fun add_item_first2list(item : Item, items_list : MutableList<Item>) : MutableLi
 }
 
 
+fun cleanInputString(inputString: String): String {
+
+    var res = inputString.trim().toLowerCase()
+    res = res.replace("é", "e")
+    res = res.replace("è", "e")
+    res = res.replace("à", "a")
+    res = res.replace("â", "a")
+    res = res.replace("û", "u")
+    res = res.replace("ô", "o")
+    res = res.replace("ï", "i")
+
+    return res
+}
 

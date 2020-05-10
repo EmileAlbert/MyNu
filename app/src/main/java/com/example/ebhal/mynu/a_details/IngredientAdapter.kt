@@ -122,18 +122,22 @@ class IngredientAdapter(var context : Context, ingredients : MutableList<Ingredi
     // Multiply ingredient list
     fun multiplyIngredientList(current : Int, next : Int){
 
-        val list = ingredientsList
+
+        val use_ingredient_list = mutableListOf<Ingredient>()
+        use_ingredient_list.addAll(this.ingredientsList)
+        use_ingredient_list.removeAt(0)
+
         val factor = next.toFloat() / current.toFloat()
 
-        Log.i(TAG, "MULTIPLY INg LIST - $current - $next - $factor : $list")
+        Log.i(TAG, "MULTIPLY INg LIST - $current - $next - $factor : $use_ingredient_list")
 
 
-        for (ingredient in ingredientsList){
+        for (ingredient in use_ingredient_list){
 
             ingredient.quantity = ingredient.OneToNquantity(ingredient.quantity, factor)
         }
 
-        ingredientsList = add_ing_first2list(Ingredient("",""), list)
+        ingredientsList = add_ing_first2list(Ingredient("",""), use_ingredient_list)
         notifyDataSetChanged()
     }
 
@@ -143,9 +147,7 @@ class IngredientAdapter(var context : Context, ingredients : MutableList<Ingredi
         val raw_list = mutableListOf<Ingredient>()
         raw_list.addAll(this.ingredientsList)
 
-        Log.i(TAG, "Get ING LIST : $raw_list" + this.ingredientsList)
         raw_list.removeAt(0)
-        Log.i(TAG, "Get ING LIST : $raw_list" + this.ingredientsList)
 
         val normList1GuestQty = mutableListOf<Ingredient>()
 

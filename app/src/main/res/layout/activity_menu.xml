@@ -18,10 +18,12 @@
         app:popupTheme="@style/pop_toolbar_theme"/>
 
     <ScrollView
+        android:id="@+id/menu_scrollview"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/toolbar"
+        android:layout_marginTop="10dp"
         android:fillViewport="true">
 
         <RelativeLayout

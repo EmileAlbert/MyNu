@@ -56,7 +56,7 @@
                 android:layout_width="0dp"
                 android:layout_height="2dp"
 
-                android:background="@color/colorAccent_variant"
+                android:background="@color/colorAccent"
 
                 android:layout_alignTop="@+id/menu_rc_person_nb"
                 android:layout_alignRight="@+id/menu_rc_person_nb"
@@ -86,7 +86,7 @@
                 android:layout_height="2dp"
                 android:layout_width="0dp"
 
-                android:background="@color/colorAccent_variant"
+                android:background="@color/colorAccent"
 
                 android:layout_alignBottom="@+id/menu_rc_person_nb"
                 android:layout_alignRight="@+id/menu_rc_person_nb"

@@ -135,7 +135,7 @@ class Shop_activity : AppCompatActivity() {
     private fun updateLockButton(items_list : List<Item>) : Boolean {
 
         var lock = false
-        val menuItem = activityMenu!!.findItem(R.id.shopping_list_lock)
+        val menuItem = activityMenu?.findItem(R.id.shopping_list_lock)
 
         for (item in items_list){if (item.check){lock = true}}
 
@@ -143,15 +143,15 @@ class Shop_activity : AppCompatActivity() {
 
             shoppingIsStarted = lock
 
-            menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
-            menuItem.isEnabled = false
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_white_24dp)
+            menuItem?.isEnabled = false
         }
 
         else {
 
             shoppingIsStarted = lock
-            menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
-            menuItem.isEnabled = true
+            menuItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
+            menuItem?.isEnabled = true
         }
 
         return true

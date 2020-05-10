@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="colorPrimary">#15247b</color>
-    <color name="colorPrimaryDark">#253492</color>
-    <color name="colorAccent">#c80a0a</color>
 
-    <color name="colorPrimary_variant">#4A6572</color>
-    <color name="colorPrimaryDark_variant">#4A6572</color>
-    <color name="colorAccent_variant">#d50000</color>
+    <color name="colorPrimary">#4A6572</color>
+    <color name="colorPrimaryDark">#4A6572</color>
+    <color name="colorAccent">#d50000</color>
 
     <color name="white">#FFFF</color>
     <color name="black">#000</color>
+
+    <color name="ns_darkgreen">#2E7D32</color>
+    <color name="ns_green">#61D800</color>
+    <color name="ns_yellow">#FFC107</color>
+    <color name="ns_orange">#FFA000</color>
+    <color name="ns_red">#DD2C00</color>
+
+
+
+    <color name="neutral">#ECEFF1</color>
 </resources>

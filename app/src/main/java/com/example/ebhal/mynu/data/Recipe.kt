@@ -90,12 +90,14 @@ data class Recipe(var name : String = "",
         val CSV_sep = ";"
         var CSV_txt = ""
 
+        var clean_recipe_steps = recipe_steps.replace("\n", " ")
+
         CSV_txt += name + CSV_sep
         CSV_txt += "$duration" + CSV_sep
         CSV_txt += "$ease" + CSV_sep
         CSV_txt += "$score" + CSV_sep
         CSV_txt += ingredient_list + CSV_sep
-        CSV_txt += recipe_steps + CSV_sep
+        CSV_txt += clean_recipe_steps + CSV_sep
         CSV_txt += "$price" + CSV_sep
         CSV_txt += meal_time + CSV_sep
         CSV_txt += "$nutri_score" + CSV_sep
@@ -144,18 +146,6 @@ data class Recipe(var name : String = "",
 
         return ingredients_list
     }
-
-
-//    fun int2nutri(int : Int) : String{
-//        val int2nutriscore = mapOf(0 to "A", 1 to "B", 2 to "C", 3 to "D", 4 to "E")
-//        return int2nutriscore[int]!!
-//    }
-//
-//    fun nutri2int(nutriscore : String) : Int{
-//        val nutriscore2int = mapOf("A" to 0, "B" to 1, "C" to 2, "D" to 3, "E" to 4)
-//        return nutriscore2int[nutriscore]!!
-//    }
-
 
     companion object CREATOR : Parcelable.Creator<Recipe> {
         private val serialVersionUID: Long = 18042020

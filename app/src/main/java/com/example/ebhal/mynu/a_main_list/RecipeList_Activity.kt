@@ -84,12 +84,14 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         add_button = findViewById<FloatingActionButton>(R.id.create_recipe_fab)
         add_button.setOnClickListener(this)
 
-
+        // Reset filters on create
+        database.updateFilters()
     }
 
     override fun onStart() {
 
         super.onStart()
+        Log.i(TAG, "On start")
 
         // Request from menu view ?
         request_menu_day_int = intent.getIntExtra(EXTRA_REQUEST_MENU_DAY_INT, -1)
@@ -115,7 +117,16 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        adapter.tagListFilter = mutableMapOf("veggie" to null, "salt" to null, "temp" to null, "original" to null)
+        // Keep filters active
+        val filtersValue = database.getFilters()
+        keepFilterActive(filtersValue)
+
+        val searchViewItem  = toolbar.menu.findItem(R.id.app_bar_search)
+        if (searchViewItem != null) {
+
+            val searchInput = searchViewItem.actionView as SearchView
+            adapter.filter.filter(searchInput.query)
+        }
     }
 
     // External events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,6 +302,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
         val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
 
+        database.updateFilters()
+
         veggie_switch.progress = 0
         salt_switch.progress = 0
         temp_switch.progress = 0
@@ -299,7 +312,30 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         return true
     }
 
-    private fun doFilter(view: View) {
+    private fun setFilterSeekbars(view : View) : Boolean {
+
+        val filtersValue = database.getFilters()
+        Log.i(TAG, "$filtersValue")
+
+        val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
+        val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
+        val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
+        val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
+
+        if (!filtersValue.isEmpty()) {
+
+            veggie_switch.progress = filtersValue[0]
+            salt_switch.progress = filtersValue[1]
+            temp_switch.progress = filtersValue[2]
+            original_switch.progress = filtersValue[3]
+
+            return true
+        }
+
+        else {return false}
+    }
+
+    private fun doFilter(view: View, loadedValue : List<Int> = listOf()) {
 
         val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
         val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
@@ -310,6 +346,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         val salt = salt_switch.progress
         val temp = temp_switch.progress
         val original = original_switch.progress
+
+        database.updateFilters(veggie, salt, temp, original)
 
         if (veggie == -1){adapter.tagListFilter["veggie"] = true}
         else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
@@ -326,8 +364,37 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         if (original == -1){adapter.tagListFilter["original"] = true}
         else if (original == 0){adapter.tagListFilter["original"] = null}
         else {adapter.tagListFilter["original"] = false}
+
+        adapter.filter.filter(null)
     }
 
+    private fun keepFilterActive(filterValue : List<Int>){
+
+
+        val veggie = filterValue[0]
+        val salt = filterValue[1]
+        val temp = filterValue[2]
+        val original = filterValue[3]
+
+        if (veggie == -1){adapter.tagListFilter["veggie"] = true}
+        else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
+        else {adapter.tagListFilter["veggie"] = false}
+
+        if (salt == -1){adapter.tagListFilter["salt"] = false}
+        else if (salt == 0){adapter.tagListFilter["salt"] = null}
+        else {adapter.tagListFilter["salt"] = true}
+
+        if (temp == -1){adapter.tagListFilter["temp"] = false}
+        else if (temp == 0){adapter.tagListFilter["temp"] = null}
+        else {adapter.tagListFilter["temp"] = true}
+
+        if (original == -1){adapter.tagListFilter["original"] = true}
+        else if (original == 0){adapter.tagListFilter["original"] = null}
+        else {adapter.tagListFilter["original"] = false}
+
+        adapter.filter.filter(null)
+
+    }
     // Data management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Add imported recipes to recipes list if does not exist
     private fun importRecipes(imported_recipes: MutableList<Recipe>) {
@@ -438,6 +505,12 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     @SuppressLint("InflateParams")
     private fun showPopUpFilterWindows() {
 
+        if (database.getFilters().isEmpty()){
+
+            database.initFilters()
+            Log.i(TAG, "init filter")
+        }
+
         val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_filters, null)
 
@@ -452,13 +525,13 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         val root_layout = findViewById<View>(R.id.main_layout)
         popupWindow.showAtLocation(root_layout, Gravity.CENTER, 0,-400)
+        setFilterSeekbars(view)
 
         val buttonApply = view.findViewById<Button>(R.id.filter_apply_button)
         buttonApply.setOnClickListener {
 
             popupWindow.dismiss()
             doFilter(view)
-            adapter.filter.filter(null)
         }
 
         buttonApply.setOnLongClickListener{resetFilterSeekbars(view)}
@@ -468,6 +541,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     // Adding menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
+
+        Log.i(TAG, "onCreateOptionsMenu")
         if (request_menu_day_int >= 0){
 
             menuInflater.inflate(R.menu.activity_recipes_list_selection, menu)

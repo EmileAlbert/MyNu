@@ -1,5 +1,6 @@
 package com.example.ebhal.mynu.a_menu
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
@@ -17,6 +18,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.ScrollView
 import android.widget.Toast
 import com.example.ebhal.mynu.App
 import com.example.ebhal.mynu.R
@@ -91,12 +93,12 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+
         // Created shopping list button
         button_shopping_list = findViewById(R.id.menu_button_shopping_list)
         button_shopping_list.setOnClickListener{goToShoppingList()}
 
         // Disable shopping list button if list is completed
-        Log.i(TAG, "#######################################################################################################################")
         if (!shoppingListIsEmpty_database(database) && shoppingListIsCompleted(loadShoppingList_database(database))){
 
             button_shopping_list.isEnabled = false
@@ -113,6 +115,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
         val callback = GestureAdapterHandler_menu(ItemTouchHelper.UP.or(ItemTouchHelper.DOWN), ItemTouchHelper.LEFT)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(recyclerView)
+
     }
 
     // External events management /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,6 +191,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
     inner class GestureAdapterHandler_menu(dragDirs: Int, swipeDirs: Int) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
     {
+        val scrollview = findViewById<ScrollView>(R.id.menu_scrollview)
         private var dragFrom = -1
         private var dragTo = -1
 
@@ -196,9 +200,33 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
             val fromPosition = viewHolder.adapterPosition
             val toPosition = target.adapterPosition
 
+
+            // Update drag and drop value for swapping
             if (dragFrom == -1) { dragFrom = fromPosition}
             dragTo = toPosition
 
+            // Auto scroll of scroll view
+            if (toPosition == 4){
+                scrollview.postDelayed(
+                        Runnable {
+                            Log.i(TAG, "Scroll down")
+                            scrollview.smoothScrollBy(0, 250)
+//                            ObjectAnimator.ofInt(scrollview, "scrollY",  250).setDuration(600).start()
+                        },1000
+                )
+            }
+
+            if (toPosition == 3){
+                scrollview.postDelayed(
+                        Runnable {
+                            Log.i(TAG, "Scroll up")
+                            scrollview.smoothScrollBy(0, -250)
+//                            ObjectAnimator.ofInt(scrollview, "scrollY",  -250).setDuration(400).start()
+                        },1000
+                )
+            }
+
+            Log.i(TAG, "onMove : $toPosition")
             return true
         }
 
@@ -209,7 +237,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
 
                 val (recipes_list, recipes_index_list) = adapter.swapRecipes(dragFrom, dragTo)
 
-                if (recipes_list.size > 0) {
+                if (recipes_list.isNotEmpty()) {
 
                     recipes = recipes_list as MutableList<Recipe>
                     recipes_index = recipes_index_list as MutableList<Int>
@@ -219,8 +247,9 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
+
+            dragFrom = -1
             dragTo = -1
-            dragFrom = dragTo
         }
 
         override fun onSwiped(viewHolder : RecyclerView.ViewHolder, direction: Int) {
