@@ -87,6 +87,12 @@
     <string name="utils_dial_backConfirm_msg">En continuant vous perdrez les modifications</string>
     <string name="utils_dial_option_continue">Continuer</string>
     <string name="utils_dial_changeMenu_msg">Voulez-vous modifier la recette assignée à</string>
+    <string name="utils_dial_option_cancel">Annuler</string>
+    <string name="utils_dial_option_suppress">Supprimer</string>
+    <string name="utils_dial_deleteConfirm_msg">Supprimer</string>
+    <string name="utils_dial_option_modify">Modifier</string>
+    <string name="utils_dial_resetMenu_msg">Êtes vous sûr de réinitialiser le menu de la semaine ?</string>
+    <string name="utils_dial_option_reset">Réinitialiser</string>
 
     <string name="utils_menu_search">Recherche</string>
     <string name="utils_menu_importexport">Importer/Exporter</string>

@@ -87,6 +87,12 @@
     <string name="utils_dial_backConfirm_msg">By continuing you will lose modifications</string>
     <string name="utils_dial_option_continue">Continue</string>
     <string name="utils_dial_changeMenu_msg">Do you want modify assigned recipe for</string>
+    <string name="utils_dial_option_cancel">Cancel</string>
+    <string name="utils_dial_option_suppress">Suppress</string>
+    <string name="utils_dial_deleteConfirm_msg">Suppress</string>
+    <string name="utils_dial_option_modify">Modify</string>
+    <string name="utils_dial_resetMenu_msg">Are you sure to reset week menu ?</string>
+    <string name="utils_dial_option_reset">Reset</string>
 
     <string name="utils_menu_search">Search</string>
     <string name="utils_menu_importexport">Import/Export</string>
