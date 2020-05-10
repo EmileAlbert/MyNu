@@ -265,6 +265,13 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
                     goPickRecipe(day)
                 }
             }
+
+            else {
+
+                Toast.makeText(this@Menu_activity, getString(R.string.menu_locked), Toast.LENGTH_SHORT).show()
+            }
+
+            adapter.notifyDataSetChanged()
         }
     }
 

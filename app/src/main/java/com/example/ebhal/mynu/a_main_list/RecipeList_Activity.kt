@@ -65,6 +65,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         // Data management on creation
         recipes = loadRecipes_database(database)
+        recipes.sortBy { it.name }
         
         // Set toolbar and toolbar gesture handling
         toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -335,7 +336,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         else {return false}
     }
 
-    private fun doFilter(view: View, loadedValue : List<Int> = listOf()) {
+    private fun doFilter(view: View) {
 
         val veggie_switch = view.findViewById<SeekBar>(R.id.filter_switch_veggie)
         val salt_switch = view.findViewById<SeekBar>(R.id.filter_switch_salty)
@@ -423,7 +424,6 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
             }
         }
 
-        adapter.notifyDataSetChanged()
         Toast.makeText(this, "Import réussi", Toast.LENGTH_LONG).show()
     }
 
@@ -451,6 +451,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         if (recipe_index < 0) {recipes.add(0, recipe)}
         else {recipes[recipe_index] = recipe}
 
+        recipes.sortBy { it.name }
         adapter.notifyDataSetChanged()
 
         if (result){Toast.makeText(this, resources.getString(R.string.utils_saved), Toast.LENGTH_SHORT).show()}
@@ -466,6 +467,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         val recipe = recipes.removeAt(recipe_index)
         val result = deleteRecipe_database(database, recipe.id)
+
+        recipes.sortBy { it.name }
         adapter.notifyDataSetChanged()
 
         if (result){Toast.makeText(this, resources.getString(R.string.utils_deleted), Toast.LENGTH_SHORT).show()}
