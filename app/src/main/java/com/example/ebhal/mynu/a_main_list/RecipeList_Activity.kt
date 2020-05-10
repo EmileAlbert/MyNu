@@ -455,7 +455,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         adapter.notifyDataSetChanged()
 
         if (result){Toast.makeText(this, resources.getString(R.string.utils_saved), Toast.LENGTH_SHORT).show()}
-        else {Toast.makeText(this, resources.getString(R.string.utils_notsaved), Toast.LENGTH_SHORT).show()}
+        else {Toast.makeText(this, resources.getString(R.string.utils_saving_failed), Toast.LENGTH_SHORT).show()}
     }
 
     // Delete recipe from recipes list and notify adapter of recycler view
@@ -472,7 +472,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         adapter.notifyDataSetChanged()
 
         if (result){Toast.makeText(this, resources.getString(R.string.utils_deleted), Toast.LENGTH_SHORT).show()}
-        else {Toast.makeText(this, resources.getString(R.string.utils_notdeleted), Toast.LENGTH_SHORT).show()}
+        else {Toast.makeText(this, resources.getString(R.string.utils_deletion_failed), Toast.LENGTH_SHORT).show()}
     }
 
     // Activity management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

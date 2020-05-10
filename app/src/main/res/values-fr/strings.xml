@@ -4,7 +4,7 @@
 
     <string name="recipe_list_menu_request">Sélectionnez une recette pour</string>
     <string name="recipe_list_title">Livre de recette</string>
-    <string name="recipe_list_title_select">Sélection</string>
+    <string name="recipe_list_title_select">Livre de recette - Sélection</string>
 
     <string name="recipe_duration_unit">min</string>
     <string name="recipe_price_unit">€</string>
@@ -33,6 +33,10 @@
     <string name="recipe_details_ingredient_name">Ingrédient</string>
     <string name="recipe_details_ingredient_quantity">Quantité</string>
     <string name="recipe_details_RO_title">Recette - Lecture seule</string>
+    <string name="recipe_details_ingredient_title">Ingrédients</string>
+    <string name="recipe_details_guest_nb_unit">Nombre de personne</string>
+    <string name="recipe_details_invalid_guest_nb">Entrez un nombre de personne valide</string>
+    <string name="details_nutriscore_hint">Selectionnez un nutriscore</string>
 
     <string-array name="recipe_details_meal_time">
         <item>Souper</item>
@@ -41,12 +45,24 @@
     </string-array>
 
 
+    <string name="filter_popup_veggie_on">végétarien</string>
+    <string name="filter_popup_veggie_off">carnivore</string>
+    <string name="filter_popup_temp_off">froid</string>
+    <string name="filter_popup_temp_on">chaud</string>
+    <string name="filter_popup_apply">Appliquer les filtres</string>
+    <string name="filter_popup_salty_on">salé</string>
+    <string name="filter_popup_salty_off">sucré</string>
+    <string name="filter_popup_original_on">original</string>
+    <string name="filter_popup_original_off">normal</string>
+
+
     <string name="menu_toolbar_title">Menu</string>
     <string name="menu_shop_list">Allez à la liste des courses</string>
     <string name="menu_default_recipe_title">Aucune recette choisie</string>
     <string name="menu_reset">Réinitialisation</string>
     <string name="menu_reset_msg">Menu de la semaine réinitialisé</string>
     <string name="menu_shopping_list_completed">Courses faites</string>
+    <string name="menu_locked">Menu verrouillé</string>
 
     <string name="menu_wk_day_1">Lundi</string>
     <string name="menu_wk_day_2">Mardi</string>
@@ -64,38 +80,19 @@
 
 
     <string name="utils_saved">Sauvé</string>
-    <string name="utils_notsaved">Sauvegarde échouée</string>
+    <string name="utils_saving_failed">Sauvegarde échouée</string>
     <string name="utils_deleted">Supprimé</string>
-    <string name="utils_notdeleted">Suppression échouée</string>
+    <string name="utils_deletion_failed">Suppression échouée</string>
 
-    <string name="utils_dial_deleteConfirm_msg">Voulez-vous vraiment supprimer la recette :</string>
     <string name="utils_dial_backConfirm_msg">En continuant vous perdrez les modifications</string>
-    <string name="utils_dial_changeMenu_msg">Voulez-vous modifier la recette assignée à</string>
-    <string name="utils_dial_resetMenu_msg">Voulez-vous réinitialiser le menu de la semaine ?</string>
-
-    <string name="utils_dial_option_suppress">Suprimmer</string>
-    <string name="utils_dial_option_cancel">Annuler</string>
     <string name="utils_dial_option_continue">Continuer</string>
-    <string name="utils_dial_option_modify">Modifier</string>
-    <string name="utils_dial_option_reset">Réinitialiser</string>
+    <string name="utils_dial_changeMenu_msg">Voulez-vous modifier la recette assignée à</string>
 
-    <string name="utils_menu_search">Search</string>
+    <string name="utils_menu_search">Recherche</string>
     <string name="utils_menu_importexport">Importer/Exporter</string>
     <string name="utils_menu_import">Importer</string>
+    <string name="utils_menu_export">Exporter</string>
     <string name="utils_menu_random">Vogel Pick</string>
-    <string name="menu_filter_cold">Froid</string>
-    <string name="filter_popup_veggie_on">végétarien</string>
-    <string name="filter_popup_veggie_off">carnivore</string>
-    <string name="filter_popup_apply">Appliquer les filtres</string>
-    <string name="filter_popup_salty_on">salé</string>
-    <string name="filter_popup_salty_off">sucré</string>
-    <string name="filter_popup_original_on">original</string>
-    <string name="filter_popup_original_off">normal</string>
-    <string name="utils_menu_filter">filter</string>
-    <string name="recipe_details_ingredient_title">Ingrédients</string>
-    <string name="recipe_details_guest_nb_unit">personne</string>
-    <string name="recipe_details_invalid_guest_nb">Entrez un nombre de personne valide</string>
-    <string name="details_nutriscore_hint">Selectionnez un nutriscore</string>
-    <string name="menu_locked">Menu verrouillé</string>
+    <string name="utils_menu_filter">Filtre</string>
 
 </resources>
