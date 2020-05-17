@@ -86,7 +86,13 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         add_button.setOnClickListener(this)
 
         // Reset filters on create
-        database.updateFilters()
+        if (database.getFilters().isEmpty()){
+
+            database.initFilters()
+            Log.i(TAG, "init filter")
+        }
+
+        else { database.updateFilters() }
     }
 
     override fun onStart() {
@@ -110,6 +116,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         }
 
         else {
+
             adapter = RecipeAdapter(recipes, this)
         }
 
@@ -120,12 +127,14 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         // Keep filters active
         val filtersValue = database.getFilters()
+        Log.i(TAG, "get filters value : $filtersValue")
         keepFilterActive(filtersValue)
 
         val searchViewItem  = toolbar.menu.findItem(R.id.app_bar_search)
         if (searchViewItem != null) {
 
             val searchInput = searchViewItem.actionView as SearchView
+            //Log.i(TAG, "Search item not null : ${searchInput.query}")
             adapter.filter.filter(searchInput.query)
         }
     }
@@ -207,6 +216,7 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when (item.itemId) {
             R.id.action_import_recipe -> {
                 val intent = Intent()
@@ -303,6 +313,8 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
         val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
 
+        val meal_spinner = view.findViewById<Spinner>(R.id.filter_meal)
+
         database.updateFilters()
 
         veggie_switch.progress = 0
@@ -310,10 +322,12 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         temp_switch.progress = 0
         original_switch.progress = 0
 
+        meal_spinner.setSelection(0)
+
         return true
     }
 
-    private fun setFilterSeekbars(view : View) : Boolean {
+    private fun setFilters(view : View) : Boolean {
 
         val filtersValue = database.getFilters()
         Log.i(TAG, "$filtersValue")
@@ -323,12 +337,16 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
         val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
 
+        val meal_spinner = view.findViewById<Spinner>(R.id.filter_meal)
+
         if (!filtersValue.isEmpty()) {
 
             veggie_switch.progress = filtersValue[0]
             salt_switch.progress = filtersValue[1]
             temp_switch.progress = filtersValue[2]
             original_switch.progress = filtersValue[3]
+
+            meal_spinner.setSelection(filtersValue[4])
 
             return true
         }
@@ -343,59 +361,75 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
         val temp_switch = view.findViewById<SeekBar>(R.id.filter_switch_temp)
         val original_switch = view.findViewById<SeekBar>(R.id.filter_switch_original)
 
+        val meal_spinner = view.findViewById<Spinner>(R.id.filter_meal)
+
+
         val veggie = veggie_switch.progress
         val salt = salt_switch.progress
         val temp = temp_switch.progress
         val original = original_switch.progress
 
-        database.updateFilters(veggie, salt, temp, original)
+        val meal_filter = meal_spinner.selectedItem as String
+        val meal_database = meal_spinner.selectedItemPosition
 
-        if (veggie == -1){adapter.tagListFilter["veggie"] = true}
-        else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
-        else {adapter.tagListFilter["veggie"] = false}
+        database.updateFilters(veggie, salt, temp, original, meal_database)
 
-        if (salt == -1){adapter.tagListFilter["salt"] = false}
-        else if (salt == 0){adapter.tagListFilter["salt"] = null}
-        else {adapter.tagListFilter["salt"] = true}
+        if (veggie == -1){adapter.tagListFilter_boolean["veggie"] = true}
+        else if (veggie == 0){adapter.tagListFilter_boolean["veggie"] = null}
+        else {adapter.tagListFilter_boolean["veggie"] = false}
 
-        if (temp == -1){adapter.tagListFilter["temp"] = false}
-        else if (temp == 0){adapter.tagListFilter["temp"] = null}
-        else {adapter.tagListFilter["temp"] = true}
+        if (salt == -1){adapter.tagListFilter_boolean["salt"] = false}
+        else if (salt == 0){adapter.tagListFilter_boolean["salt"] = null}
+        else {adapter.tagListFilter_boolean["salt"] = true}
 
-        if (original == -1){adapter.tagListFilter["original"] = true}
-        else if (original == 0){adapter.tagListFilter["original"] = null}
-        else {adapter.tagListFilter["original"] = false}
+        if (temp == -1){adapter.tagListFilter_boolean["temp"] = false}
+        else if (temp == 0){adapter.tagListFilter_boolean["temp"] = null}
+        else {adapter.tagListFilter_boolean["temp"] = true}
+
+        if (original == -1){adapter.tagListFilter_boolean["original"] = true}
+        else if (original == 0){adapter.tagListFilter_boolean["original"] = null}
+        else {adapter.tagListFilter_boolean["original"] = false}
+
+
+        adapter.tagListFiler_spinner["meal_time"] = meal_filter
 
         adapter.filter.filter(null)
     }
 
     private fun keepFilterActive(filterValue : List<Int>){
 
-
         val veggie = filterValue[0]
         val salt = filterValue[1]
         val temp = filterValue[2]
         val original = filterValue[3]
 
-        if (veggie == -1){adapter.tagListFilter["veggie"] = true}
-        else if (veggie == 0){adapter.tagListFilter["veggie"] = null}
-        else {adapter.tagListFilter["veggie"] = false}
+        val meal_database =  filterValue[4]
 
-        if (salt == -1){adapter.tagListFilter["salt"] = false}
-        else if (salt == 0){adapter.tagListFilter["salt"] = null}
-        else {adapter.tagListFilter["salt"] = true}
+        if (veggie == -1){adapter.tagListFilter_boolean["veggie"] = true}
+        else if (veggie == 0){adapter.tagListFilter_boolean["veggie"] = null}
+        else {adapter.tagListFilter_boolean["veggie"] = false}
 
-        if (temp == -1){adapter.tagListFilter["temp"] = false}
-        else if (temp == 0){adapter.tagListFilter["temp"] = null}
-        else {adapter.tagListFilter["temp"] = true}
+        if (salt == -1){adapter.tagListFilter_boolean["salt"] = false}
+        else if (salt == 0){adapter.tagListFilter_boolean["salt"] = null}
+        else {adapter.tagListFilter_boolean["salt"] = true}
 
-        if (original == -1){adapter.tagListFilter["original"] = true}
-        else if (original == 0){adapter.tagListFilter["original"] = null}
-        else {adapter.tagListFilter["original"] = false}
+        if (temp == -1){adapter.tagListFilter_boolean["temp"] = false}
+        else if (temp == 0){adapter.tagListFilter_boolean["temp"] = null}
+        else {adapter.tagListFilter_boolean["temp"] = true}
+
+        if (original == -1){adapter.tagListFilter_boolean["original"] = true}
+        else if (original == 0){adapter.tagListFilter_boolean["original"] = null}
+        else {adapter.tagListFilter_boolean["original"] = false}
+
+
+        val meal_array = resources.getStringArray(R.array.filter_popup_meal_time)
+        adapter.tagListFiler_spinner["meal_time"] = meal_array[meal_database]
+
 
         adapter.filter.filter(null)
 
     }
+
     // Data management ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Add imported recipes to recipes list if does not exist
     private fun importRecipes(imported_recipes: MutableList<Recipe>) {
@@ -508,12 +542,6 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
     @SuppressLint("InflateParams")
     private fun showPopUpFilterWindows() {
 
-        if (database.getFilters().isEmpty()){
-
-            database.initFilters()
-            Log.i(TAG, "init filter")
-        }
-
         val inflater:LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_filters, null)
 
@@ -528,7 +556,13 @@ class RecipeList_Activity : AppCompatActivity(), View.OnClickListener, View.OnLo
 
         val root_layout = findViewById<View>(R.id.main_layout)
         popupWindow.showAtLocation(root_layout, Gravity.CENTER, 0,-400)
-        setFilterSeekbars(view)
+
+        val meal_spinner = view.findViewById<Spinner>(R.id.filter_meal)
+        val spinnerArrayAdapter : ArrayAdapter<String> = ArrayAdapter<String>(this,R.layout.spinner_entries, resources.getStringArray(R.array.filter_popup_meal_time))
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_entries)
+        meal_spinner.setAdapter(spinnerArrayAdapter)
+
+        setFilters(view)
 
         val buttonApply = view.findViewById<Button>(R.id.filter_apply_button)
         buttonApply.setOnClickListener {

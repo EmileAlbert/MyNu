@@ -10,8 +10,10 @@ class App : Application() {
         val database : Database by lazy { Database(instance) }
     }
 
-    init{
+    override fun onCreate() {
+
         super.onCreate()
         instance = this
     }
+
 }

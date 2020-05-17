@@ -78,6 +78,8 @@ class Shop_activity : AppCompatActivity() {
 
         // Suppress item in 2delete list
         val itemsToDelete = adapter.get_items2delete_list()
+        Log.i(TAG, "2Delete list : $itemsToDelete")
+
         for (item in itemsToDelete){
 
             database.delete_item(item.dbID)

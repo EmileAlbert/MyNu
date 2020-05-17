@@ -2,7 +2,6 @@ package com.example.ebhal.mynu.a_main_list
 
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,8 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
     private var recipesList = recipes
     var filteredRecipesList = recipes
 
-    var tagListFilter : MutableMap<String, Boolean?> = mutableMapOf("veggie" to null, "salt" to null, "temp" to null, "original" to null)
+    var tagListFilter_boolean : MutableMap<String, Boolean?> = mutableMapOf("veggie" to null, "salt" to null, "temp" to null, "original" to null)
+    var tagListFiler_spinner :  MutableMap<String, String?> = mutableMapOf("meal_time" to null)
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val cardView = itemView.findViewById(R.id.card_view_recipe) as CardView
@@ -67,7 +67,7 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
                 val charConstraint = !constraint.isNullOrEmpty()
                 val charSearch = constraint.toString()
 
-                val tagsFilteredRecipesList = tagsFiltering(tagListFilter)
+                val tagsFilteredRecipesList = tagsFiltering(tagListFilter_boolean, tagListFiler_spinner)
 
                 // Name filtering
                 if (!charConstraint) {
@@ -91,7 +91,7 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
 
                 val filterResults = FilterResults()
 
-                Log.i("FILTER", "Filter results $filteredRecipesList")
+                //Log.i("FILTER", "Filter results $filteredRecipesList")
                 filterResults.values = filteredRecipesList
 
                 return filterResults
@@ -108,7 +108,7 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
     }
 
 
-    private fun tagsFiltering(tagsMap : MutableMap<String, Boolean?>) : MutableList<Recipe> {
+    private fun tagsFiltering(tagsMap_bool : MutableMap<String, Boolean?>, tagsMap_spin : MutableMap<String, String?>) : MutableList<Recipe> {
 
         val tagsFilteredRecipesList = mutableListOf<Recipe>()
 
@@ -117,27 +117,34 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
 
            var filtered = false
 
-           Log.i("FILTER ADAPTER TAG", "$tagsMap")
-           Log.i("FILTER ADAPTER RECIPE", "$recipe")
+           //Log.i("FILTER ADAPTER TAG", "$tagsMap")
+           //Log.i("FILTER ADAPTER RECIPE", "$recipe")
 
-           if (tagsMap["veggie"] != null){
+           if (tagsMap_bool["veggie"] != null){
 
-               if (recipe.veggie != tagsMap["veggie"]){filtered = true}
+               if (recipe.veggie != tagsMap_bool["veggie"]){filtered = true}
            }
 
-           if (tagsMap["salt"] != null){
+           if (tagsMap_bool["salt"] != null){
 
-               if (recipe.salty != tagsMap["salt"]){filtered = true}
+               if (recipe.salty != tagsMap_bool["salt"]){filtered = true}
            }
 
-           if (tagsMap["temp"] != null){
+           if (tagsMap_bool["temp"] != null){
 
-               if (recipe.temp != tagsMap["temp"]){filtered = true}
+               if (recipe.temp != tagsMap_bool["temp"]){filtered = true}
            }
 
-           if (tagsMap["original"] != null){
+           if (tagsMap_bool["original"] != null){
 
-               if (recipe.original != tagsMap["original"]){filtered = true}
+               if (recipe.original != tagsMap_bool["original"]){filtered = true}
+           }
+
+           if (tagsMap_spin["meal_time"] != null){
+
+               // TODO get default no filter string
+               // val meal_array_default = resources.getStringArray(R.array.filter_popup_meal_time)
+               if (recipe.meal_time != tagsMap_spin["meal_time"] && tagsMap_spin["meal_time"] != "Pas de filtre") {filtered = true}
            }
 
            if (!filtered){
@@ -147,7 +154,7 @@ class RecipeAdapter(recipes : List<Recipe>, private val itemClickListener: View.
 
        }
 
-       Log.i("FILTER", "$tagsFilteredRecipesList")
+       //Log.i("FILTER", "$tagsFilteredRecipesList")
 
        return tagsFilteredRecipesList
 

@@ -12,8 +12,7 @@ import com.example.ebhal.mynu.R
 import com.example.ebhal.mynu.data.Recipe
 import java.util.*
 
-class MenuDayAdapter(recipes : List<Recipe>,
-                     recipes_index : List<Int>,
+class MenuDayAdapter(week_recipes : List<Recipe>,
                      private val days : List<String>,
                      guest_number : List<Int>,
                      private val empty_recipe_name : String,
@@ -23,9 +22,7 @@ class MenuDayAdapter(recipes : List<Recipe>,
 
     : RecyclerView.Adapter<MenuDayAdapter.ViewHolder>() {
 
-    private var recipes_list = recipes as MutableList<Recipe>
-    private var recipes_index_list = recipes_index as MutableList<Int>
-
+    private var week_recipes_list = week_recipes as MutableList<Recipe>
     private var days_guest : MutableList<Int> = guest_number.toMutableList()
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -43,8 +40,10 @@ class MenuDayAdapter(recipes : List<Recipe>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        Log.i("MENU ADAPTER", "$week_recipes_list")
+
         val day = days[position]
-        //val recipe = recipes[position]
+        val recipe = week_recipes_list[position]
 
         holder.cardView.tag = position
 
@@ -54,7 +53,7 @@ class MenuDayAdapter(recipes : List<Recipe>,
             holder.dayView.setTypeface(null, Typeface.BOLD_ITALIC)
         }
 
-        holder.recipeTitleView.text = recipes_list[position].name
+        holder.recipeTitleView.text = recipe.name
         holder.guestView.text = days_guest[position].toString()
 
         holder.cardView.setOnClickListener(itemClickListener)
@@ -91,31 +90,25 @@ class MenuDayAdapter(recipes : List<Recipe>,
         return days_guest
     }
 
-    fun swapRecipes(fromPosition : Int, toPosition : Int) : Pair<List<Recipe>, List<Int>> {
+    fun swapRecipes(fromPosition : Int, toPosition : Int) : List<Recipe> {
 
-        val recipe_swap_1 = recipes_list[fromPosition]
-        val recipe_swap_2 = recipes_list[toPosition]
-
-        val recipe_swap_1_index = recipes_index_list[fromPosition]
-        val recipe_swap_2_index = recipes_index_list[toPosition]
+        val recipe_swap_1 = week_recipes_list[fromPosition]
+        val recipe_swap_2 = week_recipes_list[toPosition]
 
         if (recipe_swap_1.name != empty_recipe_name){
 
-            recipes_list[fromPosition] = recipe_swap_2
-            recipes_list[toPosition] = recipe_swap_1
-
-            recipes_index_list[fromPosition] = recipe_swap_2_index
-            recipes_index_list[toPosition] = recipe_swap_1_index
+            week_recipes_list[fromPosition] = recipe_swap_2
+            week_recipes_list[toPosition] = recipe_swap_1
 
             notifyDataSetChanged()
 
-            return Pair(recipes_list, recipes_index_list)
+            return week_recipes_list
         }
 
         Log.i("TAG", "moved item - from $fromPosition")
         Log.i("TAG", "moved item - to $toPosition")
 
-        return Pair(listOf(), listOf())
+        return listOf()
     }
 
     fun weekDay() : Int {

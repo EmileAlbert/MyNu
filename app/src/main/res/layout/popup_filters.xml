@@ -181,6 +181,20 @@
         android:layout_marginBottom="5dp"
         android:layout_alignStart="@+id/filter_veggie_off" />
 
+    <Spinner
+        android:id="@+id/filter_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+
+        android:spinnerMode="dropdown"
+
+        android:layout_below="@+id/filter_original_on"
+        android:padding="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="0dp"/>
+
+
 
 
     <Button
@@ -189,7 +203,7 @@
         android:layout_height="wrap_content"
 
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/filter_switch_original"
+        android:layout_below="@+id/filter_meal"
         android:layout_marginTop="25dp"
 
         android:text="@string/filter_popup_apply"/>

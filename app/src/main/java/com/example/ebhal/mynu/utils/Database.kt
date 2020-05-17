@@ -14,6 +14,7 @@ private const val DATABASE_VERSION = 1
 
 private const val RECIPE_TABLE_NAME = "recipe"
 private const val MENU_TABLE_NAME = "menu"
+private const val EXTRA_RECIPE_TABLE_NAME = "extra"
 private const val SHOPLIST_TABLE_NAME = "shopping_list"
 private const val FILTER_TABLE_NAME = "filters"
 
@@ -41,6 +42,11 @@ private const val MENU_KEY_DAY = "day_index"
 private const val MENU_KEY_RECIPE_IDX = "recipe_index"
 private const val MENU_KEY_GUEST_NB = "guest_number"
 
+// Database columns for extra recipe table
+private const val EXTRA_KEY_ID = "id"
+private const val EXTRA_KEY_RECIPE_IDX = "recipe_index"
+private const val EXTRA_KEY_GUEST_NB = "guest_number"
+
 // Database columns name for shopping list table
 private const val SHOPLIST_KEY_ID = "id"
 private const val SHOPLIST_KEY_ITEM_NAME = "item_name"
@@ -58,6 +64,7 @@ private const val FILTER_KEY_FILTER4 = "filter4"
 private const val FILTER_KEY_FILTER5 = "filter5"
 private const val FILTER_KEY_FILTER6 = "filter6"
 private const val FILTER_KEY_FILTER7 = "filter7"
+
 
 // Database table creation request
 private const val RECIPE_TABLE_CREATE_REQUEST = "CREATE TABLE $RECIPE_TABLE_NAME ($RECIPE_KEY_ID INTEGER PRIMARY KEY, " +
@@ -82,6 +89,11 @@ private const val MENU_TABLE_CREATE_REQUEST = "CREATE TABLE $MENU_TABLE_NAME ($M
                                                                              "$MENU_KEY_RECIPE_IDX INTEGER, " +
                                                                              "$MENU_KEY_GUEST_NB INTEGER)"
 
+private const val EXTRA_TABLE_CREATE_REQUEST = "CREATE TABLE $EXTRA_RECIPE_TABLE_NAME ($EXTRA_KEY_ID INTEGER PRIMARY KEY, " +
+                                                                                      "$EXTRA_KEY_RECIPE_IDX INTEGER, " +
+                                                                                      "$EXTRA_KEY_GUEST_NB INTEGER)"
+
+
 private const val SHOPLIST_TABLE_CREATE_REQUEST = "CREATE TABLE $SHOPLIST_TABLE_NAME ($SHOPLIST_KEY_ID INTEGER PRIMARY KEY, " +
                                                                                      "$SHOPLIST_KEY_ITEM_NAME TEXT, " +
                                                                                      "$SHOPLIST_KEY_ITEM_QTY TEXT, " +
@@ -105,6 +117,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(RECIPE_TABLE_CREATE_REQUEST)
         db?.execSQL(MENU_TABLE_CREATE_REQUEST)
+        db?.execSQL(EXTRA_TABLE_CREATE_REQUEST)
         db?.execSQL(SHOPLIST_TABLE_CREATE_REQUEST)
         db?.execSQL(FILTER_TABLE_CREATE_REQUEST)
     }
@@ -351,6 +364,114 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         }
     }
 
+    // EXTRA RECIPE DATABASE MANAGEMENT ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    fun add_extra_recipe(recipe_ID : Int) : Boolean {
+
+        val values = ContentValues()
+
+        values.put(EXTRA_KEY_RECIPE_IDX, recipe_ID)
+        values.put(EXTRA_KEY_GUEST_NB, 0)
+
+        val id = writableDatabase.insert(EXTRA_RECIPE_TABLE_NAME, null, values)
+
+        Log.i(TAG, "created extra recipe in db : $id")
+        return id > 0
+
+    }
+
+    fun delete_extra_recipe(recipe_ID: Int) : Boolean {
+
+        var result = false
+
+        Log.d(TAG, "Delete extra recipe")
+
+        try {
+            writableDatabase.delete(EXTRA_RECIPE_TABLE_NAME, "$EXTRA_KEY_RECIPE_IDX = $recipe_ID", null)
+            result = true
+        } catch (e: Exception) {
+        }
+
+        return result
+    }
+
+    fun update_extra_recipe(old_recipe_ID : Int, new_recipe_ID : Int) : Boolean {
+
+        var result = false
+        val values = ContentValues()
+
+        values.put(EXTRA_KEY_RECIPE_IDX, new_recipe_ID)
+        values.put(EXTRA_KEY_GUEST_NB, 0)
+
+
+        Log.i(TAG, "Update extra recipe : old index = $old_recipe_ID")
+
+        try {
+
+            writableDatabase.update(EXTRA_RECIPE_TABLE_NAME, values, "$EXTRA_KEY_RECIPE_IDX = $old_recipe_ID", null)
+            result = true
+            Log.i(TAG, "Successed update extra recipe")
+        }
+
+        catch (e: Exception) {
+
+            Log.i(TAG, "Failed udpate extra recipe : $e")
+        }
+
+        return result
+
+    }
+
+    fun update_guest_number_extra(recipe_ID: Int, guest_number: Int) : Boolean {
+
+        var result = false
+
+        Log.d(TAG, "Update guest number for extra recipe ID $recipe_ID - $guest_number")
+
+        try {
+
+            writableDatabase.execSQL("UPDATE $EXTRA_RECIPE_TABLE_NAME SET $EXTRA_KEY_GUEST_NB = $guest_number WHERE $EXTRA_KEY_RECIPE_IDX = $recipe_ID;")
+            result = true
+        } catch (e: Exception) {
+            Log.d(TAG, "Update day guest for extra failed : $e")
+        }
+
+        return result
+    }
+
+    fun get_extra_recipes_ID() : MutableList<Int> {
+
+        val extra_recipes_list = mutableListOf<Int>()
+        readableDatabase.rawQuery("SELECT * FROM $EXTRA_RECIPE_TABLE_NAME", null).use { cursor ->
+            while (cursor.moveToNext()) {
+
+                val recipe_ID = cursor.getInt(cursor.getColumnIndex(EXTRA_KEY_RECIPE_IDX))
+
+                extra_recipes_list.add(recipe_ID)
+            }
+        }
+
+        return extra_recipes_list
+    }
+
+
+    fun get_extra_recipe_guestNB() : MutableList<Int> {
+
+        val extra_recipes_guests_list = mutableListOf<Int>()
+        readableDatabase.rawQuery("SELECT * FROM $EXTRA_RECIPE_TABLE_NAME", null).use { cursor ->
+            while (cursor.moveToNext()) {
+
+                val recipe_guests = cursor.getInt(cursor.getColumnIndex(EXTRA_KEY_GUEST_NB))
+
+                extra_recipes_guests_list.add(recipe_guests)
+            }
+        }
+
+        return extra_recipes_guests_list
+    }
+
+    fun delete_all_extra_recipe() {
+        writableDatabase.execSQL("DELETE FROM $EXTRA_RECIPE_TABLE_NAME")
+    }
 
     // SHOPPING LIST DATABASE MANAGEMENT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     fun create_item(item: Item): Boolean {
@@ -403,7 +524,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
 
         var result = false
 
-        Log.d(TAG, "Delete recipe $item_ID")
+        Log.d(TAG, "Delete item $item_ID")
 
         try {
             writableDatabase.delete(SHOPLIST_TABLE_NAME, "$SHOPLIST_KEY_ID = $item_ID", null)
@@ -478,7 +599,7 @@ class Database(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 
         values.put(FILTER_KEY_FILTER6, f6)
         values.put(FILTER_KEY_FILTER7, f7)
 
-        Log.i(TAG, "Update item $values")
+        Log.i(TAG, "Update filters $values")
 
         try {
             writableDatabase.update(FILTER_TABLE_NAME, values, "$FILTER_KEY_ID = 1", null)

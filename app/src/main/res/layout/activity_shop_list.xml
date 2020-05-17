@@ -16,28 +16,36 @@
         android:theme="@style/toolbar_theme"
         app:popupTheme="@style/pop_toolbar_theme"/>
 
-    <Button
-        android:id="@+id/shop_list_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/toolbar"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/shopping_list_button_back"/>
-
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/shop_list_button"
+        android:layout_below="@+id/toolbar"
         android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="14dp"
+            android:paddingLeft="14dp">
+
+            <Button
+                android:id="@+id/shop_list_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/shopping_list_button_back"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/shop_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_shop_list" />
+                android:layout_below="@id/shop_list_button"
+                tools:listitem="@layout/item_shop_list"
+                android:layout_marginTop="20dp"/>
 
+        </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

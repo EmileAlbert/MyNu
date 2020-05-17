@@ -43,36 +43,68 @@ class IngredientAdapter(var context : Context, ingredients : MutableList<Ingredi
                 return@setOnEditorActionListener when (actionId) {
 
                     EditorInfo.IME_ACTION_DONE -> {
-                        if (rcNameView.text.toString() != "" && rcQtyView.text.toString() != "") {
 
-                            val data =  Ingredient(rcNameView.text.toString())
+                        var data = Ingredient()
+                        var error = -1
 
-                            if (data.checkInputQtyIsValid(rcQtyView.text.toString())){
+                        if (data.cleanInputName(rcNameView.text.toString()) != ""){
 
-                                data.quantity = data.normalizedQuantityForm_fromRaw(rcQtyView.text.toString())
+                            val cleanedInput = data.cleanInputName(rcNameView.text.toString())
+                            data.name = cleanedInput
 
-                                this@IngredientAdapter.addIngredient(data)
-                                rcNameView.post {rcNameView.requestFocus() }
-                                Log.i(TAG, "ADD DONE")
-                                true
-                            }
+                        }
 
-                            else {
-                                Log.w(TAG, "ADD NOT DONE")
-                                Toast.makeText(context, "Rentrez une quantité valide pour l'ingrédient", Toast.LENGTH_SHORT).show()
-                                true
+                        else {error += 1}
+
+                        if (rcQtyView.text.toString() != "") {
+
+                            if (error != 0){
+
+                                // Check and clean ingredient quantity input
+                                if (data.checkInputQtyIsValid(rcQtyView.text.toString())) {
+
+                                    data.quantity = data.normalizedQuantityForm_fromRaw(rcQtyView.text.toString())
+
+                                    // Check if modification on existing ingredient or add new
+                                    if (adapterPosition == 0){
+                                        this@IngredientAdapter.addIngredient(data)
+                                    }
+
+                                    else {
+                                        this@IngredientAdapter.modifyIngredient(data, adapterPosition)
+                                    }
+
+                                    rcNameView.post { rcNameView.requestFocus() }
+                                }
                             }
                         }
 
-                        else {
+                        else { error += 10}
 
-                            var field = "quantité"
-                            if (rcNameView.text.toString() == "") {field = "nom"}
 
-                            Log.w(TAG, "ADD NOT DONE")
-                            Toast.makeText(context, "Remplissez le champ $field de l'ingrédient", Toast.LENGTH_SHORT).show()
-                            true
+                        if (error != -1) {
+
+                            Log.w(TAG, "ADD NOT DONE - $error")
+                            var errorMSG = context.getString(R.string.recipe_details_error_input_start) + " "
+
+                            when (error) {
+
+                                // Error in ingredient name input
+                                0 -> {errorMSG += context.getString(R.string.recipe_details_error_input_name)}
+
+                                // Error in ingredient quantity input
+                                9 -> {errorMSG += context.getString(R.string.recipe_details_error_input_quantity)}
+
+                                // Error in quantity user input
+                                10 -> {errorMSG += context.getString(R.string.recipe_details_error_input_both)}
+                            }
+
+                            Toast.makeText(context, errorMSG, Toast.LENGTH_SHORT).show()
                         }
+
+                        else {Log.i(TAG, "ADD DONE")}
+
+                        true
                     }
                     else -> false
                 }
@@ -106,7 +138,7 @@ class IngredientAdapter(var context : Context, ingredients : MutableList<Ingredi
 
         val ingredient = ingredientsList[position]
         holder.cardView.tag = position
-        holder.rcNameView.setText(ingredient.name)
+        holder.rcNameView.setText(ingredient.name_toStringUI())
         holder.rcQtyView.setText(ingredient.qty_toStringUI())
     }
 
@@ -116,6 +148,12 @@ class IngredientAdapter(var context : Context, ingredients : MutableList<Ingredi
 
     fun addIngredient(ingredient : Ingredient) {
         ingredientsList.add(ingredient)
+        this.notifyDataSetChanged()
+    }
+
+    fun modifyIngredient(ingredient : Ingredient, index : Int) {
+
+        ingredientsList[index] = ingredient
         this.notifyDataSetChanged()
     }
 

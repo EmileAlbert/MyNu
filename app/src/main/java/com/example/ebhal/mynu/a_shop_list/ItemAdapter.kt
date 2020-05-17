@@ -49,8 +49,24 @@ class ItemAdapter(private var context: Context, shopping_list : MutableList<Item
                             Log.w(LOG, "ADD DONE")
 
                             val data =  Item(rc_sl_nameView.text.toString(), rc_sl_qtyView.text.toString(), -1,false, true)
-                            this@ItemAdapter.add_item(data)
-                            rc_sl_nameView.post {rc_sl_nameView.requestFocus() }
+
+                            if (adapterPosition == 0){
+
+                                this@ItemAdapter.add_item(data)
+                                rc_sl_nameView.post {rc_sl_nameView.requestFocus() }
+                            }
+
+                            else if (items_list[adapterPosition].independence){
+
+                                this@ItemAdapter.modify_item(data, adapterPosition)
+                            }
+
+                            else {
+
+                                Toast.makeText(context, context.getString(R.string.shopping_list_modification_impossible), Toast.LENGTH_SHORT).show()
+                                notifyDataSetChanged()
+                            }
+
                             true
                         }
 
@@ -87,11 +103,11 @@ class ItemAdapter(private var context: Context, shopping_list : MutableList<Item
         item.rc_position = position
 
         holder.cardView.tag = position
-        holder.rc_sl_nameView.setText(item.name)
+        holder.rc_sl_nameView.setText(item.name_toStringUI())
         holder.rc_sl_qtyView.setText(item.qty_toStringUI())
         holder.rc_sl_checkbox.isChecked = item.check
 
-        Log.i(TAG, "onBindViewHolder ${item.name} position : $position")
+//        Log.i(TAG, "onBindViewHolder ${item.name} position : $position")
     }
 
     private fun order_clean_list(unordered_list : MutableList<Item>): MutableList<Item> {
@@ -162,6 +178,12 @@ class ItemAdapter(private var context: Context, shopping_list : MutableList<Item
 
         items_list.add(item)
         items2save_list.add(item)
+        this.notifyDataSetChanged()
+    }
+
+    fun modify_item(item : Item, index : Int){
+
+        items_list[index] = item
         this.notifyDataSetChanged()
     }
 

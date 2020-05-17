@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">MyNu</string>
 
 
@@ -34,7 +34,12 @@
     <string name="recipe_details_ingredient_quantity">Quantité</string>
     <string name="recipe_details_RO_title">Recette - Lecture seule</string>
     <string name="recipe_details_ingredient_title">Ingrédients</string>
-    <string name="recipe_details_guest_nb_unit">Nombre de personne</string>
+
+    <plurals name="recipe_details_guest_nb_unit">
+        <item quantity="one" tools:ignore="ImpliedQuantity">personne</item>
+        <item quantity="other">personnes</item>
+    </plurals>
+
     <string name="recipe_details_invalid_guest_nb">Entrez un nombre de personne valide</string>
     <string name="details_nutriscore_hint">Selectionnez un nutriscore</string>
 
@@ -42,8 +47,8 @@
         <item>Souper</item>
         <item>Diner</item>
         <item>Déjeuner</item>
+        <item>En-Cas</item>
     </string-array>
-
 
     <string name="filter_popup_veggie_on">végétarien</string>
     <string name="filter_popup_veggie_off">carnivore</string>
@@ -55,6 +60,13 @@
     <string name="filter_popup_original_on">original</string>
     <string name="filter_popup_original_off">normal</string>
 
+    <string-array name="filter_popup_meal_time">
+        <item>Pas de filtre</item>
+        <item>Souper</item>
+        <item>Diner</item>
+        <item>Déjeuner</item>
+        <item>En-Cas</item>
+    </string-array>
 
     <string name="menu_toolbar_title">Menu</string>
     <string name="menu_shop_list">Allez à la liste des courses</string>
@@ -100,5 +112,14 @@
     <string name="utils_menu_export">Exporter</string>
     <string name="utils_menu_random">Vogel Pick</string>
     <string name="utils_menu_filter">Filtre</string>
+    <string name="recipe_details_error_input_start">Veuillez entrez</string>
+    <string name="recipe_details_error_input_name">un nom valide</string>
+    <string name="recipe_details_error_input_quantity">une quantité valide</string>
+    <string name="recipe_details_error_input_both">un nom et une quantité valide</string>
+    <string name="menu_extra_empty_recipe">Recette supplémentaire</string>
+    <string name="menu_extra_title_card">Extra</string>
+    <string name="menu_extra_default_recipe_title">Ajouter une recette supplémentaire</string>
+    <string name="extra_menu_recipe_cancelled">Recette supprimée</string>
+    <string name="shopping_list_modification_impossible">Impossible de modifier un ingrédient lié à une recette</string>
 
 </resources>

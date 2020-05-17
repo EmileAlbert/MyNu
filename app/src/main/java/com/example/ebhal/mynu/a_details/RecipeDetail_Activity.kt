@@ -63,6 +63,8 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
     lateinit var ease_rating : RatingBar
     lateinit var score_rating : RatingBar
 
+    lateinit var guest_unit_view : TextView
+
     lateinit var ingredient_list : MutableList<Ingredient>
     lateinit var ingredient_recyclerView : RecyclerView
     lateinit var ingredient_adapter : IngredientAdapter
@@ -144,11 +146,14 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         // Dynamic multiply quantity
         Log.i(TAG , "ingredient list : ${ingredient_adapter.get_ingredient_list(1)}")
 
-        if (ingredient_adapter.get_ingredient_list(1).size > 1){
+        if (ingredient_adapter.get_ingredient_list(1).size > 0){
 
             ingredient_adapter.multiplyIngredientList(currentValue, nextValue)
 
         }
+
+        // Update unit textview
+        guest_unit_view.text = resources.getQuantityText(R.plurals.recipe_details_guest_nb_unit, nextValue)
 
         return true
     }
@@ -166,6 +171,8 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
         ease_rating = findViewById(R.id.ease)
         score_rating = findViewById(R.id.score)
+
+        guest_unit_view = findViewById<TextView>(R.id.guest_nb_unit)
 
         ingredient_recyclerView = findViewById(R.id.ingredients_recycler_view)
 
@@ -234,6 +241,8 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
 
         ease_rating.rating = recipe.ease
         score_rating.rating = recipe.score
+
+        guest_unit_view.text = resources.getQuantityText(R.plurals.recipe_details_guest_nb_unit, 1)
 
         ingredient_list = recipe.ing_string2list(recipe.ingredient_list)
         ingredient_adapter = IngredientAdapter(this, ingredient_list, request_code == REQUEST_VIEW_RECIPE)

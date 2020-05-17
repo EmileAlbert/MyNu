@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:fillViewport="true">
 
         <RelativeLayout
@@ -40,6 +40,17 @@
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_menu_day" />
 
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/extra_recipe_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/menu_day_recycler_view"
+                android:layout_marginTop="20dp"
+
+                tools:listitem="@layout/item_menu_day" />
+
             <Button
                 android:id="@+id/menu_button_shopping_list"
                 android:layout_width="wrap_content"
@@ -51,7 +62,7 @@
                 android:drawablePadding="5dp"
 
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/menu_day_recycler_view"
+                android:layout_below="@+id/extra_recipe_recycler_view"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"/>
 

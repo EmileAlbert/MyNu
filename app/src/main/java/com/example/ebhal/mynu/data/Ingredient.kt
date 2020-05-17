@@ -1,9 +1,8 @@
 package com.example.ebhal.mynu.data
 
 import android.util.Log
-import java.math.BigDecimal
+import com.example.ebhal.mynu.utils.plurals
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
 const val TAG = "Ingredient_class"
 
@@ -12,6 +11,21 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
     // return qty of an ing in a form value-decade-unit to be stored in recipe ing list (string)
     override fun toString(): String {
         return name + "_" + quantity
+    }
+
+    // return singular or plural name according to ingredient quantity
+    fun name_toStringUI() : String {
+
+        var name = this.name
+
+        if (name == ""){return ""}
+
+        val strings_qty = this.quantity.split("-")
+        val quantity = java.lang.Float.valueOf(strings_qty[0])
+
+        if (quantity > 1 && strings_qty[1] == "i"){name = plurals(name)}
+
+        return name
     }
 
     // return quantity of the ingredient in a human readable form (ex : 56 mg)
@@ -24,9 +38,11 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
             Log.i(TAG, "QTY to UI : ${this.quantity}")
             val strings = this.quantity.split("-")
 
+            // Round qty value X.XX
             val int_res = java.lang.Float.valueOf(strings[0])
             res = int_res.toBigDecimal().setScale(1, RoundingMode.HALF_EVEN).toString()
 
+            // Construct clean string for user
             if (strings[1] == "i"){return res}
             else if(strings[1] == strings[2]){return "$res ${strings[1]}"}
             else {return "$res ${strings[1]}${strings[2]}"}
@@ -35,6 +51,39 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         return res
     }
 
+
+    // NAME STRING MANAGEMENT /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Clean user input string and return "" if not valid
+    fun cleanInputName(input : String) : String {
+
+        // Check validity
+        var isValid = true
+        val raw_input = input
+        var working = raw_input
+
+        for (char in working){if (!char.isLetter() && char.toString() != " "){isValid = false}}
+
+        // Clean string
+        while (working[0].toString() == " "){ working = working.removeRange(0, 1) }
+        while (working.last().toString() == " "){working = working.dropLast(1) }
+
+        // Singular name
+        if (working.last().toString() == "s"){working = working.dropLast(1) }
+        else if (working == "Choux" || working == "choux"){working.dropLast(1)}
+
+        // Return management
+        val returnString : String
+
+        Log.w(TAG, "cleaned string  -  @$working@")
+        returnString = if (isValid){working}
+        else {""}
+
+        return returnString
+    }
+
+
+
+    // QUANTITY STRING MANAGEMENT /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // check if an user input is valid to be processed as a quantity
     fun checkInputQtyIsValid(input : String) : Boolean{
 
@@ -103,27 +152,6 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         return "$qty_value-$qty_unit"
     }
 
-    // return normalized quantity for 1 person
-    fun Nto1quantity(norm_qty : String, N : Int) : String{
-
-        val valueDecadeUnitList = norm_qty.split("-")
-
-        val NGuestQty = java.lang.Float.valueOf(valueDecadeUnitList[0])
-        val oneGuestQty = NGuestQty / N
-
-        return "$oneGuestQty-${valueDecadeUnitList[1]}-${valueDecadeUnitList[2]}"
-    }
-
-    fun OneToNquantity(norm_qty : String, N : Float) : String{
-
-        val valueDecadeUnitList = norm_qty.split("-")
-
-        val GuestQty = java.lang.Float.valueOf(valueDecadeUnitList[0])
-        val oneGuestQty = GuestQty * N
-
-        return "$oneGuestQty-${valueDecadeUnitList[1]}-${valueDecadeUnitList[2]}"
-    }
-
     // return float equals to quantity from a raw (not normalized) string
     private fun getValue_fromRaw(raw_qty: String, unit : String): Float {
 
@@ -189,7 +217,6 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         return "getUnit_fromRaw - Error"
     }
 
-
     // return normalized quantity (in g for weight, in l for liquid)
     // Use when this.quantity has a form value-decade-unit
     fun normalizedQuantityValue_fromNorm() : String{
@@ -238,6 +265,29 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         return this.quantity.split("-").toMutableList()
     }
 
+    // return normalized quantity for 1 person
+    fun Nto1quantity(norm_qty : String, N : Int) : String{
+
+        val valueDecadeUnitList = norm_qty.split("-")
+
+        val NGuestQty = java.lang.Float.valueOf(valueDecadeUnitList[0])
+        val oneGuestQty = NGuestQty / N
+
+        return "$oneGuestQty-${valueDecadeUnitList[1]}-${valueDecadeUnitList[2]}"
+    }
+
+    // Multiply quantity to get quantity for N guest
+    fun OneToNquantity(norm_qty : String, N : Float) : String{
+
+        val valueDecadeUnitList = norm_qty.split("-")
+
+        val GuestQty = java.lang.Float.valueOf(valueDecadeUnitList[0])
+        val oneGuestQty = GuestQty * N
+
+        return "$oneGuestQty-${valueDecadeUnitList[1]}-${valueDecadeUnitList[2]}"
+    }
+
+    // QUANTITY UNIT TOOLS ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // return the quantity with wished unit decade
     fun norm2decade(value : Float, decade : String, unit : String) : String{
 
