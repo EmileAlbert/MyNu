@@ -1,5 +1,6 @@
 package com.example.ebhal.mynu.data
 
+import android.util.Log
 import com.example.ebhal.mynu.utils.plurals
 import java.math.RoundingMode
 
@@ -28,10 +29,10 @@ data class Item(var name : String = "", var quantity : String = "", var rc_posit
         return res
     }
 
-
     fun name_toStringUI(): String {
 
         var name = this.name
+        Log.w(TAG, "Item name to UI  -  $name")
 
         if (name == "") {return ""}
         if (this.independence){return name}
@@ -44,5 +45,4 @@ data class Item(var name : String = "", var quantity : String = "", var rc_posit
 
         return name
     }
-
 }

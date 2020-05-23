@@ -28,10 +28,7 @@ fun makeShoppingList(list_pairRecipesGuests: List<Pair<Recipe, Int>>): MutableLi
             val list_value_decade_unit = ingredient.getList_ValueDecadeUnit()
 
             val mult_qty = java.lang.Float.valueOf(list_value_decade_unit[0])* guestNB.toFloat()
-            val df = DecimalFormat("#.#")
-            df.roundingMode = RoundingMode.HALF_UP
-
-            ingredient.quantity = "${df.format(mult_qty)}-${list_value_decade_unit[1]}-${list_value_decade_unit[2]}"
+            ingredient.quantity = "${mult_qty}-${list_value_decade_unit[1]}-${list_value_decade_unit[2]}"
 
             Log.i(TAG, "mult ingredient : $ingredient")
             rawIngredientList.add(ingredient)
@@ -88,6 +85,8 @@ fun concat_ingredient_item(ingredient: Ingredient, item: Item): Item {
     val ing_2 = Ingredient(item.name, item.quantity)
 
     val concat_item = Item(item.name, "")
+
+    Log.i(TAG, "concat ing1 - ${ing_1}, ing2 - ${ing_2}")
 
     // norm_qty form : value-decade-unit with unit = g or l or i
     val norm_qty_1 = ing_1.normalizedQuantityValue_fromNorm().split("-")

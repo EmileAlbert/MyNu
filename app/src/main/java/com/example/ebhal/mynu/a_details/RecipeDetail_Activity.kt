@@ -254,6 +254,7 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         if (meal_View.getItemAtPosition(0) == recipe.meal_time){meal_View.setSelection(0)}
         if (meal_View.getItemAtPosition(1) == recipe.meal_time){meal_View.setSelection(1)}
         if (meal_View.getItemAtPosition(2) == recipe.meal_time){meal_View.setSelection(2)}
+        if (meal_View.getItemAtPosition(3) == recipe.meal_time){meal_View.setSelection(3)}
 
         nutriscore_View.progress = recipe.nutri_score
         nutriscore_View.thumb = getThumb(recipe.nutri_score)
@@ -322,7 +323,10 @@ class RecipeDetail_Activity : AppCompatActivity(), View.OnClickListener {
         recipe.ingredient_list = recipe.ing_list2string(ingredient_adapter.get_ingredient_list(guestNB))
 
         recipe.recipe_steps = steps_View.text.toString()
+
         recipe.meal_time = meal_View.selectedItem.toString()
+        Log.w(TAG, "Get meal time : ${recipe.meal_time}")
+
         recipe.nutri_score = nutriscore_View.progress
 
         recipe.veggie = meat_check.isChecked

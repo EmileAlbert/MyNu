@@ -17,6 +17,7 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
     fun name_toStringUI() : String {
 
         var name = this.name
+        Log.w(TAG, "Ingredient name to UI  -  $name - ${this.quantity}")
 
         if (name == ""){return ""}
 
@@ -61,7 +62,20 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         val raw_input = input
         var working = raw_input
 
-        for (char in working){if (!char.isLetter() && char.toString() != " "){isValid = false}}
+
+        for (char in working){
+
+            if (!char.isLetter() && !char.isDigit() && char.toString() != " "){
+
+                val possibleChar = mutableListOf("%", "'")
+
+                // Exception
+                if (!possibleChar.contains(char.toString()))
+                isValid = false
+
+            }
+
+        }
 
         // Clean string
         while (working[0].toString() == " "){ working = working.removeRange(0, 1) }
@@ -69,19 +83,24 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
 
         // Singular name
         if (working.last().toString() == "s"){working = working.dropLast(1) }
-        else if (working == "Choux" || working == "choux"){working.dropLast(1)}
+
+        // x exception
+        else if (working.toLowerCase() == "choux"){working.dropLast(1)}
+
+
+        // s at the end exception
+        if (working.toLowerCase() == "maï"){working += "s"}
+
 
         // Return management
         val returnString : String
 
-        Log.w(TAG, "cleaned string  -  @$working@")
+        Log.w(TAG, "cleaned string  -  @$working@ - $isValid")
         returnString = if (isValid){working}
         else {""}
 
         return returnString
     }
-
-
 
     // QUANTITY STRING MANAGEMENT /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // check if an user input is valid to be processed as a quantity
@@ -226,6 +245,7 @@ data class Ingredient(var name : String = "", var quantity : String = ""){
         val decade = getList_ValueDecadeUnit()[1]
         val unit = getList_ValueDecadeUnit()[2]
 
+        Log.i(TAG, "PRE NORM QTY Value : ${getList_ValueDecadeUnit()} ")
         val current_qty_value = java.lang.Float.valueOf(getList_ValueDecadeUnit()[0])
 
         Log.i(TAG, "NORM QTY Value : ${this.name} - unit = $unit - decade = $decade")

@@ -74,9 +74,12 @@ class MenuDayAdapter(week_recipes : List<Recipe>,
                 val current = Integer.valueOf(holder.guestView.text.toString())
                 val next = current - 1
 
-                days_guest[position] = Integer.valueOf(next)
-                holder.guestView.text = next.toString()
-                saveGuest_database(position, next)
+                if (next > 0) {
+                    days_guest[position] = Integer.valueOf(next)
+                    holder.guestView.text = next.toString()
+                    saveGuest_database(position, next)
+                }
+
                 true
             }
         }

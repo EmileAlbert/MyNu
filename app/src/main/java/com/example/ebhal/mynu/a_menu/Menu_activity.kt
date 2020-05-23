@@ -477,7 +477,7 @@ class Menu_activity : AppCompatActivity(), View.OnClickListener {
             index += 1
         }
 
-        Log.i(TAG, "list of pair recipe - guest nb : $recipes_guestNB_list")
+        //Log.i(TAG, "list of pair recipe - guest nb : $recipes_guestNB_list")
 
         shopping_list = makeShoppingList(recipes_guestNB_list)
 

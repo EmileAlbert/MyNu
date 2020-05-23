@@ -17,6 +17,7 @@ fun plurals(input : String) : String {
         // Exception
         if (name.toLowerCase() == "chou") {name += "x"}
         else if (name.toLowerCase() == "ail") {}
+        else if (name.toLowerCase() == "maïs")
 
         else {name += "s"}
     }
